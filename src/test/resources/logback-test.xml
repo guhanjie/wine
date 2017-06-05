@@ -5,33 +5,21 @@
     <property name="log.root.level" value="INFO" />
     <property name="log.sql.level" value="INFO" />
     <property file="default.properties"/>
-
+    
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
 			<pattern>%d [%thread] %-5p %logger{16} [%file:%line] - %m%n</pattern>
 			<charset>UTF-8</charset>
 		</encoder>
 	</appender>
-	
-	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${PROJECT_LOG_DIR}/${PROJECT_NAME}.log</file>
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${PROJECT_LOG_DIR}/${PROJECT_NAME}.%d{yyyy-MM-dd}.log</fileNamePattern>
-			<maxHistory>30</maxHistory>
-		</rollingPolicy>
-		<encoder>
-			<pattern>%d [%thread] %-5p %logger{16} [%file:%line] - %m%n</pattern>
-			<charset>UTF-8</charset>
-		</encoder>
-	</appender>
-	
+		
 	<!-- TRACE < DEBUG < INFO < WARN < ERROR -->	 
 		
 	<logger name="top.guhanjie.wine" level="DEBUG"/>
     <logger name="java.sql" level="${log.sql.level}"/>
-
+	<!-- <logger name="org.springframework.web" level="DEBUG"/> -->
+	
 	<root level="${log.root.level}">
-		<appender-ref ref="FILE" />
 		<appender-ref ref="STDOUT" />
 	</root>
 </configuration>

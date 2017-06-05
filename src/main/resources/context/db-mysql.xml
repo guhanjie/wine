@@ -17,7 +17,7 @@
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" p:sqlSessionFactoryBeanName="sessionFactory">
         <property name="basePackage">
-            <value>com.guhanjie.mapper</value>
+            <value>top.guhanjie.wine.mapper</value>
         </property>
     </bean>
 

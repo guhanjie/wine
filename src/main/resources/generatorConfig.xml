@@ -19,16 +19,16 @@
 			<property name="forceBigDecimals" value="false" />
 		</javaTypeResolver>
 		<!-- 生成模型的包名和位置 -->
-		<javaModelGenerator targetPackage="com.guhanjie.model" targetProject="./src/main/java">
+		<javaModelGenerator targetPackage="top.guhanjie.wine.model" targetProject="./src/main/java">
 			<property name="enableSubPackages" value="false" />
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
 		<!-- 生成DAO接口的包名和位置 -->
-		<sqlMapGenerator targetPackage="com.guhanjie.mapper" targetProject="./src/main/resources">
+		<sqlMapGenerator targetPackage="top.guhanjie.wine.mapper" targetProject="./src/main/resources">
 			<property name="enableSubPackages" value="false" />
 		</sqlMapGenerator>
 		<!-- 生成映射文件的包名和位置 -->
-		<javaClientGenerator targetPackage="com.guhanjie.mapper" targetProject="./src/main/java" type="XMLMAPPER">
+		<javaClientGenerator targetPackage="top.guhanjie.wine.mapper" targetProject="./src/main/java" type="XMLMAPPER">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 		<!-- 生成具体的表 -->
