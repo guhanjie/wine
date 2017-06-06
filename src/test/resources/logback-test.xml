@@ -3,7 +3,6 @@
 	<property name="PROJECT_NAME" value="wine" />
     <property name="PROJECT_LOG_DIR" value="${user.home}/logs/${PROJECT_NAME}" />
     <property name="log.root.level" value="INFO" />
-    <property name="log.sql.level" value="INFO" />
     <property file="default.properties"/>
     
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -16,7 +15,6 @@
 	<!-- TRACE < DEBUG < INFO < WARN < ERROR -->	 
 		
 	<logger name="top.guhanjie.wine" level="DEBUG"/>
-    <logger name="java.sql" level="${log.sql.level}"/>
 	<!-- <logger name="org.springframework.web" level="DEBUG"/> -->
 	
 	<root level="${log.root.level}">

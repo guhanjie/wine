@@ -2,8 +2,7 @@
 <configuration scan="true" scanPeriod="6 seconds" debug="true">
 	<property name="PROJECT_NAME" value="wine" />
     <property name="PROJECT_LOG_DIR" value="${user.home}/logs/${PROJECT_NAME}" />
-    <property name="log.root.level" value="INFO" />
-    <property name="log.sql.level" value="INFO" />
+    <property name="log.root.level" value="WARN" />
     <property file="default.properties"/>
 
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -27,8 +26,7 @@
 	
 	<!-- TRACE < DEBUG < INFO < WARN < ERROR -->	 
 		
-	<logger name="top.guhanjie.wine" level="DEBUG"/>
-    <logger name="java.sql" level="${log.sql.level}"/>
+	<logger name="top.guhanjie.wine" level="INFO"/>
 
 	<root level="${log.root.level}">
 		<appender-ref ref="FILE" />
