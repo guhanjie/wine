@@ -1,25 +1,31 @@
+# Compiled class file
 *.class
+
+# Log file
+*.log
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
+# Package Files
 *.jar
 *.war
 *.ear
+*.zip
+*.tar.gz
+*.rar
 
+# Eclipse settings file
 .project
 .classpath
-.settings
-target
-META-INF
-.externalToolBuilders
-bin
-*.log
-.DS_Store
+.settings/
+target/
+bin/
+.springBeans
+
+# InteliJ Idea settings file
 *.iml
 .idea
-.springBeans
-.clover
-rebel.xml
-.bpmn
+
+# Mac os
+.DS_Store
