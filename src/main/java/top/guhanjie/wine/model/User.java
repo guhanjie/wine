@@ -578,4 +578,34 @@ public class User {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    /**
+     * Class Name:    TypeEnum<br/>
+     * <b>会员类型</b>
+     * <ul>
+     * <li>0：普通用户，</li>
+     * <li>1：会员</li>
+     * </ul>
+     */
+    public static enum TypeEnum {
+    
+        NORMAL((short)0, "普通会员"),
+        VIP((short)1, "会员");
+        
+        private short code;
+        private String desc;
+        
+        private TypeEnum(short code, String desc) {
+            this.code = code;
+            this.desc = desc;
+        }
+        
+        public short code() {
+            return code;
+        }
+        
+        public String desc() {
+            return desc;
+        }
+    }
 }

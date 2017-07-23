@@ -37,7 +37,7 @@
 	
 	<filter>
 		<filter-name>xssFilter</filter-name>
-		<filter-class>com.guhanjie.filter.XSSFilter</filter-class>
+		<filter-class>top.guhanjie.wine.filter.XSSFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>xssFilter</filter-name>

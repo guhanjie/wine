@@ -2,12 +2,12 @@
 <configuration scan="true" scanPeriod="6 seconds" debug="true">
 	<property name="PROJECT_NAME" value="wine" />
     <property name="PROJECT_LOG_DIR" value="${user.home}/logs/${PROJECT_NAME}" />
-    <property name="log.root.level" value="INFO" />
+    <property name="log.root.level" value="DEBUG" />
     <property file="default.properties"/>
     
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<pattern>%d [%thread] %-5p %logger{16} [%file:%line] - %m%n</pattern>
+			<pattern>%d{HH:mm:ss} [%thread] %-5p %logger{16} - %m%n</pattern>
 			<charset>UTF-8</charset>
 		</encoder>
 	</appender>

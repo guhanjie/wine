@@ -483,4 +483,111 @@ public class Order {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    /**
+     * Class Name:    PayStatusEnum<br/>
+     * <b>支付状态:    </b>
+     * <ul>
+     * <li>0：未支付，</li>
+     * <li>1：支付成功，</li>
+     * <li>2：支付失败，</li>
+     * <li>3：转入退款，</li>
+     * <li>4：已关闭，</li>
+     * <li>5：已撤销（刷卡支付），</li>
+     * <li>6： 用户支付中</li>
+     * </ul>
+     */
+    public static enum PayStatusEnum {
+
+        NOTPAY((short)0, "未支付"),
+        SUCCESS((short)1, "支付成功"),
+        PAYERROR((short)2, "支付失败"),
+        REFUND((short)3, "转入退款"),
+        CLOSED((short)4, "已关闭"),
+        REVOKED((short)5, "已撤销（刷卡支付）"),
+        USERPAYING((short)6, "用户支付中");
+        
+        private short code;
+        private String desc;
+        
+        private PayStatusEnum(short code, String desc) {
+            this.code = code;
+            this.desc = desc;
+        }
+        
+        public short code() {
+            return code;
+        }
+        
+        public String desc() {
+            return desc;
+        }
+    }
+    
+
+    /**
+     * Class Name:    PayTypeEnum<br/>
+     * <b>支付类型:    </b>
+     * <ul>
+     * <li>0：微信支付，</li>
+     * <li>1：现金</li>
+     * </ul>
+     */
+    public static enum PayTypeEnum {
+
+        WEIXIN((short)0, "微信支付"),
+        CASH((short)1, "现金支付");
+        
+        private short code;
+        private String desc;
+        
+        private PayTypeEnum(short code, String desc) {
+            this.code = code;
+            this.desc = desc;
+        }
+        
+        public short code() {
+            return code;
+        }
+        
+        public String desc() {
+            return desc;
+        }
+    }
+    
+    /**
+     * Class Name:    StatusEnum<br/>
+     * <b>订单状态，采用位表示法，第1-2位：是否下单成功，第3-4位：是否开始送货，第5-6位：是否支付完成]</b>
+     */
+    public static enum StatusEnum {
+        //位表示法  
+    //  private static final short PUT_ORDER = 0x01;        //下单与（否）
+    //  private static final short CANCEL_ORDER = 0x02;     //取消与（否）
+    //  private static final short START_SEND = 0x04;       //开始送货与（否）
+    //  private static final short FINISH_ORDER = 0x08;     //完成与（否）
+    //  private static final short PAY_ORDER = 0x10;        //支付与（否）
+        
+        NEW((short)0x01, "新建订单"),           //1
+        CANCEL((short)(0x01<<2 | 0x01), "取消订单"),    //3
+        SENDING((short)(0x01<<3 | 0x01), "开始送货"),   //5
+        FINISH((short)(0x01<<4 | 0x01<<3 | 0x01), "送货完成"),        //13
+        PAYED((short)(0x01<<5 | 0x01<<4 | 0x01<<3 | 0x01), "支付完成");     //29
+        
+        private short code;
+        private String desc;
+        
+        private StatusEnum(short code, String desc) {
+            this.code = code;
+            this.desc = desc;
+        }
+        
+        public short code() {
+            return code;
+        }
+        
+        public String desc() {
+            return desc;
+        }
+    }
+
 }

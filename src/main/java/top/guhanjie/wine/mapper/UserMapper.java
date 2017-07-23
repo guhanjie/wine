@@ -50,4 +50,10 @@ public interface UserMapper {
      * @mbggenerated Tue Jun 06 00:54:08 CST 2017
      */
     int updateByPrimaryKey(User record);
+
+    //------------------------- custom add -----------------------------
+    User selectByOpenId(String openid);
+    
+    User selectByPhone(String phone);
+    //--------------------------------------------------------------------
 }
