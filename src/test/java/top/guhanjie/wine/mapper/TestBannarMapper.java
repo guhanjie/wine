@@ -2,7 +2,7 @@ package top.guhanjie.wine.mapper;
 
 import static org.junit.Assert.assertEquals;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +46,7 @@ public class TestBannarMapper {
 		logger.debug(JSON.toJSONString(model, true));
 		//Update
 		logger.debug("Update one record in table[{}]...", tableName);
-		model.setIndex((short)1);
+		model.setIdx(1);
 		long updateCount = mapper.updateByPrimaryKeySelective(model);
 		logger.debug("Update [{}] record(s) in table[{}]...", updateCount, tableName);
 		model = mapper.selectByPrimaryKey(model.getId());
@@ -57,4 +57,19 @@ public class TestBannarMapper {
 		assertEquals(deleteCount, 1L);
 	}
 	
+	@Test
+    public void testSelect() {
+        logger.debug("Select one record from table[{}]...", tableName);
+        Bannar model = mapper.selectByPrimaryKey(1);
+        logger.debug(JSON.toJSONString(model, true));
+	}
+
+    @Test
+    public void testSelectAll() {
+        logger.debug("Select all records from table[{}]...", tableName);
+        List<Bannar> models = mapper.selectAll();
+        for(Bannar obj : models) {
+            logger.debug(JSON.toJSONString(obj, true));
+        }
+    }
 }

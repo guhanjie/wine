@@ -18,7 +18,7 @@
   <div class="container" id="page-body">
     <div class="row">
       <div class="col-sm-offset-3 col-sm-6">
-        <img src="${pageContext.request.contextPath}/resources/img/error.jpg" class="img-responsive img-rounded" />
+        <img src="${pageContext.request.contextPath}/resources/images/error.jpg" class="img-responsive img-rounded" />
       </div>
     </div>
     <div class="row">

@@ -3,6 +3,7 @@ package top.guhanjie.wine.mapper;
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -58,4 +59,11 @@ public class TestItemMapper {
 		assertEquals(deleteCount, 1L);
 	}
 	
+	@Test
+    public void testSelectByCategory() {
+	    List<Item> items = mapper.selectByCategory(6);
+	    for(Item item : items) {
+	        logger.debug(JSON.toJSONString(item));
+	    }
+	}
 }

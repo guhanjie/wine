@@ -7,10 +7,12 @@
  */  
 package top.guhanjie.wine.util;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * Class Name:      TTLCache<br/>
@@ -57,7 +59,7 @@ public class TTLCache<K, V> {
     }
     
     public void put(K key, V value) {
-        map.put(key, new TimedValue(value));
+        map.put(key, new TimedValue<V>(value));
     }
 
     public V get(K key) {
@@ -84,11 +86,15 @@ public class TTLCache<K, V> {
     public int size() {
         return map.size();
     }
-
+    
     public void clear() {
         map.clear();
     }
-    
+
+    public Set<K> keySet() {
+        return map.keySet();
+    }
+
     /**
      * Method Name: forceRemoveExpires<br/>
      * Description:         [强制删除缓存中已失效的项，此方法一般不建议使用，除非需要减小缓存大小]
@@ -129,7 +135,7 @@ public class TTLCache<K, V> {
         return sb.toString();
     }
     
-    class TimedValue<V> {
+    private class TimedValue<V> {
         V value;
         long timestamp;
         

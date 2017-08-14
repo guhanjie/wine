@@ -89,6 +89,40 @@ CREATE TABLE `item` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for rush_item
+-- ----------------------------
+CREATE TABLE `rush_item` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '1元抢购商品ID',
+  `name` varchar(100) DEFAULT NULL COMMENT '商品名称',
+  `icon` varchar(200) DEFAULT NULL COMMENT '商品缩略图',
+  `detail` varchar(200) DEFAULT '' COMMENT '商品详情描述',
+  `category_id` int(10) unsigned DEFAULT NULL COMMENT '目录ID',
+  `normal_price` decimal(10,2) DEFAULT NULL COMMENT '普通价格',
+  `vip_price` decimal(10,2) DEFAULT NULL COMMENT '会员价格',
+  `back_points` int(10) unsigned DEFAULT NULL COMMENT '返送积分',
+  `buyers` int(11) DEFAULT NULL COMMENT '参与人数',
+  `counts` int(11) DEFAULT NULL COMMENT '抢购份数',
+  `status` int(6) DEFAULT '2' COMMENT '商品状态（1：进行中、2：未开始、3：已结束）',
+  `img1` varchar(200) DEFAULT NULL COMMENT '商品图片1',
+  `img2` varchar(200) DEFAULT NULL,
+  `img3` varchar(200) DEFAULT NULL,
+  `img4` varchar(200) DEFAULT NULL,
+  `img5` varchar(200) DEFAULT NULL,
+  `img6` varchar(200) DEFAULT NULL,
+  `img7` varchar(200) DEFAULT NULL,
+  `img8` varchar(200) DEFAULT NULL,
+  `img9` varchar(200) DEFAULT NULL,
+  `img10` varchar(200) DEFAULT NULL,
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='1元抢购商品信息表';
+
+-- ----------------------------
+-- Records of item
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for order
 -- ----------------------------
 DROP TABLE IF EXISTS `order`;

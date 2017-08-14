@@ -44,47 +44,8 @@
                selectByPrimaryKeyQueryId="false"
                selectByExampleQueryId="false">
                <generatedKey column="id" sqlStatement="MySql" identity="true" />
-		</table>
-		<table tableName="category" domainObjectName="Category" 
-			   enableInsert="true"
-               enableSelectByPrimaryKey="true"
-               enableSelectByExample="false"
-               enableUpdateByPrimaryKey="true"
-               enableDeleteByPrimaryKey="true"
-               enableDeleteByExample="false"
-               enableCountByExample="false"
-               enableUpdateByExample="false"
-               selectByPrimaryKeyQueryId="false"
-               selectByExampleQueryId="false">
-               <generatedKey column="id" sqlStatement="MySql" identity="true" />
-		</table>
-		<table tableName="item" domainObjectName="Item" 
-			   enableInsert="true"
-               enableSelectByPrimaryKey="true"
-               enableSelectByExample="false"
-               enableUpdateByPrimaryKey="true"
-               enableDeleteByPrimaryKey="true"
-               enableDeleteByExample="false"
-               enableCountByExample="false"
-               enableUpdateByExample="false"
-               selectByPrimaryKeyQueryId="false"
-               selectByExampleQueryId="false">
-               <generatedKey column="id" sqlStatement="MySql" identity="true" />
-		</table>
-		<table tableName="order" domainObjectName="Order" 
-			   enableInsert="true"
-               enableSelectByPrimaryKey="true"
-               enableSelectByExample="false"
-               enableUpdateByPrimaryKey="true"
-               enableDeleteByPrimaryKey="true"
-               enableDeleteByExample="false"
-               enableCountByExample="false"
-               enableUpdateByExample="false"
-               selectByPrimaryKeyQueryId="false"
-               selectByExampleQueryId="false">
-               <generatedKey column="id" sqlStatement="MySql" identity="true" />
-		</table>
-		<table tableName="user" domainObjectName="User" 
+		</table> -->
+		<!-- <table tableName="category" domainObjectName="Category" 
 			   enableInsert="true"
                enableSelectByPrimaryKey="true"
                enableSelectByExample="false"
@@ -97,7 +58,20 @@
                selectByExampleQueryId="false">
                <generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table> -->
-		<table tableName="point_detail" domainObjectName="PointDetail" 
+		<!-- <table tableName="item" domainObjectName="Item" 
+			   enableInsert="true"
+               enableSelectByPrimaryKey="true"
+               enableSelectByExample="false"
+               enableUpdateByPrimaryKey="true"
+               enableDeleteByPrimaryKey="true"
+               enableDeleteByExample="false"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               selectByPrimaryKeyQueryId="false"
+               selectByExampleQueryId="false">
+               <generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table> -->
+		<table tableName="rush_item" domainObjectName="RushItem" 
 			   enableInsert="true"
                enableSelectByPrimaryKey="true"
                enableSelectByExample="false"
@@ -110,6 +84,45 @@
                selectByExampleQueryId="false">
                <generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>
+		<!-- <table tableName="order" domainObjectName="Order" 
+			   enableInsert="true"
+               enableSelectByPrimaryKey="true"
+               enableSelectByExample="false"
+               enableUpdateByPrimaryKey="true"
+               enableDeleteByPrimaryKey="true"
+               enableDeleteByExample="false"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               selectByPrimaryKeyQueryId="false"
+               selectByExampleQueryId="false">
+               <generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table> -->
+		<!-- <table tableName="user" domainObjectName="User" 
+			   enableInsert="true"
+               enableSelectByPrimaryKey="true"
+               enableSelectByExample="false"
+               enableUpdateByPrimaryKey="true"
+               enableDeleteByPrimaryKey="true"
+               enableDeleteByExample="false"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               selectByPrimaryKeyQueryId="false"
+               selectByExampleQueryId="false">
+               <generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table> -->
+		<!-- <table tableName="point_detail" domainObjectName="PointDetail" 
+			   enableInsert="true"
+               enableSelectByPrimaryKey="true"
+               enableSelectByExample="false"
+               enableUpdateByPrimaryKey="true"
+               enableDeleteByPrimaryKey="true"
+               enableDeleteByExample="false"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               selectByPrimaryKeyQueryId="false"
+               selectByExampleQueryId="false">
+               <generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table> -->
 	</context>
 	<!--
 		maven cmd:

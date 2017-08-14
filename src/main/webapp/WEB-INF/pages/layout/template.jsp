@@ -6,7 +6,8 @@
 	if("/".equals(path)){
 		path = "";
 	}
-	request.setAttribute("rootPath", path);
+    request.setAttribute("rootPath", path);
+	request.setAttribute("resourcePath", path+"/resources");
     /* 等价于JSP中使用如下EL表达式：${pageContext.request.contextPath} */
 %>
 <!DOCTYPE html>
@@ -17,27 +18,28 @@
     	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     	<meta name="renderer" content="webkit|ie-comp|ie-stand">
     	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    	<meta name="keywords" content="${meta.keywords}"/>
-    	<meta name="description" content="${meta.description}"/>
-    	<link rel="shortcut icon" type="image/x-icon" href="${rootPath}/img/favicon.ico">
-    	<t:importAttribute name="cssPath" />
-        <link rel="stylesheet" href="${rootPath}/${cssPath}/common/bootstrap.css">
-        <link rel="stylesheet" href="${rootPath}/${cssPath}/common/header.css">
-        <link rel="stylesheet" href="${rootPath}/${cssPath}/common/footer.css">
-    	<t:importAttribute name="css" />
-        <c:if test='${not empty css}'>
-            <link rel="stylesheet" href="${rootPath}/${cssPath}/${css}.css">
-        </c:if>
-    	<title><t:getAsString name="title"/>-${rootPath}</title>
+    	<meta name="keywords" content="如东，茶酒，商城，微信商城" />
+    	<meta name="description" content="如东，茶酒，商城，微信商城"/>
+        <title>如东茶酒商城</title>
+    	<link rel="shortcut icon" type="image/x-icon" href="${resourcePath}/images/favicon.ico">
+        <!--theme style-->
+        <link rel="stylesheet" href="${resourcePath}/css/bootstrap.css" media="all">
+        <link rel="stylesheet" href="${resourcePath}/css/style.css" media="all">
+    	
+        <!--//theme style-->
+        <script src="${resourcePath}/js/jquery.min.js"></script>
+        <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+        <!-- start menu -->
+        <script src="${resourcePath}/js/simpleCart.min.js"> </script>
+        <link rel="stylesheet" href="${resourcePath}/css/memenu.css" media="all" />
+        <script src="${resourcePath}/js/memenu.js"></script>
+        <script>$(document).ready(function(){$(".memenu").memenu();});</script>
+        <script src="${resourcePath}/js/bootstrap.js"></script>
+        <!--//start menu-->
     </head>
     <body>
-		<t:insertAttribute name="body" />
-        <t:importAttribute name="jsPath" />
-        <script src="${rootPath}/${jsPath}/common/jquery-1.11.3.js"></script>
-        <script src="${rootPath}/${jsPath}/common/bootstrap.js"></script>
-        <t:importAttribute name="js" />
-        <c:if test='${not empty js}'>
-            <script src="${rootPath}/${jsPath}/${js}.js"></script>
-        </c:if>
+        <t:insertAttribute name="header" />
+		<t:insertAttribute name="main" />
+        <t:insertAttribute name="footer" />
     </body>
 </html>

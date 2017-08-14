@@ -41,7 +41,7 @@ public class TestCategoryMapper {
 		for(String str : mainCategory) {
 			Category model = new Category();
 			model.setId(i++);
-			model.setLevel((short)1);
+			model.setLevel(1);
 			model.setParentId(0);
 			model.setName(str);
 			insertCount += mapper.insertSelective(model);
