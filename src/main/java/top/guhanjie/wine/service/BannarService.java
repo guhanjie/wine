@@ -1,10 +1,8 @@
 package top.guhanjie.wine.service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.slf4j.Logger;
@@ -24,7 +22,7 @@ public class BannarService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BannarService.class);
 	
-	private static final TTLCache<Integer, Bannar> CACHE = new TTLCache<Integer, Bannar>(60 * 20); //失效时间为20分钟，按进入时间超时逐出
+	private static final TTLCache<Integer, Bannar> CACHE = new TTLCache<Integer, Bannar>(-1); //失效时间为20分钟，按进入时间超时逐出
 	
 	@Autowired
 	private BannarMapper bannarMapper;
@@ -54,6 +52,7 @@ public class BannarService {
 	
 	public List<Bannar> listBannar() {
 	    if(CACHE.size() == 0) {
+	        LOGGER.info("Bannar cache set up...");
 	        List<Bannar> list = bannarMapper.selectAll();
 	        for(Bannar b : list) {
 	            CACHE.put(b.getIdx(), b);
@@ -67,10 +66,4 @@ public class BannarService {
 	    return bannars;
 	}
 	
-//	public 
-//    
-//    public Bannar getFromCache(int idx) {
-//		LOGGER.debug("get bannar from cache, idx:[{}].", idx);
-//        return CACHE.get(idx);
-//    }
 }

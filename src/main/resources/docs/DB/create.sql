@@ -103,6 +103,8 @@ CREATE TABLE `rush_item` (
   `buyers` int(11) DEFAULT NULL COMMENT '参与人数',
   `counts` int(11) DEFAULT NULL COMMENT '抢购份数',
   `status` int(6) DEFAULT '2' COMMENT '商品状态（1：进行中、2：未开始、3：已结束）',
+  `start_tiem` datetime DEFAULT NULL COMMENT '活动开始时间',
+  `end_time` datetime DEFAULT NULL COMMENT '活动结束时间',
   `img1` varchar(200) DEFAULT NULL COMMENT '商品图片1',
   `img2` varchar(200) DEFAULT NULL,
   `img3` varchar(200) DEFAULT NULL,
@@ -116,10 +118,10 @@ CREATE TABLE `rush_item` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='1元抢购商品信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='1元抢购商品信息表';
 
 -- ----------------------------
--- Records of item
+-- Records of rush_item
 -- ----------------------------
 
 -- ----------------------------

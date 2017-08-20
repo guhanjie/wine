@@ -1,6 +1,6 @@
 package top.guhanjie.wine.mapper;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -48,7 +48,7 @@ public class TestItemMapper {
 		logger.debug(JSON.toJSONString(model, true));
 		//Update
 		logger.debug("Update one record in table[{}]...", tableName);
-		model.setImg1("http://www.guhanjie.top");
+		model.setDetailImgs("http://www.guhanjie.top");
 		long updateCount = mapper.updateByPrimaryKeySelective(model);
 		logger.debug("Update [{}] record(s) in table[{}]...", updateCount, tableName);
 		model = mapper.selectByPrimaryKey(model.getId());
@@ -66,4 +66,11 @@ public class TestItemMapper {
 	        logger.debug(JSON.toJSONString(item));
 	    }
 	}
+
+    @Test
+    public void testSelectById() {
+        Item item = mapper.selectById(1);
+        assertNotNull(item);
+        logger.debug(JSON.toJSONString(item));
+    }
 }

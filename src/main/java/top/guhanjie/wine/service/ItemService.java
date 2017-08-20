@@ -8,7 +8,6 @@
  */  
 package top.guhanjie.wine.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -25,24 +24,59 @@ public class ItemService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ItemService.class);
     
-    private static final TTLCache<Integer, Item> CACHE = new TTLCache<Integer, Item>(60 * 20); //失效时间为20分钟，按进入时间超时逐出
+    private static final Integer CATEGORY_WRITE = 5;
+    private static final Integer CATEGORY_WINE = 6;
+    private static final Integer CATEGORY_BEER = 7;
+    
+    private static final TTLCache<Integer, List<Item>> GROUPED_ITEMS_CACHE = 
+                    new TTLCache<Integer, List<Item>>(10 * 60); //失效时间为10分钟，按进入时间超时逐出
+
+    private static final TTLCache<Integer, Item> ITEM_CACHE = 
+                    new TTLCache<Integer, Item>(10 * 60); //失效时间为10分钟，按进入时间超时逐出
     
     @Autowired
     private ItemMapper itemMapper;
     
     //白酒
-    public List<Item> getItemsByBaijiu() {
-        return itemMapper.selectByCategory(5);
-    }
-    
-    //洋酒
-    public List<Item> getItemsByYangjiu() {
-        List<Item> items1 = itemMapper.selectByCategory(6);
-        List<Item> items2 = itemMapper.selectByCategory(6);
-        List<Item> items = new ArrayList<Item>();
-        items.addAll(items1);
-        items.addAll(items2);
+    public List<Item> listWhiteWine() {
+        List<Item> items = GROUPED_ITEMS_CACHE.get(CATEGORY_WRITE);
+        if(items == null) {
+            LOGGER.info("white wine Item not hit cache, updating...");
+            items = itemMapper.selectByCategory(CATEGORY_WRITE);
+            GROUPED_ITEMS_CACHE.put(CATEGORY_WRITE, items);
+        }
         return items;
     }
     
+    //红酒
+    public List<Item> listWine() {
+        List<Item> items = GROUPED_ITEMS_CACHE.get(CATEGORY_WINE);
+        if(items == null) {
+            LOGGER.info("wine Item not hit cache, updating...");
+            items = itemMapper.selectByCategory(CATEGORY_WINE);
+            GROUPED_ITEMS_CACHE.put(CATEGORY_WINE, items);
+        }
+        return items;
+    }
+
+    //啤酒
+    public List<Item> listBeer() {
+        List<Item> items = GROUPED_ITEMS_CACHE.get(CATEGORY_BEER);
+        if(items == null) {
+            LOGGER.info("beer Item not hit cache, updating...");
+            items = itemMapper.selectByCategory(CATEGORY_BEER);
+            GROUPED_ITEMS_CACHE.put(CATEGORY_BEER, items);
+        }
+        return items;
+    }
+    
+    public Item getItem(Integer itemId) {
+        Item item = ITEM_CACHE.get(itemId);
+        if(item == null) {
+            LOGGER.info("Item not hit cache, updating...");
+            item = itemMapper.selectById(itemId);
+            ITEM_CACHE.put(itemId, item);
+        }
+        return item;
+    }
 }

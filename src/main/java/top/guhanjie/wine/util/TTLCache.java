@@ -8,6 +8,7 @@
 package top.guhanjie.wine.util;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -37,6 +38,7 @@ public class TTLCache<K, V> {
         
     public TTLCache(int cacheSize, int ttlSeconds, int expiredMod) {
         expiredPolicy = expiredMod;
+        boolean accessorder = (expiredMod==ExpiredByLastAccess);
         TTL = ttlSeconds * 1000L;
         //根据cacheSize和加载因子计算hashmap的capactiy，+1确保当达到cacheSize上限时不会触发hashmap的扩容
         int capacity = (int) Math.ceil(cacheSize / DEFAULT_LOAD_FACTOR) + 1;
@@ -45,11 +47,15 @@ public class TTLCache<K, V> {
             @Override
             protected boolean removeEldestEntry(Map.Entry<K, TimedValue<V>> eldest) {
                 //缓存中最老项是否过期失效，若失效则删除
-                return System.currentTimeMillis() - eldest.getValue().timestamp > TTL;  
+                return (TTL>0 && System.currentTimeMillis() - eldest.getValue().timestamp > TTL);  
             }
         };
     }
 
+    /**
+     * @param ttlSeconds 秒为单位，-1为永不过期
+     * @param expiredMode 可选项：[TTLCache.ExpiredByInTime, TTLCache.ExpiredByLastAccess]
+     */
     public TTLCache(int ttlSeconds, int expiredMode) {
         this(DEFAULT_CACHE_SIZE, ttlSeconds, expiredMode);
     }
@@ -67,7 +73,7 @@ public class TTLCache<K, V> {
          if(v == null) {
              return null;
          }
-         if(System.currentTimeMillis() - v.timestamp > TTL) {   //若该缓存项最近访问时间过期，则将其删除
+         if(TTL>0 && System.currentTimeMillis() - v.timestamp > TTL) {   //若该缓存项最近访问时间过期，则将其删除
              v.value = null;
              remove(key);
          }
@@ -93,6 +99,15 @@ public class TTLCache<K, V> {
 
     public Set<K> keySet() {
         return map.keySet();
+    }
+    
+    public Set<V> values() {
+        Collection<TimedValue<V>> wrapedValues = map.values();
+        Set<V> values = new HashSet<V>();
+        for(TimedValue<V> v : wrapedValues) {
+            values.add(v.value);
+        }
+        return values;
     }
 
     /**

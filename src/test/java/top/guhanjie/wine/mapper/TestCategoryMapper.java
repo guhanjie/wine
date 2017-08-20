@@ -1,8 +1,9 @@
 package top.guhanjie.wine.mapper;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -57,5 +58,12 @@ public class TestCategoryMapper {
 		logger.debug(JSON.toJSONString(model, true));
 		assertNotNull(model);
 	}	
-	
+
+    @Test
+    public void testSelectByLevel() {
+        //Retrieve
+        List<Category> models = mapper.selectByLevel(1);
+        logger.debug(JSON.toJSONString(models, true));
+        assertNotNull(models);
+    }   
 }

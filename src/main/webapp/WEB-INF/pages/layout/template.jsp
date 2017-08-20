@@ -27,7 +27,7 @@
         <link rel="stylesheet" href="${resourcePath}/css/style.css" media="all">
     	
         <!--//theme style-->
-        <script src="${resourcePath}/js/jquery.min.js"></script>
+        <script src="${resourcePath}/js/jquery-1.11.3.js"></script>
         <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
         <!-- start menu -->
         <script src="${resourcePath}/js/simpleCart.min.js"> </script>
