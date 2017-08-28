@@ -58,12 +58,12 @@ public class WeixinConstants {
     public final static String API_PAY_UNIFIEDORDER = "https://api.mch.weixin.qq.com/pay/unifiedorder";
     public final static String API_PAY_ORDERQUERY = "https://api.mch.weixin.qq.com/pay/orderquery";
     public final static String API_PAY_CLOSEORDER = "https://api.mch.weixin.qq.com/pay/closeorder";
-    public final static String API_PAY_CALLBACK = "http://www.guhanjie.top/weixin-boot/order/paycallback";
+    public final static String API_PAY_CALLBACK = "http://www.guhanjie.top/wine/order/paycallback";
     
     public final static String OAUTH2_SCOPE_SNSAPI_BASE="snsapi_base";
     public final static String OAUTH2_SCOPE_SNSAPI_USERINFO="snsapi_userinfo";
     public final static String OAUTH2_AUTHORIZE="https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
-    public final static String OAUTH2_REDIRECT_URI="http://www.guhanjie.top/weixin-boot/wx/oauth2";
+    public final static String OAUTH2_REDIRECT_URI="http://www.guhanjie.top/wine/wx/oauth2";
     public final static String OAUTH2_ACCESS_TOKEN="https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
     public final static String OAUTH2_REFRESH_TOKEN="https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=APPID&grant_type=refresh_token&refresh_token=REFRESH_TOKEN";
     public final static String OAUTH2_GET_USER_INFO="https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
