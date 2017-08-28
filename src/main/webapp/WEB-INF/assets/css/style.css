@@ -498,7 +498,7 @@ span.disc {
 	padding:0.6em 1em;
 	color:#7D7D7D;
 }
-.subscribe form input[type="submit"]{
+.subscribe form a, .subscribe form input[type="submit"]{
 	outline:none;
 	border:1px solid #fff;
 	width:20%;
@@ -507,7 +507,7 @@ span.disc {
 	margin-left:1em;
 	color:#fff;
 }
-.subscribe form input[type="submit"]:hover{
+.subscribe form a:hover, .subscribe form input[type="submit"]:hover{
 	color:#333;
 	border:1px solid #fff;
 	background:#fff;
@@ -764,6 +764,8 @@ background-position:-167px -36px;
   width: 40%;
   display:inline-block;
   float: left;
+  border-color: #ed645c;
+  border-style: solid;
 }
 .item_add{
 	color:#fff;
@@ -1268,20 +1270,23 @@ p.para {
 	border:1px solid #eee;
 }
 .btm-grid a{
-		text-decoration:none;
+	text-decoration:none;
 }
 .btm-grid h4{
 	color:#BDBCBC;
 	font-size:1.3em;
 	display:block;
-font-family: 'Dosis-Medium';	
+	font-family: 'Dosis-Medium';	
 }
 .btm-grid span{
-	color:#333;
-	font-size:1.3em;
+	/* color:#333; */
+	font-size:1em;
 	padding:4px 0;
 	font-weight:500;
 	display:inline-block;
+}
+.btm-grid .vip em{
+	color:#ed645c;
 }
 /*--//single--*/
 .bottom-prdt{
@@ -1309,8 +1314,8 @@ h3.ghj {
 	margin-bottom: 0;
 }
 .b4,.b5,.b6 {
-  margin-top: 15px !important;
-  margin-bottom: 15px !important;
+  	margin-top: 15px !important;
+  	margin-bottom: 15px !important;
 }
 .bs-example h1, .bs-example hh2, .bs-example h3, .bs-example h4, .bs-example h5, .bs-example h6 {
   margin: 0 0 10px;
@@ -1441,8 +1446,11 @@ h3.ghj {
 	float:left;
 	margin-top: 1em;
 }
+.check-nav{
+	padding: 1em 5px 0;
+}
 .check-sec{
-	padding:3em 0 0;
+	margin:3em 0 2em;
 }
 .cart-item-info h3{
 	font-size:1em;	
@@ -1507,14 +1515,14 @@ a.order {
   display: block;
   font-weight: 600;
   text-align: center;
-  margin:3em 0;
+  margin:3em 0 1em;
 }
 a.order:hover{
 	background:#ed645c;
 }
 .cart-items{
 	margin-top:0em;
-	padding-bottom:2em;
+	padding-bottom:1em;
 }
 .coupons-item{
 	margin: 10px auto;
@@ -1533,6 +1541,9 @@ a.order:hover{
 .coupons-item input.points {
 	width: 80px;
     padding: 1px 5px;
+    border-color: #6FC9EB;
+    border-style: solid;
+    box-shadow: 0 1px 2px 1px rgba(10, 157, 230, 0.33);
 }
 a.cpns{
 	background:#ed645c;
@@ -1542,7 +1553,7 @@ a.cpns{
 	font-weight:600;
 }
 a.cpns:hover{
-	background:#204056;
+	background:#02a1dc;
 }
 .coupons-item p{
 	font-size:0.9em;
@@ -1592,6 +1603,8 @@ ul.total_price li.last_price span{
     font-weight: 600;
     color: #ed645c;
     box-shadow: 3px 3px 6px 0px #999;
+    padding: 0 5px;
+    margin: 0 10px;
 }
 .price-details, .coupons-item{
 	border-bottom: 1px solid #DDD9D9;
@@ -2406,7 +2419,7 @@ label {
 	.subscribe form input[type="text"] {
 	    width: 61%;
 	}
-	.subscribe form input[type="submit"] {
+	.subscribe form a, .subscribe form input[type="submit"] {
 	    width: 28%;
 	}
 }
@@ -2421,7 +2434,7 @@ label {
 	.top-nav {
 	    width: 42%;
 	}
-	.subscribe form input[type="submit"] {
+	.subscribe form a, .subscribe form input[type="submit"] {
 	    width: 30%;
 	}
 }
@@ -2524,7 +2537,7 @@ label {
 	    width: 100%;
 		margin-bottom:1em;
 	}
-	.subscribe form input[type="submit"] {
+	.subscribe form a, .subscribe form input[type="submit"] {
 	    width: 39%;
 	}
 }

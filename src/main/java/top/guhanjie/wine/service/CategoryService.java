@@ -1,7 +1,7 @@
 package top.guhanjie.wine.service;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -70,14 +70,18 @@ public class CategoryService {
                 CACHE.put(c.getId(), c);
             }
         }
+        //Double check in lock
+        if(categoryListCache != null) {
+        	return categoryListCache;
+        }
         //TreeMap<K,V> pattern: <parentid-idx, category>
         //Attention!!! this just support up to 0-9, such case will be error:  1-1, 11-1, 2-1, 3-1
-        TreeMap<String, Category> categories = new TreeMap<String, Category>();
+        TreeMap<String, Category> orderedMap = new TreeMap<String, Category>();
         for(Category c : CACHE.values()) {
-            categories.put(c.getParentId()+"-"+c.getIdx(), c);
+            orderedMap.put(c.getParentId()+"-"+c.getIdx(), c);
         }
         List<Category> items = new ArrayList<Category>();
-        for(Category item : categories.values()) {
+        for(Category item : orderedMap.values()) {
             item.getSubItems().clear();
             if(item.getParentId() == 0) {
                 items.add(item);
@@ -91,8 +95,22 @@ public class CategoryService {
         }
         return items;
     }
-    
-    public Category getCategory(int id) {
+
+    //广度优先查找父目录
+	private Category findParent(List<Category> items, Category c) {
+	    for(Category item : items) {
+	        if(item.getId() == c.getParentId()) {
+	            return item;
+	        }
+	    }
+	    for(Category item : items) {
+	        return findParent(item.getSubItems(), c);
+	    }
+	    LOGGER.error("can not find parent category for: [{}]", JSON.toJSONString(c));
+	    return null;
+	}
+
+	public Category getCategory(int id) {
         Category c = CACHE.get(id);
         if(c == null) {
             LOGGER.info("Category not hit cache, updating...");
@@ -106,18 +124,16 @@ public class CategoryService {
         return c;
     }
     
-    //广度优先查找父目录
-    private Category findParent(List<Category> items, Category c) {
-        for(Category item : items) {
-            if(item.getId() == c.getParentId()) {
-                return item;
-            }
-        }
-        for(Category item : items) {
-            return findParent(item.getSubItems(), c);
-        }
-        LOGGER.error("can not find parent category for: [{}]", JSON.toJSONString(c));
-        return null;
-    }
+    public List<Category> getCategorySequence(int id) {
+		List<Category> cSeq = new ArrayList<Category>();
+		Category c = getCategory(id);
+    	cSeq.add(c);
+		while(c!=null && c.getParentId()!=0) {
+			c = getCategory(c.getParentId());
+			cSeq.add(c);
+	    }
+		Collections.reverse(cSeq);
+	    return cSeq;
+	}
     
 }

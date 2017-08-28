@@ -24,9 +24,9 @@ public class ItemService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ItemService.class);
     
-    private static final Integer CATEGORY_WRITE = 5;
-    private static final Integer CATEGORY_WINE = 6;
-    private static final Integer CATEGORY_BEER = 7;
+    private static final Integer CATEGORY_WRITE = 5; //白酒
+    private static final Integer CATEGORY_WINE = 6;	//红酒
+    private static final Integer CATEGORY_BEER = 7; //啤酒
     
     private static final TTLCache<Integer, List<Item>> GROUPED_ITEMS_CACHE = 
                     new TTLCache<Integer, List<Item>>(10 * 60); //失效时间为10分钟，按进入时间超时逐出
@@ -78,5 +78,10 @@ public class ItemService {
             ITEM_CACHE.put(itemId, item);
         }
         return item;
+    }
+    
+    public List<Item> getRelativeItems(Integer categoryId) {
+    	LOGGER.debug("get relative items for category[{}]", categoryId);
+    	return itemMapper.selectByCategory(categoryId);
     }
 }

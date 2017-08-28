@@ -289,9 +289,15 @@
     from user
     where open_id = #{openid}
   </select>
-   <select id="selectByPhone" resultMap="BaseResultMap">
+  <select id="selectByPhone" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" />
     from user
     where phone = #{phone}
+  </select>
+  <select id="selectBySourceId" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from user
+    where source_id = #{id}
+    order by update_time
   </select>
 </mapper>

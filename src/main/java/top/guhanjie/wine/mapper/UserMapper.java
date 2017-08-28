@@ -1,5 +1,7 @@
 package top.guhanjie.wine.mapper;
 
+import java.util.List;
+
 import top.guhanjie.wine.model.User;
 
 public interface UserMapper {
@@ -55,5 +57,7 @@ public interface UserMapper {
     User selectByOpenId(String openid);
     
     User selectByPhone(String phone);
+    
+    List<User> selectBySourceId(Integer id);
     //--------------------------------------------------------------------
 }

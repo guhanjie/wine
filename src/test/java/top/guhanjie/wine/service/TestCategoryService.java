@@ -37,9 +37,23 @@ public class TestCategoryService {
     }
     
     @Test
-    public void testListBannar() {
+    public void testListCategory() {
         List<Category> list = categoryService.listCategory();
         for(Category b : list) {
+            System.out.println(JSON.toJSONString(b, true));
+        }
+    }
+
+    @Test
+    public void testGetCategory() {
+        Category c = categoryService.getCategory(5);
+        System.out.println(JSON.toJSONString(c, true));
+    }
+    
+    @Test
+    public void testGetCategorySeq() {
+    	List<Category> c = categoryService.getCategorySequence(5);
+        for(Category b : c) {
             System.out.println(JSON.toJSONString(b, true));
         }
     }

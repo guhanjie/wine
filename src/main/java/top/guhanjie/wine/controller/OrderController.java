@@ -56,7 +56,7 @@ import top.guhanjie.wine.weixin.pay.PayKit;
  * @version			1.0.0 
  * @since 			JDK 1.7 
  */
-//@Controller
+@Controller
 //@RequestMapping("/order")
 public class OrderController extends BaseController {
 	
@@ -71,8 +71,13 @@ public class OrderController extends BaseController {
 	@Autowired
 	private OrderService orderService;
 	
-	@Resource(name="scheduler4weixin")
-	private TaskScheduler taskScheduler;
+//	@Resource(name="scheduler4weixin")
+//	private TaskScheduler taskScheduler;
+	
+	@RequestMapping(value={"/checkout"},method=RequestMethod.GET)
+	public String cart() {
+		return "checkout";
+	}
 	
 	@RequestMapping(value={"", "pre"},method=RequestMethod.GET)
 	public String order(HttpServletRequest req, HttpServletResponse resp, 

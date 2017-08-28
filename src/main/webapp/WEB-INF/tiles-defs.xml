@@ -15,6 +15,30 @@
         <put-attribute name="footer" value="/WEB-INF/pages/layout/footer.jsp" cascade="true"/>
     </definition>
     
+    <definition name="items" template="/WEB-INF/pages/layout/template.jsp">
+        <put-attribute name="header" value="/WEB-INF/pages/layout/header.jsp" cascade="true" />
+        <put-attribute name="main" value="/WEB-INF/pages/items.jsp"  cascade="true"/>
+        <put-attribute name="footer" value="/WEB-INF/pages/layout/footer.jsp" cascade="true"/>
+    </definition>
+    
+    <definition name="checkout" template="/WEB-INF/pages/layout/template.jsp">
+        <put-attribute name="header" value="/WEB-INF/pages/layout/header.jsp" cascade="true" />
+        <put-attribute name="main" value="/WEB-INF/pages/checkout.jsp"  cascade="true"/>
+        <put-attribute name="footer" value="/WEB-INF/pages/layout/footer.jsp" cascade="true"/>
+    </definition>
+    
+    <definition name="user" template="/WEB-INF/pages/layout/template.jsp">
+        <put-attribute name="header" value="/WEB-INF/pages/layout/header.jsp" cascade="true" />
+        <put-attribute name="main" value="/WEB-INF/pages/user.jsp"  cascade="true"/>
+        <put-attribute name="footer" value="/WEB-INF/pages/layout/footer.jsp" cascade="true"/>
+    </definition>
+    
+    <definition name="promote" template="/WEB-INF/pages/layout/template.jsp">
+        <put-attribute name="header" value="/WEB-INF/pages/layout/header.jsp" cascade="true" />
+        <put-attribute name="main" value="/WEB-INF/pages/promote.jsp"  cascade="true"/>
+        <put-attribute name="footer" value="/WEB-INF/pages/layout/footer.jsp" cascade="true"/>
+    </definition>
+    
     <definition name="error" template="/WEB-INF/pages/error.jsp"/>
     
 </tiles-definitions>

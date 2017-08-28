@@ -1,5 +1,7 @@
 package top.guhanjie.wine.service;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,11 @@ public class UserService {
 	
 	@Autowired
 	private UserMapper userMapper;
+	
+	public List<User> getPromotees(int id) {
+		LOGGER.debug("get users promoted by user id[{}]...", id);
+		return userMapper.selectBySourceId(id);
+	}
 	
 	public User getUserById(int id) {
 		LOGGER.debug("get user by id[{}]...", id);

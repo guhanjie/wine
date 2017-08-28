@@ -9,14 +9,47 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class DESUtil {
 	
+	public static final String ALGORITHOM_DES = "DES";
+	public static final String ALGORITHOM_3DES = "DESede";
+	public static final String ALGORITHOM_BLOWFISH = "Blowfish";
+	
 	/**
 	 * 加密
+	 * @param algorithom: DES,DESede,Blowfish
+	 * DES：算法DES要求密钥长度为64位密钥, 有效密钥56位。64bits=8*8*1，即8个ascii字符。
+	 * DESede：算法DESede要求的密钥位数为192位，即192bits=64*3=8*8*3，即24个ascii字符。
+	 * Blowfish：算法Blowfish要求密钥长度为8--448字位，即8--448(bits)。即：1个到56个ascii字符
+	 * @param inStr 需要加密的内容
+	 * @param secretKey 密钥
+	 * @return 加密后的数据
+	 */
+	public static String encrypt(String algorithom,String inStr, String secretKey) {
+		SecretKey deskey = new SecretKeySpec(secretKey.getBytes(), algorithom);	
+		Cipher cipher;
+		String outStr = null;
+		try {
+			cipher = Cipher.getInstance(algorithom);
+			cipher.init(Cipher.ENCRYPT_MODE, deskey);
+			outStr = byte2hex(cipher.doFinal(inStr.getBytes()));
+		} catch (Exception e) {
+			outStr = "default";
+			System.err.println("3DES加密失败！加密内容[" + inStr + "]");
+			e.printStackTrace();
+		}
+		return outStr;
+	}
+	
+	/**
+	 * 加密
+	 * DES：算法DES要求密钥长度为64位密钥, 有效密钥56位。64bits=8*8*1，即8个ascii字符。
+	 * DESede：算法DESede要求的密钥位数为192位，即192bits=64*3=8*8*3，即24个ascii字符。
+	 * Blowfish：算法Blowfish要求密钥长度为8--448字位，即8--448(bits)。即：1个到56个ascii字符
 	 * @param inStr 需要加密的内容
 	 * @param secretKey 密钥
 	 * @return 加密后的数据
 	 */
 	public static String encrypt(String inStr, String secretKey) {
-		SecretKey deskey = new SecretKeySpec(secretKey.getBytes(), "DESede");
+		SecretKey deskey = new SecretKeySpec(secretKey.getBytes(), "DESede");	//DES,DESede,Blowfish
 		Cipher cipher;
 		String outStr = null;
 		try {
