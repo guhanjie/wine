@@ -7,26 +7,17 @@
  */  
 package top.guhanjie.wine.controller;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,16 +28,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 
-import top.guhanjie.wine.exception.WebException;
-import top.guhanjie.wine.exception.WebExceptionEnum;
-import top.guhanjie.wine.exception.WebExceptionFactory;
+import top.guhanjie.wine.model.Item;
 import top.guhanjie.wine.model.Order;
 import top.guhanjie.wine.model.User;
+import top.guhanjie.wine.service.ItemService;
 import top.guhanjie.wine.service.OrderService;
 import top.guhanjie.wine.service.UserService;
-import top.guhanjie.wine.util.DateTimeUtil;
 import top.guhanjie.wine.weixin.WeixinConstants;
-import top.guhanjie.wine.weixin.pay.PayKit;
 
 /**
  * Class Name:		OrderController<br/>
@@ -67,7 +55,10 @@ public class OrderController extends BaseController {
     
 	@Autowired
 	private UserService userService;
-	
+
+    @Autowired
+    private ItemService itemService;
+    
 	@Autowired
 	private OrderService orderService;
 	
@@ -75,56 +66,92 @@ public class OrderController extends BaseController {
 //	private TaskScheduler taskScheduler;
 	
 	@RequestMapping(value={"/checkout"},method=RequestMethod.GET)
-	public String cart() {
+	public String checkout(Model model, HttpSession session) {
+	    User user = new User();
+	    user.setName("顾汉杰");
+	    user.setPhone("13052333613");
+	    user.setAddress("如东县环镇乡");
+	    setSessionUser(user);
+		List<Item> items = new ArrayList<Item>();
+		Object obj = session.getAttribute("cart");
+		Map<Integer, Integer> cart = null;
+		if(obj != null) {
+			cart = (Map<Integer, Integer>)obj;
+		}
+		if(cart != null) {
+			for(Integer i : cart.keySet()) {
+				Integer count = cart.get(i);
+				Item item = itemService.getItem(i);
+				items.add(item);
+			}
+		}
+		model.addAttribute("items", items);
 		return "checkout";
 	}
 	
-	@RequestMapping(value={"", "pre"},method=RequestMethod.GET)
-	public String order(HttpServletRequest req, HttpServletResponse resp, 
-	                                        Model model, 
-	                                        @RequestParam(required=false) String phone, 
-	                                        @RequestParam(required=false) String source) {
-	    resp.setHeader("Cache-Control", "no-cache");
-	    if(getSessionUser()==null && StringUtils.isNotBlank(phone)) {
-    	    User user = userService.getUserByPhone(phone);
-    	    if(user != null) {
-    	        setSessionUser(user);
-    	        req.getSession().setAttribute(AppConstants.SESSION_KEY_OPEN_ID, user.getOpenId());
-    	    }
-	    }
-	    if(StringUtils.isNotBlank(source)) {
-	        model.addAttribute("source", source);
-	    }
-		return "order";
-	}
-	
-//	@RequestMapping(value="put",method=RequestMethod.POST, consumes="application/json")
+//	@SuppressWarnings("unchecked")
+//	@RequestMapping(value="/cart/add",method=RequestMethod.POST)
 //	@ResponseBody
-//	public Map<String, Object> putOrder(HttpServletRequest req, HttpServletResponse resp, 
-//    	                                                    @RequestParam("open_id") String openid, 
-//    	                                                    @RequestParam("source") String source, 
-//    	                                                    @RequestBody Order order) {
-//	    resp.setHeader("Cache-Control", "no-cache");
-//		LOGGER.info("putting new order for user open_id[{}] from source[{}]...", openid, source);
-//		LOGGER.info("=====order:[{}]...", JSON.toJSONString(order, true));
-//		//获取用户信息
+//	public Map<String, Object> add(Integer itemId, Integer count, HttpSession session) {
 //		User user = getSessionUser();
-//		if(user == null) {
-//		    user = userService.getUserByOpenId(openid);
+//		LOGGER.info("user[{}] added cart of item=[{}], count=[{}]", user.getId(), itemId, count);
+//		Object obj = session.getAttribute("cart");
+//		Map<Integer, Integer> cart = null;
+//		if(obj != null) {
+//			cart = (Map<Integer, Integer>)obj;
 //		}
-//		if(user == null) {
-//		    user = new User();
-//		    user.setPhone(order.getPhone());
-//		    setSessionUser(user);
+//		else {
+//			cart = new HashMap<Integer, Integer>();
+//			session.setAttribute("cart", cart);
 //		}
-//		//封装信息
-//		order.setUser(user);
-//		order.setSource(source);
-//		//下单
-//		orderService.putOrder(order);
+//		Integer c = cart.get(itemId);
+//		Integer newCount = (c == null) ? count : (c+count);
+//		cart.put(itemId, newCount);
 //		return success();
 //	}
-//
+	
+//	@RequestMapping(value={"", "pre"},method=RequestMethod.GET)
+//	public String order(HttpServletRequest req, HttpServletResponse resp, 
+//	                                        Model model, 
+//	                                        @RequestParam(required=false) String phone, 
+//	                                        @RequestParam(required=false) String source) {
+//	    resp.setHeader("Cache-Control", "no-cache");
+//	    if(getSessionUser()==null && StringUtils.isNotBlank(phone)) {
+//    	    User user = userService.getUserByPhone(phone);
+//    	    if(user != null) {
+//    	        setSessionUser(user);
+//    	        req.getSession().setAttribute(AppConstants.SESSION_KEY_OPEN_ID, user.getOpenId());
+//    	    }
+//	    }
+//	    if(StringUtils.isNotBlank(source)) {
+//	        model.addAttribute("source", source);
+//	    }
+//		return "order";
+//	}
+	
+	@RequestMapping(value="put",method=RequestMethod.POST, consumes="application/json")
+	@ResponseBody
+	public Map<String, Object> putOrder(HttpServletRequest req, HttpServletResponse resp, 
+    	                                                    @RequestBody Order order, 
+    	        	                                        @RequestParam(required=false) String source) {
+	    resp.setHeader("Cache-Control", "no-cache");
+		//获取用户信息
+		User user = getSessionUser();
+		LOGGER.info("putting new order for user [{}]...", JSON.toJSONString(user, true));
+		LOGGER.info("=====order:[{}]...", JSON.toJSONString(order, true));
+		if(user == null) {
+		    user = new User();
+		    user.setPhone(order.getPhone());
+		    setSessionUser(user);
+		}
+		//封装信息
+		order.setUserId(user.getId());
+		//order.setSource(source);
+		//下单
+		orderService.putOrder(order);
+		return success();
+	}
+
 //    @RequestMapping(value="list",method=RequestMethod.GET)
 //    public String listOrders(HttpServletRequest req, HttpServletResponse resp, Model model, 
 //                    @RequestParam(required=false) String beginDate, //yyyy-mm-dd

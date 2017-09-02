@@ -58,7 +58,7 @@
                selectByExampleQueryId="false">
                <generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table> -->
-		<table tableName="item" domainObjectName="Item" 
+		<!-- <table tableName="item" domainObjectName="Item" 
 			   enableInsert="true"
                enableSelectByPrimaryKey="true"
                enableSelectByExample="false"
@@ -70,7 +70,7 @@
                selectByPrimaryKeyQueryId="false"
                selectByExampleQueryId="false">
                <generatedKey column="id" sqlStatement="MySql" identity="true" />
-		</table>
+		</table> -->
 		<!-- <table tableName="rush_item" domainObjectName="RushItem" 
 			   enableInsert="true"
                enableSelectByPrimaryKey="true"
@@ -84,7 +84,7 @@
                selectByExampleQueryId="false">
                <generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table> -->
-		<!-- <table tableName="order" domainObjectName="Order" 
+		<table tableName="order" domainObjectName="Order" 
 			   enableInsert="true"
                enableSelectByPrimaryKey="true"
                enableSelectByExample="false"
@@ -96,7 +96,7 @@
                selectByPrimaryKeyQueryId="false"
                selectByExampleQueryId="false">
                <generatedKey column="id" sqlStatement="MySql" identity="true" />
-		</table> -->
+		</table>
 		<!-- <table tableName="user" domainObjectName="User" 
 			   enableInsert="true"
                enableSelectByPrimaryKey="true"

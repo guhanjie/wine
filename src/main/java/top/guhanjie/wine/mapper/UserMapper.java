@@ -2,6 +2,8 @@ package top.guhanjie.wine.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import top.guhanjie.wine.model.User;
 
 public interface UserMapper {
@@ -59,5 +61,8 @@ public interface UserMapper {
     User selectByPhone(String phone);
     
     List<User> selectBySourceId(Integer id);
+    
+    int addPoints(@Param("userid")Integer userid, @Param("points")Integer points);
+    int subPoints(@Param("userid")Integer userid, @Param("points")Integer points);
     //--------------------------------------------------------------------
 }

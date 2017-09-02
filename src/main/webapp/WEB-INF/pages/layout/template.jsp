@@ -25,9 +25,13 @@
         <!--theme style-->
         <link rel="stylesheet" href="${resourcePath}/css/bootstrap.css" media="all">
         <link rel="stylesheet" href="${resourcePath}/css/style.css" media="all">
-        <link rel="stylesheet" href="${resourcePath}/css/weui.min.css"/>
-    	
+        <link rel="stylesheet" href="${resourcePath}/css/weui-0.4.3.min.css" media="all"/>
+        <link rel="stylesheet" href="${resourcePath}/css/memenu.css" media="all" />
         <!--//theme style-->
+        <script type="text/javascript">
+          //Globals
+          ships = 10;
+        </script>
         <script src="${resourcePath}/js/jquery-1.11.3.js"></script>
         <script type="application/x-javascript">
           addEventListener("load", function() { 
@@ -37,17 +41,64 @@
               window.scrollTo(0,1); 
           } 
         </script>
-        <!-- start menu -->
         <script src="${resourcePath}/js/simpleCart.min.js"> </script>
-        <link rel="stylesheet" href="${resourcePath}/css/memenu.css" media="all" />
+        <script type="text/javascript">
+        simpleCart({
+            cartColumns: [
+                /* { attr: "name" , label: "Name" } ,
+                { attr: "price" , label: "Price", view: 'currency' } ,
+                { view: "decrement" , label: false , text: "-" } ,
+                { attr: "quantity" , label: "Qty" } ,
+                { view: "increment" , label: false , text: "+" } ,
+                { attr: "total" , label: "SubTotal", view: 'currency' } , */
+                { view: function(item, column){
+                    return  '<div class="cart-header" data-id="'+item.get("name")+'">'+
+                              '<div class="cart-sec simpleCart_shelfItem">'+
+                                '<div class="cart-item cyc">'+
+                                  '<img src="'+item.get("img")+'" class="img-responsive" alt="" />'+
+                                '</div>'+
+                                '<div class="cart-item-info">'+
+                                  '<h3>'+
+                                    '<a href="single.html">'+item.get("name")+'</a>'+
+                                    '<span> </span>'+
+                                  '</h3>'+
+                                  '<ul class="qty">'+
+                                    '<li>'+
+                                      '<p>单价 : <span>'+item.get("price")+'</span>元</p>'+
+                                    '</li>'+
+                                    '<li>'+
+                                      '<div class="item-decrement"><a href="javascript:;" class="simpleCart_decrement">-</a></div>'+
+                                    '</li>'+
+                                    '<li>'+
+                                      '<p>数量 : <span>'+item.get("quantity")+'</span></p>'+
+                                    '</li>'+
+                                    '<li>'+
+                                      '<div class="item-increment"><a href="javascript:;" class="simpleCart_increment">+</a></div>'+
+                                    '</li>'+
+                                  '</ul>'+
+                                '</div>'+
+                                '<div class="simpleCart_remove item-remove">'+
+                                  '<a href="javascript:;" class="simpleCart_remove"></a>'+
+                                '</div>'+
+                                '<div class="clearfix"></div>'+
+                              '</div>'+
+                            '</div>'
+                    } , 
+                    attr: "custom" }
+            ]
+        });
+        </script>
+        <!-- start menu -->
         <script src="${resourcePath}/js/memenu.js"></script>
         <script>$(document).ready(function(){$(".memenu").memenu();});</script>
-        <script src="${resourcePath}/js/bootstrap.js"></script>
         <!--//start menu-->
+        <script src="${resourcePath}/js/bootstrap.js"></script>
+        <script src="${resourcePath}/js/weui-0.3.0.js"></script>
     </head>
     <body ontouchstart>
         <t:insertAttribute name="header" />
 		<t:insertAttribute name="main" />
         <t:insertAttribute name="footer" />
+        <script src="${resourcePath}/js/order.js"></script>
     </body>
 </html>

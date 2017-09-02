@@ -49,14 +49,26 @@
   		  </script>
         </div>
         <div class="col-md-5 single-top-in simpleCart_shelfItem">
-          <div class="single-para">
+          <div data-id="${item.id}" data-price="${item.vipPrice}" class="single-para product-item">
             <div class="relative">
-              <h5 class="item_price">￥ ${item.normalPrice}</h5>
+              <span class="hidden item_itemid">${item.id}</span>
+              <span class="hidden item_name">${item.name}</span>
+              <span class="hidden item_img">${pageContext.request.contextPath}/resources/${item.icon}</span>
+              <h5 class="item_price">￥ ${item.vipPrice}</h5>
               <a href="#" class="add-cart item_add">立即购买</a>
             </div>
             <div class="clear-fix"></div>
+            <div class="ofr">
+              <p class="pric1">
+                原价
+                <del class="item_normalprice">${item.normalPrice}</del>
+              </p>
+              <span class="disc">[<fmt:formatNumber type="percent"
+                  maxIntegerDigits="2" value="${item.vipPrice/item.normalPrice}" /> Off]
+              </span>
+            </div>
             <p class="para">${item.detail}</p>
-            <div class="prdt-info-grid">
+            <!-- <div class="prdt-info-grid">
               <ul>
                 <li>- 品牌 : 洋河</li>
                 <li>- 商品编号 : PX3247</li>
@@ -65,7 +77,7 @@
                 <li>- 商品毛重 : 1.08kg</li>
               </ul>
             </div>
-            <!-- <div class="check">
+            <div class="check">
     		 <p><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>Enter pin code for delivery &amp; availability</p>
     		 <form class="navbar-form">
     			  <div class="form-group">

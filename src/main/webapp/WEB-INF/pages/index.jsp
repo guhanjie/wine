@@ -47,7 +47,8 @@
               <span>会员价 </span> ￥<em>${white.vipPrice}</em>元
             </p>
             <p class="normal">
-              <span>原价 </span><span class="pric1"> ￥<del>${white.normalPrice}</del></span> <span class="disc">[<fmt:formatNumber type="percent"
+              <span>原价 </span><span class="pric1"> ￥<del>${white.normalPrice}</del></span>
+              <span class="disc">[<fmt:formatNumber type="percent"
                   maxIntegerDigits="2" value="${white.vipPrice/white.normalPrice}" /> Off]
               </span>
             </p>

@@ -30,19 +30,24 @@
               <img src="${pageContext.request.contextPath}/resources/${item.icon}" class="img-responsive" alt="">
             </div>
           </a>
-          <div class="product-info simpleCart_shelfItem">
+          <div data-id="${item.id}" data-price="${item.vipPrice}" class="product-info simpleCart_shelfItem product-item">
             <div class="product-info-cust prt_name">
               <h4>${item.name}</h4>
+              <span class="hidden item_itemid">${item.id}</span>
+              <span class="hidden item_name">${item.name}</span>
+              <span class="hidden item_img">${pageContext.request.contextPath}/resources/${item.icon}</span>
               <span class="item_price">￥${item.vipPrice}</span>
               <div class="ofr">
                 <p class="pric1">
                   原价
-                  <del>${item.normalPrice}</del>
+                  <del class="item_normalprice">${item.normalPrice}</del>
                 </p>
-                <p class="disc">[12% Off]</p>
+                <span class="disc">[<fmt:formatNumber type="percent"
+                    maxIntegerDigits="2" value="${item.vipPrice/item.normalPrice}" /> Off]
+                </span>
               </div>
               <input type="text" class="item_quantity" value="1"> 
-              <input id="showToast" type="button" class="item_add" value="立即下单">
+              <input type="button" class="add-cart item_add" value="立即下单">
               <div class="clearfix"></div>
             </div>
           </div>

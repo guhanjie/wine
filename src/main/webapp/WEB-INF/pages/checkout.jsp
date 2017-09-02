@@ -12,98 +12,66 @@
   <div class="check-sec">
     <div class="col-md-12 cart-items">
       <p>
-        我的购物清单 (<span>2</span>)
+        我的购物清单 (<span id="simpleCart_quantity" class="simpleCart_quantity"></span>)
       </p>
-      <script>
-	    $(document).ready(function(c) {
-		  $('.close1').on('click',function(c) {
-			$('.cart-header').fadeOut('slow',function(c) {
-			  $('.cart-header').remove();
-			});
-		  });
-	    });
-	  </script>
-      <div class="cart-header">
-        <div class="close1"></div>
-        <div class="cart-sec simpleCart_shelfItem">
-          <div class="cart-item cyc">
-            <img src="${resourcePath}/images/product-15.jpg" class="img-responsive" alt="" />
-          </div>
-          <div class="cart-item-info">
-            <h3>
-              <a href="single.html">洋河蓝色经典 天之蓝 46度 480ml 绵柔浓香型</a> <span> </span>
-            </h3>
-            <ul class="qty">
-              <li><p>
-                  单价 : <span>2200</span>元
-                </p></li>
-              <li><p>
-                  数量 : <span>1</span>
-                </p></li>
-            </ul>
-            <!-- <div class="delivery">
-				 <p>Service Charges : Rs.100.00</p>
-				 <span>Delivered in 2-3 bussiness days</span>
-				 <div class="clearfix"></div>
-			</div> -->
-          </div>
-          <div class="clearfix"></div>
-
-        </div>
-      </div>
-      <script>
-      $(document).ready(function(c) {
-	    $('.close2').on('click', function(c) {
-	      $('.cart-header2').fadeOut('slow', function(c) {
-	        $('.cart-header2').remove();
-	      });
-	    });
-	  });
-      </script>
-      <div class="cart-header2">
-        <div class="close2"></div>
-        <div class="cart-sec simpleCart_shelfItem">
-          <div class="cart-item cyc">
-            <img src="${resourcePath}/images/product-16.jpg" class="img-responsive" alt="" />
-          </div>
-          <div class="cart-item-info">
-            <h3>
-              <a href="single.html">茅台 王子 53度 单瓶装白酒 500ml 口感酱香型</a> <span></span>
-            </h3>
-            <ul class="qty">
-              <li><p>
-                  单价 : <span>4000</span>元
-                </p></li>
-              <li><p>
-                  数量 : <span>1</span>
-                </p></li>
-            </ul>
-          </div>
-          <div class="clearfix"></div>
-        </div>
-      </div>
+      <div class="simpleCart_items"></div>
     </div>
     <div class="col-md-12 cart-total">
       <!-- <a class="continue" href="product.html">返回商品页</a> -->
       <div class="price-details">
         <h3>订单总额</h3>
-        <span>总价</span> <span class="total1">6200.00</span> <span>折扣</span> <span class="total1">10%(会员价)</span> <span>运送费</span> <span class="total1">150.00</span>
+        <div><span>总价</span> <span class="total1"><span class="simpleCart_total"></span>元</span></div>
+        <div><span>会员折扣（已省）</span> <span class="total1"><del class="simpleCart_discount"></del>元</span></div>
+        <div class="coupons-discount"><span class="cpns">会员积分（扣减）</span> <span class="total1 "><span class="delcpns"></span>元</span></div>
+        <div><span>运送费</span> <span class="total1"><span class="simpleCart_shipping"></span>元</span></div>
         <div class="clearfix"></div>
       </div>
       <div class="coupons-item">
         <h3>优惠券</h3>
-        <p>
-          会员积分<span>(当前有1200积分)</span>
-        </p>
-        <input class="points" type="text" name="100"></input> <a class="cpns btn-sm" href="#">使用积分</a>
+        <p>会员积分<span>(当前有<strong>1200</strong>积分)</span></p>
+        <input class="points" type="number"></input> 
+        <a class="cpns btn-sm" href="javascript:;">使用积分</a>
+      </div>
+      <div class="owner-info">
+        <h3>收件人信息</h3>
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">联系人</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="text" value="${user.name}" placeholder="请输入联系人名字">
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">联系电话</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="number" pattern="[0-9]*" value="${user.phone}" placeholder="请输入手机号码">
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">收货地址</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="text" value="${user.address}" placeholder="请输入收货地址">
+            </div>
+        </div>
+        <!-- <div>
+        <label class="">收货人</<label>
+        <input class="contactor " type="text"> 
+        </div>
+        <div>
+        <label class="">联系电话</label>
+        <input class="phone " type="text"> 
+        </div>
+        <div>
+        <label class="">收货地址</label>
+        <input class="address " type="text"> 
+        </div> -->
       </div>
       <div class="total_price">
         <h3 class="last_price">实际支付</h3>
         <p class="last_price pull-right">
-          <span>￥6150.00</span> 元
+          <span class="simpleCart_all"></span> 元
         </p>
       </div>
-      <a class="order" href="#">确认下单</a>
+      <a class="order btn" id="submit-order" href="javascript:;">确认下单</a>
     </div>
     <div class="clearfix"></div>
   </div>

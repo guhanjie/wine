@@ -1,7 +1,10 @@
 package top.guhanjie.wine.model;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import org.apache.commons.beanutils.PropertyUtils;
 
 public class Item {
     /**
@@ -462,4 +465,31 @@ public class Item {
         this.category = category;
     }
     
+    //--------------------------------------------
+    private int count;	//used in order buy
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+    
+	public Item deepCopy() {
+		Item copy = new Item();
+		try {
+			PropertyUtils.copyProperties(copy, this);
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return copy;
+	}
 }

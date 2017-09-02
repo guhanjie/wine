@@ -300,4 +300,16 @@
     where source_id = #{id}
     order by update_time
   </select>
+  
+  <update id="addPoints">
+    update user
+    set points = points + #{points}
+    where id = #{userid}
+  </update>
+  
+  <update id="subPoints">
+    update user
+    set points = points - #{points}
+    where id = #{userid} and points >= #{points}
+  </update>
 </mapper>

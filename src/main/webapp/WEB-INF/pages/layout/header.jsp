@@ -37,8 +37,9 @@
     <div class="cart box_1">
       <a href="${pageContext.request.contextPath}/checkout">
         <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+        &nbsp;&nbsp;(<span id="simpleCart_quantity" class="simpleCart_quantity"></span>)
         <div class="total">
-          <span class="simpleCart_total"></span> (<span id="simpleCart_quantity" class="simpleCart_quantity"></span>)
+          <span class="simpleCart_total"></span>
         </div>
       </a>
       <div class="clearfix"></div>
@@ -49,48 +50,3 @@
   <div class="clearfix"></div>
 </div>
 <!--header-->
-<!--BEGIN toast-->
-<div id="toast" style="display: none;">
-  <div class="weui-mask_transparent"></div>
-  <div class="weui-toast">
-    <i class="weui-icon-success-no-circle weui-icon_toast"></i>
-    <p class="weui-toast__content">已加入购物车</p>
-  </div>
-</div>
-<!--end toast-->
-<!-- loading toast -->
-<div id="loadingToast" style="display: none;">
-  <div class="weui-mask_transparent"></div>
-  <div class="weui-toast">
-    <i class="weui-loading weui-icon_toast"></i>
-    <p class="weui-toast__content">数据加载中</p>
-  </div>
-</div>
-<!--end loading toast-->
-<script type="text/javascript" class="toast js_show">
-// toast
-$(function(){
-    var $toast = $('#toast');
-    $('#showToast').on('click', function(){
-        if ($toast.css('display') != 'none') return;
-
-        $toast.fadeIn(100);
-        setTimeout(function () {
-            $toast.fadeOut(100);
-        }, 2000);
-    });
-});
-
-// loading
-$(function(){
-    var $loadingToast = $('#loadingToast');
-    $('#showLoadingToast').on('click', function(){
-        if ($loadingToast.css('display') != 'none') return;
-
-        $loadingToast.fadeIn(100);
-        setTimeout(function () {
-            $loadingToast.fadeOut(100);
-        }, 2000);
-    });
-});
-</script>

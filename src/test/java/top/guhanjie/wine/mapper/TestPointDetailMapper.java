@@ -37,7 +37,7 @@ public class TestPointDetailMapper {
 		//Create
 		logger.debug("Create one record to table[{}]...", tableName);
 		PointDetail model = new PointDetail();
-		model.setItemId(123);
+		model.setOrderId(123);
 		model.setPoints(500);
 		model.setType("+");
 		long insertCount = mapper.insertSelective(model);
@@ -58,5 +58,4 @@ public class TestPointDetailMapper {
 		long deleteCount = mapper.deleteByPrimaryKey(model.getId());
 		assertEquals(deleteCount, 1L);
 	}
-	
 }

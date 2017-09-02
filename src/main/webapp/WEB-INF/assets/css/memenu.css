@@ -197,6 +197,15 @@ skyblue .mepanel img:hover,.skyblue form.contact input[type="text"]:focus,.skybl
 	  text-align:left !important;
 	}
 }
+@media (max-width:360px){
+    .memenu {
+        margin: 13px;
+    }
+    .memenu>li.showhide {
+      width: 25%;
+      margin: 0;
+    }
+}
 @media (max-width:320px){
 	.memenu {
 	    margin: 13px;

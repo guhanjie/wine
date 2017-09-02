@@ -1,5 +1,8 @@
 package top.guhanjie.wine.mapper;
 
+import java.util.List;
+import java.util.Map;
+
 import top.guhanjie.wine.model.Order;
 
 public interface OrderMapper {
@@ -50,4 +53,20 @@ public interface OrderMapper {
      * @mbggenerated Sat Aug 19 18:06:45 CST 2017
      */
     int updateByPrimaryKey(Order record);
+    
+    //------------------------- custom add -----------------------------
+    List<Order> selectByUserId(Integer userid);
+    
+    List<Order> selectByUserOpenId(String openid);
+    
+    List<Order> selectByUserPhone(String phone);
+    
+    List<Order> selectByQualifiedPage(Map<String, Object> param);
+    
+    int countSelective(Map<String, Object> param);
+    
+    int updateByStatus(Order record, int oldstaus);
+    
+    int updateByPayStatus(Order record, int oldstatus, int oldPayStatus);
+    //--------------------------------------------------------------------
 }

@@ -68,4 +68,13 @@ public class TestUserMapper {
 		assertEquals(insertCount, 1L);
 	}
 
+	@Test
+	public void testAddPoints() {
+		mapper.addPoints(1, 888);
+	}
+	
+	@Test
+	public void testSubPoints() {
+		mapper.subPoints(1, 1888);
+	}
 }

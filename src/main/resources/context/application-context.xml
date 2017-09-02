@@ -23,8 +23,8 @@
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 	
-    <task:annotation-driven scheduler="scheduler4weixin"/>
-	<task:scheduler id="scheduler4weixin" pool-size="2"/>
+    <!-- <task:annotation-driven scheduler="scheduler4weixin"/>
+	<task:scheduler id="scheduler4weixin" pool-size="2"/> -->
 
 	<bean id="springContextUtil" class="top.guhanjie.wine.util.SpringContextUtil"></bean>
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
