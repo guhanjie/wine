@@ -3,7 +3,9 @@
 	<property name="PROJECT_NAME" value="wine" />
     <property name="PROJECT_LOG_DIR" value="${user.home}/logs/${PROJECT_NAME}" />
     <property name="log.root.level" value="WARN" />
+    <property name="log.app.level" value="INFO" />
     <property file="default.properties"/>
+    <property file="${user.home}/default.properties"/>
 
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
@@ -26,7 +28,7 @@
 	
 	<!-- TRACE < DEBUG < INFO < WARN < ERROR -->	 
 		
-	<logger name="top.guhanjie.wine" level="INFO"/>
+	<logger name="top.guhanjie.wine" level="${log.app.level}"/>
 
 	<root level="${log.root.level}">
 		<appender-ref ref="FILE" />

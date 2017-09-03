@@ -257,5 +257,11 @@
     from item 
     where category_id = #{categoryId,jdbcType=INTEGER} and status = 1
   </select>
+  
+  <update id="addSales">
+    update item
+    set sales = sales + #{sales}
+    where id = #{itemid}
+  </update>
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 </mapper>

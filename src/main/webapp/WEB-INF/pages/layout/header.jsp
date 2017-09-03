@@ -35,7 +35,7 @@
     </div>
     <!-- top nar bar -->
     <div class="cart box_1">
-      <a href="${pageContext.request.contextPath}/checkout">
+      <a href="${pageContext.request.contextPath}/order/checkout">
         <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
         &nbsp;&nbsp;(<span id="simpleCart_quantity" class="simpleCart_quantity"></span>)
         <div class="total">

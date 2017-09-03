@@ -2,6 +2,8 @@ package top.guhanjie.wine.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import top.guhanjie.wine.model.Item;
 
 public interface ItemMapper {
@@ -56,5 +58,6 @@ public interface ItemMapper {
     //~~~~~~~~~~~~~~~~~ custom add ~~~~~~~~~~~~~~~~~~
     Item selectById(int id);
     List<Item> selectByCategory(int category);
+    int addSales(@Param("itemid")Integer itemid, @Param("sales")Integer sales);
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }

@@ -3,6 +3,8 @@ package top.guhanjie.wine.exception;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.alibaba.fastjson.JSON;
 
 import top.guhanjie.wine.util.HttpUtil;
 
@@ -46,8 +50,16 @@ public class WebExceptionHandler implements HandlerExceptionResolver {
 			PrintWriter os = null;
 			try {
 				response.setStatus(ee.getHttpStatus());
+				response.setContentType("application/json;charset=UTF-8");
+				response.setCharacterEncoding("UTF-8");
 				os = response.getWriter();
-				os.print(causeMsg);
+				Map<String, Object> rt = new HashMap<String, Object>();
+				rt.put("status", ee.getHttpStatus());
+				rt.put("success", false);
+				rt.put("code", ee.getCode());//api
+				rt.put("msg", ee.getMessage());
+				rt.put("description", causeMsg);
+				os.print(JSON.toJSONString(rt));
 			} catch (IOException e) {
 				LOGGER.error(e.getMessage(), e);
 			} finally {
