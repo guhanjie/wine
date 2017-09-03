@@ -641,7 +641,7 @@ public class Order {
     
     /**
      * Class Name:    StatusEnum<br/>
-     * <b>订单状态，采用位表示法，第1-2位：是否下单成功，第3-4位：是否开始送货，第5-6位：是否支付完成]</b>
+     * <b>订单状态，采用位表示法，第1位：是否下单成功，第2位：是否开始送货，第3位：是否支付完成]</b>
      */
     public static enum StatusEnum {
         //位表示法  
@@ -652,10 +652,10 @@ public class Order {
     //  private static final short PAY_ORDER = 0x10;        //支付与（否）
         
         NEW(0x01, "新建订单"),           //1
-        CANCEL((0x01<<2 | 0x01), "取消订单"),    //3
-        SENDING((0x01<<3 | 0x01), "开始送货"),   //5
-        FINISH((0x01<<4 | 0x01<<3 | 0x01), "送货完成"),        //13
-        PAYED((0x01<<5 | 0x01<<4 | 0x01<<3 | 0x01), "支付完成");     //29
+        CANCEL((0x01<<1 | 0x01), "取消订单"),    //3
+        SENDING((0x01<<2 | 0x01), "开始送货"),   //5
+        FINISH((0x01<<3 | 0x01<<2 | 0x01), "送货完成"),        //13
+        PAYED((0x01<<4 | 0x01<<3 | 0x01<<2 | 0x01), "支付完成");     //29
         
         private int code;
         private String desc;

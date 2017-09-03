@@ -21,12 +21,14 @@
     	<meta name="keywords" content="如东，如果茶酒，商城，微信商城" />
     	<meta name="description" content="如东，如果茶酒，商城，微信商城"/>
         <title>如果茶酒商城</title>
-    	<link rel="shortcut icon" type="image/x-icon" href="${resourcePath}/images/favicon.ico">
+    	<link rel="shortcut icon" type="image/x-icon" href="${resourcePath}/images/favicon.ico"/>
         <!--theme style-->
-        <link rel="stylesheet" href="${resourcePath}/css/bootstrap.css" media="all">
-        <link rel="stylesheet" href="${resourcePath}/css/style.css" media="all">
+        <link rel="stylesheet" href="${resourcePath}/css/bootstrap.css" media="all"/>
+        <link rel="stylesheet" href="${resourcePath}/css/style.css" media="all"/>
+        <link rel="stylesheet" href="${resourcePath}/css/font-awesome.css" media="all"/>
         <link rel="stylesheet" href="${resourcePath}/css/weui-0.4.3.min.css" media="all"/>
         <link rel="stylesheet" href="${resourcePath}/css/memenu.css" media="all" />
+        <link rel="stylesheet" href="${resourcePath}/css/order.css">
         <!--//theme style-->
         <script type="text/javascript">
           //Globals

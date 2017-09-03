@@ -1328,6 +1328,9 @@ h3.ghj {
   margin: 0 0 10px;
 }
 /*-- --*/
+.container.main{
+  min-height: 400px;
+}
 /*---start-contact----*/
 .contact {
   padding-bottom: 3em;
@@ -1601,10 +1604,14 @@ ul.total_price li.last_price span{
 .owner-info input {
 	width: 80%;
     padding: 1px 5px;
-    margion: 0 10px;
+    margin: 0 10px;
     border-color: #6FC9EB;
     border-style: solid;
     box-shadow: 0 1px 2px 1px rgba(10, 157, 230, 0.33);
+}
+.owner-info input.warn {
+	border: 1px red dashed;
+	box-shadow: 0 1px 2px 1px rgba(237, 100, 92, 0.5);
 }
 .price-details, .coupons-item, .owner-info{
 	border-bottom: 1px solid #DDD9D9;

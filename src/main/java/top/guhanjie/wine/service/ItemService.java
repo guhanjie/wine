@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import top.guhanjie.wine.mapper.ItemMapper;
 import top.guhanjie.wine.model.Item;
@@ -83,6 +84,20 @@ public class ItemService {
     public List<Item> getRelativeItems(Integer categoryId) {
     	LOGGER.debug("get relative items for category[{}]", categoryId);
     	return itemMapper.selectByCategory(categoryId);
+    }
+    
+    @Transactional
+    public void addSales(String items) {
+    	LOGGER.debug("add sales for items:[{}]", items);
+		String[] it = items.split(",");
+		for(String str : it) {
+			String[] iteminfo = str.split(":");
+			Integer itemId = Integer.parseInt(iteminfo[0]);
+			Integer count = Integer.parseInt(iteminfo[1]);
+			if(0 == itemMapper.addSales(itemId, count)) {
+				throw new RuntimeException("add sales for items["+items+"] failed, transaction rollback....");
+			}
+		}
     }
     
 }

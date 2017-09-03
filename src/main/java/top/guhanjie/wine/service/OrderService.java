@@ -61,7 +61,12 @@ public class OrderService {
 	@Autowired
 	private WeixinConstants weixinConstants;
 	
-	public void putOrder(Order order) {
+	/*
+	 * 返回值的order对象中包含user的id
+	 * 为什么一定要包含userid这个值？
+	 * 因为订单请求有可能用户之前根本就没注册，在OrderController中我们还会依据user进行后续操作，比如刷新session等动作
+	 */
+	public Order putOrder(Order order) {
 		if(order == null) {
 			LOGGER.error("put order error, order is null");
 			throw WebExceptionFactory.exception(WebExceptionEnum.PARAMETER_NULL);
@@ -84,6 +89,7 @@ public class OrderService {
 	            LOGGER.info("user first in while putting order, add an new user:[{}]", JSON.toJSONString(user));
 	            userService.addUser(user);
 			}
+			order.setUserId(user.getId());
 		}
 		else {
 			user = userService.getUserById(userid);
@@ -112,7 +118,7 @@ public class OrderService {
 		String items = order.getItems();
 		String[] it = items.split(",");
 		for(String str : it) {
-			String[] iteminfo = str.split("|");
+			String[] iteminfo = str.split(":");
 			Integer itemId = Integer.parseInt(iteminfo[0]);
 			Integer count = Integer.parseInt(iteminfo[1]);
 			Item item = itemService.getItem(itemId);
@@ -129,8 +135,9 @@ public class OrderService {
 		// 3. 生成订单
 		order.setCreateTime(new Date());
 		order.setStatus(Order.StatusEnum.NEW.code());
-		orderMapper.insertSelective(order);
-		userService.consumePoints(user.getId(), order.getCoupons(), order.getId());
+		orderMapper.insertSelective(order);	//插入订单记录
+        itemService.addSales(items);	//插入商品销售记录
+		userService.consumePoints(user.getId(), order.getCoupons(), order.getId());	//更新用户积分
 		
 		// 4. 发送微信消息通知客服
 		StringBuilder sb = new StringBuilder("主人，您有新的订单：\n");
@@ -141,7 +148,9 @@ public class OrderService {
 		sb.append("购买商品：").append(purchases);
 		sb.append("创建时间：").append(DateTimeUtil.formatDate(order.getCreateTime(), "yyyy-MM-dd HH:mm")).append("\n");
 		sb.append("备注：").append(order.getRemark()).append("\n");
-		MessageKit.sendKFMsg(weixinConstants.KF_OPENIDS, sb.toString());
+		//MessageKit.sendKFMsg(weixinConstants.KF_OPENIDS, sb.toString());
+		
+		return order;
 	}
 	
 	public PageImpl<Order> listOrders(Date beginTime, Date endTime, Pageable pageable) {
@@ -279,7 +288,7 @@ public class OrderService {
 		long startTime = order.getCreateTime().getTime();
 		long now = System.currentTimeMillis();
 		//只有订单状态为新建，且距离服务时间4小时之前，才可取消订单
-		if(order.getStatus()==Order.StatusEnum.NEW.code() && (startTime-now) > 4*60*60*1000) {
+		if(order.getStatus()==Order.StatusEnum.NEW.code()) {	// && (startTime-now) > 4*60*60*1000
 			order.setStatus(Order.StatusEnum.CANCEL.code());
 			order.setUpdateTime(new Date());
 			if(1 == orderMapper.updateByStatus(order, Order.StatusEnum.NEW.code())) {
@@ -329,7 +338,7 @@ public class OrderService {
     	String items = order.getItems();
 		String[] it = items.split(",");
 		for(String str : it) {
-			String[] iteminfo = str.split("|");
+			String[] iteminfo = str.split(":");
 			Integer itemId = Integer.parseInt(iteminfo[0]);
 			Integer count = Integer.parseInt(iteminfo[1]);
 			Item item = itemService.getItem(itemId).deepCopy();

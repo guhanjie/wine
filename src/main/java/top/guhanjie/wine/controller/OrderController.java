@@ -7,17 +7,27 @@
  */  
 package top.guhanjie.wine.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,13 +38,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 
+import top.guhanjie.wine.exception.WebException;
+import top.guhanjie.wine.exception.WebExceptionEnum;
+import top.guhanjie.wine.exception.WebExceptionFactory;
 import top.guhanjie.wine.model.Item;
 import top.guhanjie.wine.model.Order;
 import top.guhanjie.wine.model.User;
 import top.guhanjie.wine.service.ItemService;
 import top.guhanjie.wine.service.OrderService;
 import top.guhanjie.wine.service.UserService;
+import top.guhanjie.wine.util.DateTimeUtil;
 import top.guhanjie.wine.weixin.WeixinConstants;
+import top.guhanjie.wine.weixin.pay.PayKit;
 
 /**
  * Class Name:		OrderController<br/>
@@ -45,7 +60,7 @@ import top.guhanjie.wine.weixin.WeixinConstants;
  * @since 			JDK 1.7 
  */
 @Controller
-//@RequestMapping("/order")
+@RequestMapping("/order")
 public class OrderController extends BaseController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(OrderController.class);
@@ -62,16 +77,12 @@ public class OrderController extends BaseController {
 	@Autowired
 	private OrderService orderService;
 	
-//	@Resource(name="scheduler4weixin")
-//	private TaskScheduler taskScheduler;
+	@Resource(name="scheduler4weixin")
+	private TaskScheduler taskScheduler;
 	
 	@RequestMapping(value={"/checkout"},method=RequestMethod.GET)
 	public String checkout(Model model, HttpSession session) {
-	    User user = new User();
-	    user.setName("顾汉杰");
-	    user.setPhone("13052333613");
-	    user.setAddress("如东县环镇乡");
-	    setSessionUser(user);
+		getSessionUser();
 		List<Item> items = new ArrayList<Item>();
 		Object obj = session.getAttribute("cart");
 		Map<Integer, Integer> cart = null;
@@ -148,164 +159,166 @@ public class OrderController extends BaseController {
 		order.setUserId(user.getId());
 		//order.setSource(source);
 		//下单
-		orderService.putOrder(order);
-		return success();
+		order = orderService.putOrder(order);
+		user = userService.getUserById(order.getUserId());
+		setSessionUser(user);  //更新会话中用户信息，可能用户积分、会员身份变动了
+		return success(order);
 	}
 
-//    @RequestMapping(value="list",method=RequestMethod.GET)
-//    public String listOrders(HttpServletRequest req, HttpServletResponse resp, Model model, 
-//                    @RequestParam(required=false) String beginDate, //yyyy-mm-dd
-//                    @RequestParam(required=false) String endDate,    //yyyy-mm-dd
-//                    @PageableDefault(page=0, size=5) Pageable pageable) {        
-//	    resp.setHeader("Cache-Control", "no-cache");
-//        Date beginTime = null;
-//        Date endTime = null;
-//        if(StringUtils.isNotBlank(beginDate)){
-//            beginTime = DateTimeUtil.getDate(beginDate + " 00:00:00", "yyyy-MM-dd HH:mm:ss");
-//        }       
-//        if(StringUtils.isNotBlank(endDate)){
-//            endTime = DateTimeUtil.getDate(endDate + " 23:59:59", "yyyy-MM-dd HH:mm:ss");
-//        }
-//        PageImpl<Order> page = orderService.listOrders(beginTime, endTime, pageable);
-//
-//        model.addAttribute("orders", page.getContent());
-//        model.addAttribute("current", page.getNumber());
-//        model.addAttribute("pages", page.getTotalPages());
-//        model.addAttribute("now", new Date());
-//        return "order_list";
-//    }
-//	
-//	@RequestMapping(value="search",method=RequestMethod.GET)
-//	public String searchOrder(HttpServletRequest req, HttpServletResponse resp, Model model) {
-//	    resp.setHeader("Cache-Control", "no-cache");
-//		User user = getSessionUser();
-//		List<Order> orders = orderService.getOrdersByUser(user);
-//		model.addAttribute("orders", orders);
-//		model.addAttribute("now", new Date());
-//		return "order_search";
-//	}
-//	
-//	@RequestMapping(value="cancel",method=RequestMethod.POST)
-//	@ResponseBody
-//	public Map<String, Object> cancelOrder(Integer orderid) {
-//		Order order = orderService.getOrderById(orderid);
-//		if(order == null) {
-//			return fail("无效的订单号");
-//		}
-//		try {
-//			orderService.cancelOrder(order);
-//			return success();
-//		} catch(WebException e) {
-//			return fail(e.getScreenMessage());
-//		}
-//	}
-//	
-//	@RequestMapping(value="payed",method=RequestMethod.POST)
-//	@ResponseBody
-//	public Map<String, Object> finishOrderPay(Integer orderid) {
-//	    Order order = orderService.getOrderById(orderid);
-//	    if(order == null) {
-//	        return fail("无效的订单号");
-//	    }
-//	    try {
-//	        orderService.finishOrderPay(order);
-//	        return success();
-//	    } catch(WebException e) {
-//	        return fail(e.getScreenMessage());
-//	    }
-//	}
-//	
-//	@RequestMapping(value="pay",method=RequestMethod.GET)
-//    @ResponseBody
-//	public Map<String, Object> payOrder(HttpServletRequest req, HttpServletResponse resp, final Integer orderid, final Integer tip) {
-//	    resp.setHeader("Cache-Control", "no-cache");
-//	    final String APPID = weixinContants.APPID;
-//	    final String MCH_ID = weixinContants.MCH_ID;
-//	    final String MCH_KEY = weixinContants.MCH_KEY;
-//	    //查询订单
-//        final Order order = orderService.getOrderById(orderid);
-//        if(order == null) {
-//            return fail("无效的订单号");
-//        }
-//        //获取订单的微信预支付id
-//        String prepayid = order.getPayId();
-//        try {
-//            if(prepayid != null) {  //若先前发起过支付，需要验证prepayid是否已关闭
-//                Map<String, String>map = PayKit.search(order, APPID, MCH_ID, MCH_KEY);
-//                String payStatus = map.get("result");
-//                if("CLOSED".equals(payStatus)) {        //若该prepayid已失效则重新下单
-//                    prepayid = null;
-//                }
-//            }
-//            if(prepayid == null) {  //第一次发起支付或支付已关闭
-//                //设置订单小费（只有在第一次支付时可以设，数据模型有问题，建议订单和支付单独两个表，1:N关系）
-//                if(tip != null) {
-//                    order.setTip(new BigDecimal(tip));
-//                }
-//                prepayid = PayKit.unifiedorder(req, order, APPID, MCH_ID, MCH_KEY);
-//                order.setPayId(prepayid);
-//                orderService.updatePayInfo(order);
-//            }
-//            //定时（10分钟）查询订单支付情况
-//        	long now = new Date().getTime();
-//        	taskScheduler.schedule(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Map<String, String> map;
-//                    try {
-//                        map = PayKit.search(order, APPID, MCH_ID, MCH_KEY);
-//                        String result = map.get("result");
-//                        Integer orderid = Integer.valueOf(map.get("out_trade_no"));
-//                        String total_fee = map.get("total_fee");
-//                        String time_end = map.get("time_end");
-//                        boolean success = "SUCCESS".equals(result);                    
-//                        orderService.updateOrderByPay(success, orderid, total_fee, time_end);
-//                    }
-//                    catch (Exception e) {
-//                        LOGGER.error("error in search pay result for order[{}].", orderid, e);
-//                    }
-//                }
-//        	}, new Date(now+10*60*1000));       //产生支付预付单后的10分钟查询，以防微信支付回调没有接收到。
-//        }
-//        catch (IOException e) {
-//            LOGGER.error("error in unified weixin pay for order[{}].", order.getId());
-//        }
-//        
-//        if(StringUtils.isBlank(prepayid)) {
-//        	throw WebExceptionFactory.exception(WebExceptionEnum.PAY_ERROR, "支付系统有误，目前无法支付");
-//        }
-//        Map<String, String> payParams = new HashMap<String, String>();
-//        final String nonceStr = String.valueOf(new Random().nextInt(10000));
-//        payParams.put("appId", APPID);                                  //公众号id
-//        payParams.put("timeStamp", String.valueOf(System.currentTimeMillis()/1000));         //时间戳
-//        payParams.put("nonceStr", nonceStr);                                                   //随机字符串
-//        payParams.put("package", "prepay_id="+prepayid);                              //订单详情扩展字符串
-//        payParams.put("signType", "MD5");                                                       //签名方式
-//        payParams.put("paySign", PayKit.sign(payParams, MCH_KEY)); //签名        
-//		return success(payParams);
-//	}
-//	
-//	@RequestMapping(value="paycallback")
-//	public void paycallback(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-//		LOGGER.debug("getting callback from weixin pay...");
-//		
-//		Map<String, String> map = PayKit.callback(req, weixinContants.MCH_KEY);
-//		String result = map.get("result");
-//		Integer orderid = Integer.valueOf(map.get("out_trade_no"));
-//		String total_fee = map.get("total_fee");
-//		String time_end = map.get("time_end");
-//		boolean success = "SUCCESS".equals(result);
-//		
-//		orderService.updateOrderByPay(success, orderid, total_fee, time_end);
-//		
-//        resp.setContentType("application/xml;charset=UTF-8");
-//        resp.setCharacterEncoding("UTF-8");
-//        String respCon = "<xml>"
-//        						+ "	<return_code><![CDATA[SUCCESS]]></return_code>"
-//        						+ "	<return_msg><![CDATA[OK]]></return_msg>"
-//        						+ "</xml>";
-//        LOGGER.debug("Weixin msg response= "+respCon);
-//        resp.getWriter().write(respCon);
-//		resp.getWriter().flush();
-//	}
+    @RequestMapping(value="list_admin",method=RequestMethod.GET)
+    public String listOrdersAdmin(HttpServletRequest req, HttpServletResponse resp, Model model, 
+                    @RequestParam(required=false) String beginDate, //yyyy-mm-dd
+                    @RequestParam(required=false) String endDate,    //yyyy-mm-dd
+                    @PageableDefault(page=0, size=5) Pageable pageable) {        
+	    resp.setHeader("Cache-Control", "no-cache");
+        Date beginTime = null;
+        Date endTime = null;
+        if(StringUtils.isNotBlank(beginDate)){
+            beginTime = DateTimeUtil.getDate(beginDate + " 00:00:00", "yyyy-MM-dd HH:mm:ss");
+        }       
+        if(StringUtils.isNotBlank(endDate)){
+            endTime = DateTimeUtil.getDate(endDate + " 23:59:59", "yyyy-MM-dd HH:mm:ss");
+        }
+        PageImpl<Order> page = orderService.listOrders(beginTime, endTime, pageable);
+
+        model.addAttribute("orders", page.getContent());
+        model.addAttribute("current", page.getNumber());
+        model.addAttribute("pages", page.getTotalPages());
+        model.addAttribute("now", new Date());
+        return "order_list_admin";
+    }
+	
+	@RequestMapping(value="list",method=RequestMethod.GET)
+	public String listOrder(HttpServletRequest req, HttpServletResponse resp, Model model) {
+	    resp.setHeader("Cache-Control", "no-cache");
+		User user = getSessionUser();
+		List<Order> orders = orderService.getOrdersByUser(user);
+		model.addAttribute("orders", orders);
+		model.addAttribute("now", new Date());
+		return "order_list_user";
+	}
+	
+	@RequestMapping(value="cancel",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> cancelOrder(Integer orderid) {
+		Order order = orderService.getOrderById(orderid);
+		if(order == null) {
+			return fail("无效的订单号");
+		}
+		try {
+			orderService.cancelOrder(order);
+			return success();
+		} catch(WebException e) {
+			return fail(e.getScreenMessage());
+		}
+	}
+	
+	@RequestMapping(value="payed",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> finishOrderPay(Integer orderid) {
+	    Order order = orderService.getOrderById(orderid);
+	    if(order == null) {
+	        return fail("无效的订单号");
+	    }
+	    try {
+	        orderService.finishOrderPay(order);
+	        return success();
+	    } catch(WebException e) {
+	        return fail(e.getScreenMessage());
+	    }
+	}
+	
+	@RequestMapping(value="pay",method=RequestMethod.GET)
+    @ResponseBody
+	public Map<String, Object> payOrder(HttpServletRequest req, HttpServletResponse resp, final Integer orderid, final Integer tip) {
+	    resp.setHeader("Cache-Control", "no-cache");
+	    final String APPID = weixinContants.APPID;
+	    final String MCH_ID = weixinContants.MCH_ID;
+	    final String MCH_KEY = weixinContants.MCH_KEY;
+	    //查询订单
+        final Order order = orderService.getOrderById(orderid);
+        if(order == null) {
+            return fail("无效的订单号");
+        }
+        //获取订单的微信预支付id
+        String prepayid = order.getPayId();
+        try {
+            if(prepayid != null) {  //若先前发起过支付，需要验证prepayid是否已关闭
+                Map<String, String>map = PayKit.search(order, APPID, MCH_ID, MCH_KEY);
+                String payStatus = map.get("result");
+                if("CLOSED".equals(payStatus)) {        //若该prepayid已失效则重新下单
+                    prepayid = null;
+                }
+            }
+            if(prepayid == null) {  //第一次发起支付或支付已关闭
+                //设置订单小费（只有在第一次支付时可以设，数据模型有问题，建议订单和支付单独两个表，1:N关系）
+                if(tip != null) {
+                    //order.setTip(new BigDecimal(tip));
+                }
+                prepayid = PayKit.unifiedorder(req, order, APPID, MCH_ID, MCH_KEY);
+                order.setPayId(prepayid);
+                orderService.updatePayInfo(order);
+            }
+            //定时（10分钟）查询订单支付情况
+        	long now = new Date().getTime();
+        	taskScheduler.schedule(new Runnable() {
+                @Override
+                public void run() {
+                    Map<String, String> map;
+                    try {
+                        map = PayKit.search(order, APPID, MCH_ID, MCH_KEY);
+                        String result = map.get("result");
+                        Integer orderid = Integer.valueOf(map.get("out_trade_no"));
+                        String total_fee = map.get("total_fee");
+                        String time_end = map.get("time_end");
+                        boolean success = "SUCCESS".equals(result);                    
+                        orderService.updateOrderByPay(success, orderid, total_fee, time_end);
+                    }
+                    catch (Exception e) {
+                        LOGGER.error("error in search pay result for order[{}].", orderid, e);
+                    }
+                }
+        	}, new Date(now+10*60*1000));       //产生支付预付单后的10分钟查询，以防微信支付回调没有接收到。
+        }
+        catch (IOException e) {
+            LOGGER.error("error in unified weixin pay for order[{}].", order.getId());
+        }
+        
+        if(StringUtils.isBlank(prepayid)) {
+        	throw WebExceptionFactory.exception(WebExceptionEnum.PAY_ERROR, "支付系统有误，目前无法支付");
+        }
+        Map<String, String> payParams = new HashMap<String, String>();
+        final String nonceStr = String.valueOf(new Random().nextInt(10000));
+        payParams.put("appId", APPID);                                  //公众号id
+        payParams.put("timeStamp", String.valueOf(System.currentTimeMillis()/1000));         //时间戳
+        payParams.put("nonceStr", nonceStr);                                                   //随机字符串
+        payParams.put("package", "prepay_id="+prepayid);                              //订单详情扩展字符串
+        payParams.put("signType", "MD5");                                                       //签名方式
+        payParams.put("paySign", PayKit.sign(payParams, MCH_KEY)); //签名        
+		return success(payParams);
+	}
+	
+	@RequestMapping(value="paycallback")
+	public void paycallback(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		LOGGER.debug("getting callback from weixin pay...");
+		
+		Map<String, String> map = PayKit.callback(req, weixinContants.MCH_KEY);
+		String result = map.get("result");
+		Integer orderid = Integer.valueOf(map.get("out_trade_no"));
+		String total_fee = map.get("total_fee");
+		String time_end = map.get("time_end");
+		boolean success = "SUCCESS".equals(result);
+		
+		orderService.updateOrderByPay(success, orderid, total_fee, time_end);
+		
+        resp.setContentType("application/xml;charset=UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+        String respCon = "<xml>"
+        						+ "	<return_code><![CDATA[SUCCESS]]></return_code>"
+        						+ "	<return_msg><![CDATA[OK]]></return_msg>"
+        						+ "</xml>";
+        LOGGER.debug("Weixin msg response= "+respCon);
+        resp.getWriter().write(respCon);
+		resp.getWriter().flush();
+	}
 }

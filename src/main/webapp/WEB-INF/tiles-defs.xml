@@ -39,6 +39,18 @@
         <put-attribute name="footer" value="/WEB-INF/pages/layout/footer.jsp" cascade="true"/>
     </definition>
     
+    <definition name="order_list_admin" template="/WEB-INF/pages/layout/template.jsp">
+        <put-attribute name="header" value="/WEB-INF/pages/layout/header.jsp" cascade="true" />
+        <put-attribute name="main" value="/WEB-INF/pages/order_list_admin.jsp"  cascade="true"/>
+        <put-attribute name="footer" value="/WEB-INF/pages/layout/footer.jsp" cascade="true"/>
+    </definition>
+    
+    <definition name="order_list_user" template="/WEB-INF/pages/layout/template.jsp">
+        <put-attribute name="header" value="/WEB-INF/pages/layout/header.jsp" cascade="true" />
+        <put-attribute name="main" value="/WEB-INF/pages/order_list_user.jsp"  cascade="true"/>
+        <put-attribute name="footer" value="/WEB-INF/pages/layout/footer.jsp" cascade="true"/>
+    </definition>
+    
     <definition name="error" template="/WEB-INF/pages/error.jsp"/>
     
 </tiles-definitions>
