@@ -45,7 +45,7 @@
 
 	<bean id="exceptionResolver" class="top.guhanjie.wine.exception.WebExceptionHandler" />
 	
-    <!-- <mvc:interceptors>
+    <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/order/**"/>
             <mvc:exclude-mapping path="/order/pre"/>
@@ -55,10 +55,10 @@
             <ref bean="OAuthIntercepter"/>
         </mvc:interceptor>
         <mvc:interceptor>
-            <mvc:mapping path="/order/list"/>
-            <mvc:mapping path="/order/payed"/>
+            <mvc:mapping path="/order/list_admin"/>
+            <!-- <mvc:mapping path="/order/payed"/> -->
             <ref bean="AdminAuthIntercepter"/>
         </mvc:interceptor>
-    </mvc:interceptors> -->
+    </mvc:interceptors>
 
 </beans>

@@ -89,6 +89,13 @@ public class WeixinController extends BaseController {
     		resp.getWriter().flush();
         }
     }    
+
+    @RequestMapping(value="oauth2/MP_verify_QYJCPcnAIwjF06ba.txt",method=RequestMethod.GET)
+    public void oauth2verify(HttpServletRequest req,HttpServletResponse resp) throws IOException {
+        resp.getWriter().println("QYJCPcnAIwjF06ba");
+        resp.flushBuffer();
+        return;
+    }
     
     @RequestMapping(value="oauth2",method=RequestMethod.GET)
     public void oauth2(HttpServletRequest req,HttpServletResponse resp) throws IOException {

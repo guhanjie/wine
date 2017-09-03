@@ -77,7 +77,7 @@ public class OrderController extends BaseController {
 	@Autowired
 	private OrderService orderService;
 	
-	@Resource(name="scheduler4weixin")
+	@Resource(name="wine-scheduler4weixin")
 	private TaskScheduler taskScheduler;
 	
 	@RequestMapping(value={"/checkout"},method=RequestMethod.GET)

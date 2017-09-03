@@ -29,7 +29,7 @@ public class WeixinConstants {
 	public String TOKEN;
 	@Value("${weixin.kf.openids:xxx}")	//,o_05Uwe4_9GGQ93ESXg27RCw6HqE
 	public String KF_OPENIDS;
-	@Value("${weixin.mch.id:1378339302}")
+	@Value("${weixin.mch.id:1480484752}")
 	public String MCH_ID;
 	@Value("${weixin.mch.key}")
 	public String MCH_KEY;
