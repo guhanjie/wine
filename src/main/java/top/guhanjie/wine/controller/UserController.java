@@ -24,7 +24,8 @@ public class UserController extends BaseController{
 	
 	@RequestMapping(value="/user", method=RequestMethod.GET)
 	public String getUser(Model model) {
-		User user = userService.getUserById(1);
+		//User user = userService.getUserById(1);
+        User user = getSessionUser();
 		model.addAttribute("user", user);
 		model.addAttribute("promotees", userService.getPromotees(user.getId()));
 		return "user";
@@ -32,7 +33,8 @@ public class UserController extends BaseController{
 	
 	@RequestMapping(value="/promote", method=RequestMethod.GET)
 	public String promote(Model model) {
-		User user = userService.getUserById(1);
+		//User user = userService.getUserById(1);
+        User user = getSessionUser();
 		model.addAttribute("user", user);
 		model.addAttribute("spm", DESUtil.encrypt(DESUtil.ALGORITHOM_BLOWFISH, String.valueOf(user.getId()), AppConstants.DES_KEY));
 		return "promote";
