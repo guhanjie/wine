@@ -33,7 +33,7 @@
         </div>
         <div class="coupons-item">
           <h3>优惠券</h3>
-          <p>会员积分<span>(当前有<strong>${user.points}</strong>积分)</span></p>
+          <p>会员积分<span>(当前有<strong>${user.points!=null ? user.points : 0}</strong>积分)</span></p>
           <input class="points" type="number"></input> 
           <a class="cpns btn-sm" href="javascript:;">使用积分</a>
         </div>

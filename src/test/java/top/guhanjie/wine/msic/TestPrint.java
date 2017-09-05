@@ -15,8 +15,12 @@ import org.junit.Test;
 public class TestPrint {
     @Test
     public void testBinaryPrint() {
-        System.out.printf("%#016x\n", 127);
-        System.out.println(String.format("%16s", Integer.toBinaryString(7)));
-        System.out.println(0x01<<2 | 0x01<<1 | 0x01);
+//        System.out.printf("%#016x\n", 127);
+//        System.out.println(String.format("%16s", Integer.toBinaryString(7)));
+//        System.out.println(0x01<<2 | 0x01<<1 | 0x01);
+    	Integer i = null;
+    	if(0 != i) {
+    		System.out.println(i);
+    	}
     }
 }

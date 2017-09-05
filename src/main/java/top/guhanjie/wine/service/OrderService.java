@@ -148,7 +148,7 @@ public class OrderService {
 		sb.append("购买商品：").append(purchases);
 		sb.append("创建时间：").append(DateTimeUtil.formatDate(order.getCreateTime(), "yyyy-MM-dd HH:mm")).append("\n");
 		sb.append("备注：").append(order.getRemark()).append("\n");
-		//MessageKit.sendKFMsg(weixinConstants.KF_OPENIDS, sb.toString());
+		MessageKit.sendKFMsg(weixinConstants.KF_OPENIDS, sb.toString());
 		
 		return order;
 	}

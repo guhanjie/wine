@@ -82,6 +82,9 @@ public class UserService {
     @Transactional
     public int addPoints(Integer userid, Integer points, Integer promoteeId) {
 		LOGGER.debug("add points[{}] to user[{}].", points, userid);
+		if(points != null && points == 0) {
+			return 0;
+		}
 		PointDetail pd = new PointDetail();
 		pd.setUserId(userid);
 		pd.setPromoteeId(promoteeId);
@@ -97,7 +100,10 @@ public class UserService {
     
     @Transactional
     public int consumePoints(Integer userid, Integer points, Integer orderId) {
-		LOGGER.debug("add points[{}] to user[{}].", points, userid);
+		LOGGER.debug("sub points[{}] to user[{}].", points, userid);
+		if(points != null && points == 0) {
+			return 0;
+		}
 		PointDetail pd = new PointDetail();
 		pd.setUserId(userid);
 		pd.setOrderId(orderId);
