@@ -132,6 +132,7 @@ public class MessageKit {
         map.put("CreateTime", new Date().getTime()+"");
         map.put("MsgType", "image");
         map.put("Image", "<MediaId>"+mediaId+"</MediaId>");
+        LOGGER.info("success to response msg:[{}]", map);
         return XmlUtil.map2xmlstr(map);
     }
     
@@ -148,6 +149,7 @@ public class MessageKit {
             replyContent = replyMsgs.get(con);
         }
         map.put("Content", replyContent);
+        LOGGER.info("success to response msg:[{}]", map);
         return XmlUtil.map2xmlstr(map);
     }
     
@@ -180,6 +182,7 @@ public class MessageKit {
                 	user.setSourceId(Integer.parseInt(qrscene));
                 }
                 userService.addUser(user);
+                LOGGER.info("success to add a new user[{}]", JSON.toJSONString(user, true));
             }
     	} catch(Exception e) {
     	    LOGGER.error("error happened in add user info, openId[{}].", openId, e);
@@ -190,6 +193,7 @@ public class MessageKit {
         map.put("CreateTime", new Date().getTime()+"");
         map.put("MsgType", "text");
         map.put("Content", "您好，欢迎关注！");
+        LOGGER.info("success to response msg:[{}]", map);
     	return XmlUtil.map2xmlstr(map);
     }
     
@@ -206,12 +210,14 @@ public class MessageKit {
                 	user.setSourceId(Integer.parseInt(qrscene));
                 	userService.updateUser(user);
                     User promoter = userService.getUserById(Integer.parseInt(qrscene));
+                    LOGGER.info("success to bind promoter[{}] to user:[{}]", promoter.getId(), user.getId());
                     Map<String,String> map = new HashMap<String, String>();
                     map.put("ToUserName", msgMap.get("FromUserName"));
                     map.put("FromUserName", msgMap.get("ToUserName"));
                     map.put("CreateTime", new Date().getTime()+"");
                     map.put("MsgType", "text");
                     map.put("Content", "您好，您已完成推荐人绑定！推荐人："+promoter.getName());
+                    LOGGER.info("success to response msg:[{}]", map);
                 	return XmlUtil.map2xmlstr(map);
                 }
             }
@@ -265,7 +271,7 @@ public class MessageKit {
 	  		UserService userService = SpringContextUtil.getBean(UserService.class);
 	  		User user = userService.getUserByOpenId(openid);
 	  		if(user == null) {
-	  			LOGGER.error("user is null, can not response.");
+	  			LOGGER.error("user is null, can not create qrcode.");
 	  			a.Description = "对不起，您还未注册会员，请先关注该公众号，成为会员";
 	  		}
 	  		else if(user.getQrcodeTicket() != null) {
@@ -273,9 +279,10 @@ public class MessageKit {
 	  			String encodedTikect = URLEncoder.encode(user.getQrcodeTicket(), "UTF-8");
 	  			picUrl = picUrl.replaceAll("TICKET", encodedTikect);
 	  			a.PicUrl = picUrl;
-	  			a.Url = user.getQrcodeUrl();
+	  			a.Url = picUrl;
 	  		}
 	  		else {
+	  			LOGGER.info("user[{}] does not have qrcode yet, create qrcode...", user.getId());
 	  			QrcodeResponse r = QrcodeKit.createQrcode(user.getId());
 	  			user.setQrcodeTicket(r.getTicket());
 	  			user.setQrcodeUrl(r.getUrl());
@@ -284,7 +291,7 @@ public class MessageKit {
 	  			String encodedTikect = URLEncoder.encode(r.getTicket(), "UTF-8");
 	  			picUrl = picUrl.replaceAll("TICKET", encodedTikect);
 	  			a.PicUrl = picUrl;
-	  			a.Url = r.getUrl();
+	  			a.Url = picUrl;
 	  		}
 	  	}
 	  	StringWriter sw = new StringWriter();
@@ -300,7 +307,7 @@ public class MessageKit {
 			e.printStackTrace();
 		}
 	  	String res = sw.toString();
-        LOGGER.debug("response for click event, msg=[{}]", res);
+        LOGGER.info("success to response msg:[{}]", res);
   	    return res;
     }
     
