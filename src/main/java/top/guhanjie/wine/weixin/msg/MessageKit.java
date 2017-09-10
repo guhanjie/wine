@@ -273,6 +273,7 @@ public class MessageKit {
 	  			String encodedTikect = URLEncoder.encode(user.getQrcodeTicket(), "UTF-8");
 	  			picUrl = picUrl.replaceAll("TICKET", encodedTikect);
 	  			a.PicUrl = picUrl;
+	  			a.Url = user.getQrcodeUrl();
 	  		}
 	  		else {
 	  			QrcodeResponse r = QrcodeKit.createQrcode(user.getId());
@@ -280,9 +281,10 @@ public class MessageKit {
 	  			user.setQrcodeUrl(r.getUrl());
 	  			userService.updateUser(user);
 	  			String picUrl = WeixinConstants.API_QRCODE_SHOW;
-	  			String encodedTikect = URLEncoder.encode(user.getQrcodeTicket(), "UTF-8");
+	  			String encodedTikect = URLEncoder.encode(r.getTicket(), "UTF-8");
 	  			picUrl = picUrl.replaceAll("TICKET", encodedTikect);
 	  			a.PicUrl = picUrl;
+	  			a.Url = r.getUrl();
 	  		}
 	  	}
 	  	StringWriter sw = new StringWriter();
