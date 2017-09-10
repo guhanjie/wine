@@ -87,15 +87,19 @@ public class MessageKit {
 	 */
 	public static String handlerMsg(Map<String, String> msgMap) {
 	    String msgType = msgMap.get("MsgType");
-	    LOGGER.debug("msg type = [{}]", msgType);
+	    LOGGER.debug("weixin msg type = [{}]", msgType);
 	    try {
     	    //处理事件消息
     	    if(msgType.equals(WeixinConstants.MSG_TYPE_EVENT)) {
     	    	String eventType = msgMap.get("Event");
-    	    	LOGGER.debug("event type = [{}]", eventType);
+    	    	LOGGER.debug("weixin msg event type = [{}]", eventType);
     	    	//关注公众号事件
     	        if(eventType.equals(WeixinConstants.EVENT_SUBSCRIBE)) {
     	        	return handleSubscribeEvent(msgMap);
+    	        }
+    	        //用户扫推广二维码事件
+    	        else if(eventType.equals(WeixinConstants.EVENT_SCAN)) {
+    	        	return handleScanEvent(msgMap);
     	        }
     	        //上报地址位置事件
 //    	        else if(eventType.equals(WeixinConstants.EVENT_LOCATION)) {
@@ -121,7 +125,7 @@ public class MessageKit {
 	}
 
 	private static String handleImageMsg(Map<String, String> msgMap,String mediaId) throws IOException {
-	    LOGGER.info("starting to handle image message....");
+	    LOGGER.info("starting to handle image message[{}]...", JSON.toJSONString(msgMap, true));
 	    Map<String,String> map = new HashMap<String, String>();
         map.put("ToUserName", msgMap.get("FromUserName"));
         map.put("FromUserName", msgMap.get("ToUserName"));
@@ -132,7 +136,7 @@ public class MessageKit {
     }
     
     private static String handleTextMsg(Map<String, String> msgMap) throws IOException {
-        LOGGER.info("starting to handle text message....");
+        LOGGER.info("starting to handle text message[{}]...", JSON.toJSONString(msgMap, true));
         Map<String,String> map = new HashMap<String, String>();
         map.put("ToUserName", msgMap.get("FromUserName"));
         map.put("FromUserName", msgMap.get("ToUserName"));
@@ -148,7 +152,7 @@ public class MessageKit {
     }
     
     private static String handleSubscribeEvent(Map<String, String> msgMap) throws IOException {
-        LOGGER.info("starting to handle subscribe event....");
+        LOGGER.info("starting to handle subscribe event[{}]...", JSON.toJSONString(msgMap, true));
         String openId = msgMap.get("FromUserName");
     	//自动添加关注用户
     	try {
@@ -169,6 +173,12 @@ public class MessageKit {
                 if(StringUtils.isNumeric(userInfo.getSubscribe_time())) {
                     user.setSubscribeTime(new Date(Long.parseLong(userInfo.getSubscribe_time())));
                 }
+                //如果用户通过扫描二维码推广进入，会绑定推荐人信息
+                String qrscene = msgMap.get("EventKey");
+                if(StringUtils.isNotBlank(qrscene)) {
+                	qrscene = qrscene.substring("qrscene_".length());	//去除前缀，截取推广用户id
+                	user.setSourceId(Integer.parseInt(qrscene));
+                }
                 userService.addUser(user);
             }
     	} catch(Exception e) {
@@ -183,8 +193,36 @@ public class MessageKit {
     	return XmlUtil.map2xmlstr(map);
     }
     
+    private static String handleScanEvent(Map<String, String> msgMap) throws IOException {
+        LOGGER.info("starting to handle scan event[{}]...", JSON.toJSONString(msgMap, true));
+        String openId = msgMap.get("FromUserName");
+    	try {
+    	    UserService userService = SpringContextUtil.getBean(UserService.class);
+            User user = userService.getUserByOpenId(openId);
+            //如果用户之前已关注公众号，但是未绑定推广人信息，可以补绑推广人信息，但属于一次性行为，绑定后不可更改
+            if(user != null && user.getSourceId() == null) {
+        		String qrscene = msgMap.get("EventKey");//此时，事件KEY值，是一个32位无符号整数，即创建二维码时的二维码scene_id
+                if(StringUtils.isNotBlank(qrscene)) {
+                	user.setSourceId(Integer.parseInt(qrscene));
+                	userService.updateUser(user);
+                    User promoter = userService.getUserById(Integer.parseInt(qrscene));
+                    Map<String,String> map = new HashMap<String, String>();
+                    map.put("ToUserName", msgMap.get("FromUserName"));
+                    map.put("FromUserName", msgMap.get("ToUserName"));
+                    map.put("CreateTime", new Date().getTime()+"");
+                    map.put("MsgType", "text");
+                    map.put("Content", "您好，您已完成推荐人绑定！推荐人："+promoter.getName());
+                	return XmlUtil.map2xmlstr(map);
+                }
+            }
+    	} catch(Exception e) {
+    	    LOGGER.error("error happened in add user info, openId[{}].", openId, e);
+    	}
+    	return "success";
+    }
+    
     private static String handleLocationEvent(Map<String, String> msgMap) throws IOException {
-//        LOGGER.info("starting to handle location event....");
+//        LOGGER.info("starting to handle location event[{}]...", JSON.toJSONString(msgMap, true));
 //        String openId = msgMap.get("FromUserName");
 //        String lat = msgMap.get("Latitude");
 //    	String lng = msgMap.get("Longitude");
@@ -201,7 +239,7 @@ public class MessageKit {
     }
     
     private static String handleClickEvent(Map<String, String> msgMap) throws IOException {
-        LOGGER.info("starting to handle click event[{}]....", JSON.toJSONString(msgMap, true));
+        LOGGER.info("starting to handle click event[{}]...", JSON.toJSONString(msgMap, true));
 
         PicTextMsg ptm = new PicTextMsg();
         ptm.ToUserName = msgMap.get("FromUserName");
@@ -214,43 +252,27 @@ public class MessageKit {
 		a.Title = "会员推广";
 		a.Description = "下面是您的专属推广二维码，请长按此二维码，发送给好友，推荐成功后，将获得积分";
 		a.PicUrl = "";
-		a.Url = "";
+		a.Url = "http://www.guhanjie.top/wine/promote";
 		as.add(a);
 		ptm.Articles = as;
-        
-//        Map<String,String> map = new HashMap<String, String>();
-//        map.put("ToUserName", msgMap.get("FromUserName"));
-//        map.put("FromUserName", msgMap.get("ToUserName"));
-//        map.put("CreateTime", new Date().getTime()+"");
-//        map.put("MsgType", "news");
-//        map.put("ArticleCount", "1");
-//        map.put("Title", "会员推广");
-//        map.put("Description", "下面是您的专属推广二维码，请长按此二维码，发送给好友，推荐成功后，将获得积分");
         
         String openid = msgMap.get("FromUserName");
         String eventkey = msgMap.get("EventKey");
 
         //用户获取推广二维码
 	  	if(WeixinConstants.EVENTKEY_PROMOTE_QRCODE.equals(eventkey)) {
-	  		LOGGER.info("starting to get promote qrcode for user open id[{}]....", openid);
+	  		LOGGER.info("starting to get promote qrcode for user open id[{}]...", openid);
 	  		UserService userService = SpringContextUtil.getBean(UserService.class);
 	  		User user = userService.getUserByOpenId(openid);
 	  		if(user == null) {
 	  			LOGGER.error("user is null, can not response.");
 	  			a.Description = "对不起，您还未注册会员，请先关注该公众号，成为会员";
-//	  			map.put("Description", "对不起，您还未注册会员，请先关注该公众号，成为会员");
-//	  			map.put("PicUrl", "");
-//		        map.put("Url", "");
-		        
 	  		}
 	  		else if(user.getQrcodeTicket() != null) {
 	  			String picUrl = WeixinConstants.API_QRCODE_SHOW;
 	  			String encodedTikect = URLEncoder.encode(user.getQrcodeTicket(), "UTF-8");
 	  			picUrl = picUrl.replaceAll("TICKET", encodedTikect);
 	  			a.PicUrl = picUrl;
-	  			a.Url = user.getQrcodeUrl();
-//	  			map.put("PicUrl", picUrl);
-//		        map.put("Url", user.getQrcodeUrl());
 	  		}
 	  		else {
 	  			QrcodeResponse r = QrcodeKit.createQrcode(user.getId());
@@ -261,9 +283,6 @@ public class MessageKit {
 	  			String encodedTikect = URLEncoder.encode(user.getQrcodeTicket(), "UTF-8");
 	  			picUrl = picUrl.replaceAll("TICKET", encodedTikect);
 	  			a.PicUrl = picUrl;
-	  			a.Url = user.getQrcodeUrl();
-//	  			map.put("PicUrl", picUrl);
-//		        map.put("Url", user.getQrcodeUrl());
 	  		}
 	  	}
 	  	StringWriter sw = new StringWriter();
@@ -279,7 +298,7 @@ public class MessageKit {
 			e.printStackTrace();
 		}
 	  	String res = sw.toString();
-        LOGGER.info("response msg=[{}]", res);
+        LOGGER.debug("response for click event, msg=[{}]", res);
   	    return res;
     }
     
