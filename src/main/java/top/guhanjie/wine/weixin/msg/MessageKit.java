@@ -207,18 +207,21 @@ public class MessageKit {
             if(user != null && user.getSourceId() == null) {
         		String qrscene = msgMap.get("EventKey");//此时，事件KEY值，是一个32位无符号整数，即创建二维码时的二维码scene_id
                 if(StringUtils.isNotBlank(qrscene)) {
-                	user.setSourceId(Integer.parseInt(qrscene));
-                	userService.updateUser(user);
-                    User promoter = userService.getUserById(Integer.parseInt(qrscene));
-                    LOGGER.info("success to bind promoter[{}] to user:[{}]", promoter.getId(), user.getId());
-                    Map<String,String> map = new HashMap<String, String>();
-                    map.put("ToUserName", msgMap.get("FromUserName"));
-                    map.put("FromUserName", msgMap.get("ToUserName"));
-                    map.put("CreateTime", new Date().getTime()+"");
-                    map.put("MsgType", "text");
-                    map.put("Content", "您好，您已完成推荐人绑定！推荐人："+promoter.getName());
-                    LOGGER.info("success to response msg:[{}]", map);
-                	return XmlUtil.map2xmlstr(map);
+                	int sourceid = Integer.parseInt(qrscene);
+                	if(user.getId() != sourceid) {
+                		user.setSourceId(sourceid);
+                		userService.updateUser(user);
+                		User promoter = userService.getUserById(Integer.parseInt(qrscene));
+                		LOGGER.info("success to bind promoter[{}] to user:[{}]", promoter.getId(), user.getId());
+                		Map<String,String> map = new HashMap<String, String>();
+                		map.put("ToUserName", msgMap.get("FromUserName"));
+                		map.put("FromUserName", msgMap.get("ToUserName"));
+                		map.put("CreateTime", new Date().getTime()+"");
+                		map.put("MsgType", "text");
+                		map.put("Content", "您好，您已完成推荐人绑定！推荐人："+promoter.getName());
+                		LOGGER.info("success to response msg:[{}]", map);
+                		return XmlUtil.map2xmlstr(map);
+                	}
                 }
             }
     	} catch(Exception e) {
