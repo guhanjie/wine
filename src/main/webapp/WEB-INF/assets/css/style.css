@@ -1457,7 +1457,7 @@ h3.ghj {
 	margin-top: 1em;
 }
 .check-nav{
-	padding: 1em 5px 0;
+	padding: 0 5px;
 }
 .check-sec{
 	margin:3em 0 2em;
@@ -1534,7 +1534,7 @@ a.order:hover{
 	width: 50%;
 }
 .coupons-item input.points {
-	width: 80px;
+	width: 23%;
     padding: 1px 5px;
     border-color: #6FC9EB;
     border-style: solid;
@@ -1546,6 +1546,7 @@ a.cpns{
 	padding: 7px 10px 5px;
 	font-size: 0.8em;
 	font-weight:600;
+	display: inline-block;
 }
 a.cpns:hover{
 	background:#02a1dc;
@@ -1616,6 +1617,7 @@ ul.total_price li.last_price span{
 .price-details, .coupons-item, .owner-info{
 	border-bottom: 1px solid #DDD9D9;
   	padding-bottom: 10px;
+  	margin-bottom: 10px;
 }
 .price-details h3{
 	color:#333;
@@ -2463,7 +2465,7 @@ label {
 	    width: 28%;
 	}
 }
-@media (max-width: 384px){
+/* @media (max-width: 384px){
 	.logo h1 a {
 	    font-size: 1em;
 	    position: absolute;
@@ -2477,15 +2479,28 @@ label {
 	.subscribe form a, .subscribe form input[type="submit"] {
 	    width: 30%;
 	}
+} */
+@media (max-width: 360px){
+    .top-nav {
+        width: 42%;
+    }
+    .single-top {
+        width: 92%;
+        margin: 0 auto;
+        float: none;
+    }
+    .subscribe form a, .subscribe form input[type="submit"] {
+        width: 30%;
+    }
 }
 @media (max-width: 320px){
-	.logo h1 a {
+	/* .logo h1 a {
 	    font-size: 0.6em;
 	    position: absolute;
 	    width: 100%;
 	    padding: 1em 0;
 	    text-align: center;
-	}
+	} */
 	.feature-grid {
 	    width: 100%;
 	    margin: 1em 0em 1.5em;
@@ -2540,12 +2555,15 @@ label {
 	    width: 222px;
 	    padding: 1em;
 	}
-	.cart-item {
-	    width: 50%;
-	    margin-right: 0em;
+	.check-nav, .cart-items, .cart-total {
+	   margin: 0 -15px;
 	}
-	.check-sec {
-	    padding: 2em 0 0;
+	.coupons-item p{
+	   font-size: 0.8em;
+	}
+	.cart-item {
+	    width: 30%;
+	    margin-right: 0em;
 	}
 	.banner-info h3 {
 	    font-size: 1em;

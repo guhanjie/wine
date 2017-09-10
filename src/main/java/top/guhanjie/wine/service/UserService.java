@@ -13,6 +13,7 @@ import com.alibaba.fastjson.JSON;
 
 import top.guhanjie.wine.mapper.PointDetailMapper;
 import top.guhanjie.wine.mapper.UserMapper;
+import top.guhanjie.wine.model.Order;
 import top.guhanjie.wine.model.PointDetail;
 import top.guhanjie.wine.model.User;
 import top.guhanjie.wine.util.TTLCache;
@@ -80,33 +81,38 @@ public class UserService {
     }
     
     @Transactional
-    public int addPoints(Integer userid, Integer points, Integer promoteeId) {
-		LOGGER.debug("add points[{}] to user[{}].", points, userid);
+    public int addPoints(Integer userid, Integer points, Integer promoteeid) {
+		LOGGER.debug("starting to add points[{}] to user[{}] for promoteeid[{}].", points, userid, promoteeid);
 		if(points != null && points == 0) {
 			return 0;
 		}
 		PointDetail pd = new PointDetail();
 		pd.setUserId(userid);
-		pd.setPromoteeId(promoteeId);
+		pd.setPromoteeId(promoteeid);
 		pd.setPoints(points);
 		pd.setType(PointDetail.TypeEnum.ADD.code());
 		pointDetailMapper.insertSelective(pd);
 		int res = userMapper.addPoints(userid, points);
 		if(0 == res) {
-			throw new RuntimeException("add user["+userid+"] points["+points+"] failed, transaction rollback....");
+			throw new RuntimeException("add points["+points+"] to user["+userid+"] failed, transaction rollback....");
 		}
+		LOGGER.info("success to consume points[{}] to user[{}] for promoteeid[{}].", points, userid, promoteeid);
 		return res;
     }
     
     @Transactional
-    public int consumePoints(Integer userid, Integer points, Integer orderId) {
-		LOGGER.debug("sub points[{}] to user[{}].", points, userid);
-		if(points == null || points == 0) {
-			return 0;
+    public int consumePoints(Integer userid, Integer points, Integer orderid) {
+		LOGGER.debug("starting to sub points[{}] to user[{}] in order[{}]...", points, userid, orderid);
+		if(userid == null || points == null || orderid == null) {
+			LOGGER.warn("can not consume point, params is null");
+		}
+		if(points == 0) {
+			LOGGER.info("points = 0, skip consume points");
+			return 1;
 		}
 		PointDetail pd = new PointDetail();
 		pd.setUserId(userid);
-		pd.setOrderId(orderId);
+		pd.setOrderId(orderid);
 		pd.setPoints(points);
 		pd.setType(PointDetail.TypeEnum.SUB.code());
 		pointDetailMapper.insertSelective(pd);
@@ -114,6 +120,31 @@ public class UserService {
 		if(0 == res) {
 			throw new RuntimeException("sub user["+userid+"] points["+points+"] failed, transaction rollback....");
 		}
+		LOGGER.info("success to consume points[{}] to user[{}] in order[{}]", points, userid, orderid);
+		return res;
+    }
+    
+    public int refundPoints(Integer userid, Integer points, Integer orderid) {
+    	LOGGER.info("starting to refund points[{}] to user[{}] in order[{}].", points, userid, orderid);
+		if(userid == null || points == null || orderid == null) {
+			LOGGER.warn("can not refund point, params is null");
+		}
+		if(points == 0) {
+			LOGGER.info("points = 0, skip refund points");
+			return 1;
+		}
+		PointDetail pd = new PointDetail();
+		pd.setUserId(userid);
+		pd.setOrderId(orderid);
+		pd.setPoints(points);
+		pd.setType(PointDetail.TypeEnum.ADD.code());
+		pd.setRemark("refund");
+		pointDetailMapper.insertSelective(pd);
+    	int res = userMapper.addPoints(userid, points);
+    	if(0 == res) {
+			throw new RuntimeException("refund points["+points+"] to user["+userid+"] failed, transaction rollback....");
+		}
+		LOGGER.info("success to refund points[{}] to user[{}] for orderid[{}].", points, userid, orderid);
 		return res;
     }
 }

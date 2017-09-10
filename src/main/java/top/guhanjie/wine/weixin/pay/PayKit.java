@@ -82,7 +82,7 @@ public class PayKit {
         //map.put("attach", "附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据");
         map.put("out_trade_no", order.getId().toString());                                  //商户订单号
         map.put("fee_type", "CNY");                                                                 //货币类型
-        int money = order.getAmount().intValue()*100;                   
+        int money = order.getTotalAmount().intValue()*100;                   
 //        if(order.getTip() != null) {
 //            money += order.getTip().intValue()*100;
 //        }
@@ -251,8 +251,8 @@ public class PayKit {
                     result.put("err_msg", "订单支付不成功："+trade_state_desc);
                     return;
                 }
-                if(order.getAmount().intValue() != Integer.valueOf(total_fee)/100) {    //支付金额与订单金额不一致
-                    LOGGER.warn("trade exception, amount not matched: topay=[{}], payed=[{}]", order.getAmount(), total_fee);
+                if(order.getTotalAmount().intValue() != Integer.valueOf(total_fee)/100) {    //支付金额与订单金额不一致
+                    LOGGER.warn("trade exception, amount not matched: topay=[{}], payed=[{}]", order.getTotalAmount(), total_fee);
 //                    result.put("result", "FAIL");
 //                    result.put("err_msg", "订单支付金额有误：topay="+order.getAmount()+", payed="+ total_fee);
 //                    return;

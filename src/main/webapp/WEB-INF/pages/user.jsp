@@ -68,7 +68,7 @@
                 <tr>
                   <th scope="row">${status.index+1}</th>
                   <td>${p.name}</td>
-                  <td><fmt:formatDate type="both" dateStyle="long" timeStyle="long" value="${p.updateTime}" /></td>
+                  <td><fmt:formatDate type="both" dateStyle="long" timeStyle="long" value="${p.createTime}" /></td>
                 </tr>
               </c:forEach>
             </tbody>

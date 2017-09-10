@@ -38,7 +38,7 @@ import top.guhanjie.wine.weixin.msg.MessageKit;
 /**
  * Class Name:		OrderService<br/>
  * Description:		[description]
- * @time				2016年9月1日 下午1:46:59
+ * @time			2016年9月1日 下午1:46:59
  * @author			GUHANJIE
  * @version			1.0.0 
  * @since 			JDK 1.7 
@@ -125,10 +125,11 @@ public class OrderService {
 			purchases.append(item.getName()+"  "+count+"\n");
 			total += count * item.getVipPrice().doubleValue();
 		}
-		total = total + order.getShips().doubleValue() - order.getCoupons();
-		double amount = order.getAmount().doubleValue();
-		//校验金额（计算金额与前端展示金额误差在1.0以内）
-		if(Math.abs(total-amount) > 1.0) {
+		double totalAmount = order.getTotalAmount().doubleValue();
+		double pay = total + order.getShips().doubleValue() - order.getCoupons();
+		double payAmount = order.getPayAmount().doubleValue();
+		//校验订单金额（计算金额与前端展示金额误差在1.0以内）
+		if(Math.abs(total-totalAmount) > 0.1 || Math.abs(pay-payAmount) > 0.1) {
 		    throw WebExceptionFactory.exception(WebExceptionEnum.VALIDATE_ERROR, "订单金额有误");
 		}
 		
@@ -142,7 +143,7 @@ public class OrderService {
 		// 4. 发送微信消息通知客服
 		StringBuilder sb = new StringBuilder("主人，您有新的订单：\n");
 		sb.append("订单ID：").append(order.getId()).append("\n");
-		sb.append("支付金额：").append(order.getAmount()).append("元\n");
+		sb.append("支付金额：").append(order.getTotalAmount()).append("元\n");
 		sb.append("联系人：").append(order.getContactor()).append("\n");
 		sb.append("联系电话：").append(order.getPhone()).append("\n");
 		sb.append("购买商品：").append(purchases);
@@ -254,8 +255,8 @@ public class OrderService {
             order.setPayStatus(Order.PayStatusEnum.SUCCESS.code());
             order.setPayType(PayTypeEnum.WEIXIN.code());
             order.setPayTime(DateTimeUtil.getDate(time_end, "yyyyMMddHHmmss"));
-            if(order.getAmount().intValue() != Integer.valueOf(total_fee)/100) {
-            	LOGGER.warn("Pay amount not matched: topay=[{}], actual payed=[{}]", order.getAmount(), total_fee);
+            if(order.getTotalAmount().intValue() != Integer.valueOf(total_fee)/100) {
+            	LOGGER.warn("Pay amount not matched: topay=[{}], actual payed=[{}]", order.getTotalAmount(), total_fee);
 //            	order.setPayStatus(PayStatusEnum.PAYERROR.code());
             }
         }
@@ -263,6 +264,9 @@ public class OrderService {
         LOGGER.info("===updating order[{}] status:[{}]-->[{}], pay status:[{}]-->[{}].", orderid, oldOrderStatus, order.getStatus(), oldPayStatus, order.getPayStatus());
         if(1 == orderMapper.updateByPayStatus(order, oldOrderStatus, oldPayStatus)) {
             LOGGER.info("Success to update order[{}] pay! status:[{}]-->[{}], pay status:[{}]-->[{}].", orderid, oldOrderStatus, order.getStatus(), oldPayStatus, order.getPayStatus());
+            
+            // 推荐人的积分提成
+            assignPromotePoints(order);
             
     		// 支付成功，发送微信消息通知客服
     		StringBuffer sb = new StringBuffer("主人，您有一笔订单已完成支付：\n");
@@ -287,16 +291,18 @@ public class OrderService {
         LOGGER.info("cancelling order[{}]...", order.getId());
 		long startTime = order.getCreateTime().getTime();
 		long now = System.currentTimeMillis();
-		//只有订单状态为新建，且距离服务时间4小时之前，才可取消订单
-		if(order.getStatus()==Order.StatusEnum.NEW.code()) {	// && (startTime-now) > 4*60*60*1000
+		//只有订单状态为新建，才可取消订单
+		if(order.getStatus()==Order.StatusEnum.NEW.code()) {
 			order.setStatus(Order.StatusEnum.CANCEL.code());
 			order.setUpdateTime(new Date());
 			if(1 == orderMapper.updateByStatus(order, Order.StatusEnum.NEW.code())) {
+				//撤销用户因此单扣减的积分
+			    userService.refundPoints(order.getUserId(), order.getCoupons(), order.getId());
 			    LOGGER.info("success to cancel order[{}]", order.getId());
 			    // 订单被取消，发送微信消息通知客服
 	            StringBuffer sb = new StringBuffer("主人，您有一笔订单已取消：\n");
 	    		sb.append("订单ID：").append(order.getId()).append("\n");
-	    		sb.append("订单金额：").append(order.getAmount()).append("元\n");
+	    		sb.append("订单金额：").append(order.getTotalAmount()).append("元\n");
 	    		sb.append("联系人：").append(order.getContactor()).append("\n");
 	    		sb.append("联系电话：").append(order.getPhone()).append("\n");
 	    		sb.append("创建时间：").append(DateTimeUtil.formatDate(order.getCreateTime())).append("\n");
@@ -328,6 +334,8 @@ public class OrderService {
         order.setPayType(PayTypeEnum.CASH.code());
         order.setPayTime(new Date());
         if(1 == orderMapper.updateByPayStatus(order, oldOrderStatus, oldPayStatus)) {
+        	// 推荐人的积分提成
+            assignPromotePoints(order);
             return true;
         }
         throw WebExceptionFactory.exception(WebExceptionEnum.PAY_ERROR, "当前订单支付出错");
@@ -346,5 +354,41 @@ public class OrderService {
 			itemList.add(item);
 		}
     	order.setItemList(itemList);
+    }
+    
+    /**
+     * 分配推广积分<br/>
+     * 推广有两种模式：1：代理商推广用户购买，2：代理商平推代理商
+     * 模式1：推广用户完成订单支付后，给推广人相应订单的积分（提成50%），每单都算
+     * 模式2：代理商平推某个用户成为代理商，给推广人购买成为代理商订单总额的一半积分，仅一次有效
+     */
+    private void assignPromotePoints(Order order) {
+    	if(order == null) {
+    		LOGGER.error("can not assign promote points, order is null");
+    		return;
+    	}
+    	int orderid = order.getId();
+    	int amount = order.getTotalAmount()==null ? 0 :order.getTotalAmount().intValue();
+        int userid =  order.getUserId();
+        User user = userService.getUserById(userid);
+        if(user == null) {
+        	LOGGER.error("order[{}] malformed, user[{}] does not exist", orderid, userid);
+        	return;
+        }
+        User promoter = userService.getUserById(user.getSourceId());
+        LOGGER.info("starting to assign promote points for order[{}]...", orderid);
+        if(promoter == null) {
+        	LOGGER.info("user[{}] has no promoter, skip assign promote process", userid);
+        	return;
+        }
+        else {
+        	int promoterid = promoter.getId();
+        	int points = amount / 2;
+        	LOGGER.info("===[Promotion Assginment]===");
+        	LOGGER.info("order[{}] amount=[{}], promote points=[{}] to user[{}]", orderid, amount, points, promoterid);
+        	userService.addPoints(promoterid, points, userid);
+        	LOGGER.info("success to assign promote points[{}] to user[{}] for order[{}]", points, promoterid, orderid);
+        }
+        
     }
 }

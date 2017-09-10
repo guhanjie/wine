@@ -30,11 +30,16 @@
 //	});
 //    });
     
+    $("body").on('click', '.simpleCart_increment,.simpleCart_decrement', function(e) {
+	$('input.points').val('');
+    });
+    
     //use coupon
     $("body").on('click', '.cpns.btn-sm', function(e) {
 	var cpns = parseInt($(this).siblings('input.points').val());
 	var $cpn = $(this).siblings('p').find('strong');
 	var maxcpns = parseInt($cpn.text());
+	var total = simpleCart.total();
 	if(simpleCart.total() == 0) {
 	    $.weui.alert('购物车内空空如也，请先加入商品');
 	    return;
@@ -51,13 +56,15 @@
 	    $.weui.alert('使用积分不能超过最大积分');
 	    return;
 	}
+	if(cpns>total) {
+	    $.weui.alert('使用积分不能超过订单总额');
+	    return;
+	}
 	simpleCart["coupons"] = cpns;
 	//$cpn.text(maxcpns-cpns);
 	$('.coupons-discount').find('span.delcpns').text('-￥'+cpns);
-	var all = $('.simpleCart_all').text();
-	var total = parseFloat(all.replace("¥","").replace(",",""))
-	total = '¥'+(total - cpns);
-	$('.simpleCart_all').text(total);
+	var all = simpleCart.all();
+	$('.simpleCart_all').text('¥'+(all - cpns));
 	$('.coupons-discount').fadeIn('slow', function(e) {
 	});
     });
@@ -67,10 +74,16 @@
 	if($(this).is('.disabled')) {
 	    return;
 	}
+	if(simpleCart.total() == 0) {
+	    $.weui.alert('购物车内空空如也，请先加入商品');
+	    return;
+	}
 	//1.收集数据
 	var order = {};
+	var total = $('.simpleCart_total').text();
+	order["totalAmount"] = !!total ? parseFloat(total.replace("¥","").replace(",","")) : 0;
 	var all = $('.simpleCart_all').text();
-	order["amount"] = !!all ? parseFloat(all.replace("¥","").replace(",","")) : 0;
+	order["payAmount"] = !!all ? parseFloat(all.replace("¥","").replace(",","")) : 0;
 	order["coupons"] = simpleCart["coupons"] || 0;
 	var items = "";	 //itemid:quantity,[itemid:quantity]
 	simpleCart.each(function (item) {

@@ -4,7 +4,7 @@
   <div class="header-bottom">
     <div class="logo">
       <h1>
-        <a href="index.html">如果茶酒商城</a>
+        <a href="index.html">如果商城</a>
       </h1>
     </div>
     <!-- top nav bar -->

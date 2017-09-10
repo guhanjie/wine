@@ -19,7 +19,9 @@ public class Order {
      *
      * @mbggenerated Sat Aug 19 18:06:45 CST 2017
      */
-    private BigDecimal amount;
+    private BigDecimal totalAmount;
+    
+    private BigDecimal payAmount;
     
     private Integer coupons;
 
@@ -177,8 +179,8 @@ public class Order {
      *
      * @mbggenerated Sat Aug 19 18:06:45 CST 2017
      */
-    public BigDecimal getAmount() {
-        return amount;
+    public BigDecimal getTotalAmount() {
+        return totalAmount;
     }
 
     /**
@@ -189,8 +191,16 @@ public class Order {
      *
      * @mbggenerated Sat Aug 19 18:06:45 CST 2017
      */
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
+    public void setTotalAmount(BigDecimal amount) {
+        this.totalAmount = amount;
+    }
+    
+    public BigDecimal getPayAmount() {
+        return payAmount;
+    }
+    
+    public void setPayAmount(BigDecimal amount) {
+        this.payAmount = amount;
     }
 
     public Integer getCoupons() {

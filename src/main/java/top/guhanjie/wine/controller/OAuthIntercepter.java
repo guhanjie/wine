@@ -29,16 +29,6 @@ public class OAuthIntercepter implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();
-    	
-    	//调试用
-//	    User u = new User();
-//	    u.setId(1);
-//	    u.setName("顾汉杰");
-//	    u.setPhone("13052333613");
-//	    u.setAddress("如东县环镇乡");
-//	    u.setPoints(2000);
-//	    request.getSession().setAttribute(AppConstants.SESSION_KEY_USER, u);
-	    //------------------------------------------------------------------
         
         Object user = session.getAttribute(AppConstants.SESSION_KEY_USER);
         if(user != null && user instanceof User) {

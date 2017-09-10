@@ -3,6 +3,7 @@ package top.guhanjie.wine.mapper;
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +39,7 @@ public class TestOrderMapper {
 		logger.debug("Create one record to table[{}]...", tableName);
 		Order model = new Order();
 		model.setAddress("shanghai");
-		model.setAmount(new BigDecimal(888));
+		model.setTotalAmount(new BigDecimal(888));
 		long insertCount = mapper.insertSelective(model);
 		assertEquals(insertCount, 1L);
 		//Retrieve
@@ -58,4 +59,27 @@ public class TestOrderMapper {
 		assertEquals(deleteCount, 1L);
 	}
 	
+	@Test
+	public void testselectByPrimaryKey() {
+		Order orders = mapper.selectByPrimaryKey(3);
+		System.out.println(JSON.toJSONString(orders, true));
+	}
+	
+	@Test
+	public void testselectByUserOpenId() {
+		List<Order> orders = mapper.selectByUserOpenId("123");
+		System.out.println(JSON.toJSONString(orders, true));
+	}
+	
+	@Test
+	public void testselectByUserPhone() {
+		List<Order> orders = mapper.selectByUserPhone("13052333613");
+		System.out.println(JSON.toJSONString(orders, true));
+	}
+	
+	@Test
+	public void testselectByUserId() {
+		List<Order> orders = mapper.selectByUserId(1);
+		System.out.println(JSON.toJSONString(orders, true));
+	}
 }

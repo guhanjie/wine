@@ -239,7 +239,6 @@ html[xmlns] .flexslider .slides {
 }
 /* ====================================================================================================================
  * RESPONSIVE
-
  * ====================================================================================================================*/
 @media(max-width:1024px){
  li.clone {
@@ -270,7 +269,7 @@ html[xmlns] .flexslider .slides {
 
 @media(max-width:640px){
 	li.clone {
-		width: 254px!important;
+		width: 270px!important;
 	}
 	.imagezoom-view{
 		display:none;
@@ -280,15 +279,7 @@ html[xmlns] .flexslider .slides {
 	li.clone {
 		width: 267px!important;
 	}
-.imagezoom-view{
-		display:none;
-	}
-}
-@media(max-width:320px) {
-	li.clone {
-		width: 239px!important;
-	}
-	.imagezoom-view{
+    .imagezoom-view{
 		display:none;
 	}
 }

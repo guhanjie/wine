@@ -298,6 +298,9 @@ public class OrderController extends BaseController {
 		return success(payParams);
 	}
 	
+	/**
+	 * 用户支付完成后的回调地址
+	 */
 	@RequestMapping(value="paycallback")
 	public void paycallback(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		LOGGER.debug("getting callback from weixin pay...");

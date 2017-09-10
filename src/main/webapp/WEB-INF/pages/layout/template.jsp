@@ -32,7 +32,7 @@
         <!--//theme style-->
         <script type="text/javascript">
           //Globals
-          ships = 10;
+          ships = 6;
         </script>
         <script src="${resourcePath}/js/jquery-1.11.3.js"></script>
         <script type="application/x-javascript">
@@ -54,25 +54,25 @@
                 { view: "increment" , label: false , text: "+" } ,
                 { attr: "total" , label: "SubTotal", view: 'currency' } , */
                 { view: function(item, column){
-                    return  '<div class="cart-header" data-id="'+item.get("name")+'">'+
+                    return  '<div class="cart-header" data-id="'+item.name()+'">'+
                               '<div class="cart-sec simpleCart_shelfItem">'+
                                 '<div class="cart-item cyc">'+
                                   '<img src="'+item.get("img")+'" class="img-responsive" alt="" />'+
                                 '</div>'+
                                 '<div class="cart-item-info">'+
                                   '<h3>'+
-                                    '<a href="single.html">'+item.get("name")+'</a>'+
+                                    '<a href="../item/'+item.itemid()+'">'+item.name()+'</a>'+
                                     '<span> </span>'+
                                   '</h3>'+
                                   '<ul class="qty">'+
                                     '<li>'+
-                                      '<p>单价 : <span>'+item.get("price")+'</span>元</p>'+
+                                      '<p>单价 : <span>'+item.price()+'</span>元</p>'+
                                     '</li>'+
                                     '<li>'+
                                       '<div class="item-decrement"><a href="javascript:;" class="simpleCart_decrement">-</a></div>'+
                                     '</li>'+
                                     '<li>'+
-                                      '<p>数量 : <span>'+item.get("quantity")+'</span></p>'+
+                                      '<p>数量 : <span>'+item.quantity()+'</span></p>'+
                                     '</li>'+
                                     '<li>'+
                                       '<div class="item-increment"><a href="javascript:;" class="simpleCart_increment">+</a></div>'+
