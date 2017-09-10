@@ -1,0 +1,25 @@
+#用户管理: 获取用户基本信息接口 /user/info
+
+GET url:
+https://api.weixin.qq.com/cgi-bin/user/info?access_token=w_ivgUn5wK5mr4pnUxohWu8Qvl-uwJYieYFjLjqs9LvIRhv1GLA_o1inVtZkjeNdLW-5Jl1akudwrUXyVmf65Yhvmog7Qt5FIqN9kMvOgbec-GsJT8KxUzKxYXytd2ERSKKfAAAEWW&openid=ouJju0Qg-Ez2EAnFEGKtcsZ_6mts
+
+HTTP response:
+Connection: close
+Date: Sat, 09 Sep 2017 16:48:36 GMT
+Content-Type: application/json; encoding=utf-8
+Content-Length: 380
+{
+    "subscribe": 1, 
+    "openid": "ouJju0Qg-Ez2EAnFEGKtcsZ_6mts", 
+    "nickname": "空气+", 
+    "sex": 1, 
+    "language": "zh_CN", 
+    "city": "浦东新区", 
+    "province": "上海", 
+    "country": "中国", 
+    "headimgurl": "http://wx.qlogo.cn/mmopen/JLL4AricSFkazsQ4fnZGcXyFOWAGDntg15fR0vm6nxAwdsfAHicnuCKk9EJ788CXgPTDJgdvTDXvQGopocHWZiaLckVK2hcHTAo/0", 
+    "subscribe_time": 1504548854, 
+    "remark": "", 
+    "groupid": 0, 
+    "tagid_list": [ ]
+}

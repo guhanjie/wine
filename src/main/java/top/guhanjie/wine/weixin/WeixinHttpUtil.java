@@ -85,13 +85,13 @@ public class WeixinHttpUtil {
             if(sc>=200&&sc<300) {
                 String respEntity = EntityUtils.toString(resp.getEntity(), Charset.forName("UTF-8"));
                 LOGGER.debug("success to get response:[{}]", respEntity);
-                if(resp.getEntity().getContentType().getValue().startsWith("application/json")) {
-                    ErrorEntity err = JSONObject.parseObject(respEntity, ErrorEntity.class);
-                    if(!"0".equals(err.getErrcode()) || !"ok".equals(err.getErrmsg())) {
-                        LOGGER.error("http[{}] response is error, errcode:[{}], errmsg:[{}].", url, err.getErrcode(), err.getErrmsg());
-                        return;
-                    }
-                }
+//                if(resp.getEntity().getContentType().getValue().startsWith("application/json")) {
+//                    ErrorEntity err = JSONObject.parseObject(respEntity, ErrorEntity.class);
+//                    if(!"0".equals(err.getErrcode()) || !"ok".equals(err.getErrmsg())) {
+//                        LOGGER.error("http[{}] response is error, errcode:[{}], errmsg:[{}].", url, err.getErrcode(), err.getErrmsg());
+//                        return;
+//                    }
+//                }
                 c.process(respEntity);
                 LOGGER.debug("success to finish http post request.");
             }

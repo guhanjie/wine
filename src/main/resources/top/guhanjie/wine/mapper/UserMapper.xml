@@ -23,6 +23,8 @@
     <result column="country" property="country" jdbcType="VARCHAR" />
     <result column="source_id" property="sourceId" jdbcType="INTEGER" />
     <result column="subscribe_time" property="subscribeTime" jdbcType="TIMESTAMP" />
+    <result column="qrcode_ticket" property="qrcodeTicket" jdbcType="VARCHAR" />
+    <result column="qrcode_url" property="qrcodeUrl" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -33,7 +35,7 @@
       This element was generated on Tue Jun 06 00:54:08 CST 2017.
     -->
     id, name, phone, type, points, open_id, unionid, nickname, sex, language, address, 
-    city, province, country, source_id, subscribe_time, create_time, update_time
+    city, province, country, source_id, subscribe_time, qrcode_ticket, qrcode_url, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     <!--
@@ -68,13 +70,14 @@
       points, open_id, unionid, 
       nickname, sex, language, 
       address, city, province, 
-      country, source_id, subscribe_time, 
+      country, source_id, subscribe_time, qrcode_ticket, qrcode_url, 
       create_time, update_time)
     values (#{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{type,jdbcType=SMALLINT}, 
       #{points,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{unionid,jdbcType=VARCHAR}, 
       #{nickname,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, #{language,jdbcType=VARCHAR}, 
       #{address,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
       #{country,jdbcType=VARCHAR}, #{sourceId,jdbcType=INTEGER}, #{subscribeTime,jdbcType=TIMESTAMP}, 
+      #{qrcodeTicket,jdbcType=VARCHAR}, #{qrcodeUrl,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="top.guhanjie.wine.model.User" >
@@ -133,6 +136,12 @@
       <if test="subscribeTime != null" >
         subscribe_time,
       </if>
+      <if test="qrcodeTicket != null" >
+        qrcode_ticket,
+      </if>
+      <if test="qrcodeUrl != null" >
+        qrcode_url,
+      </if>
       <if test="createTime != null" >
         create_time,
       </if>
@@ -185,6 +194,12 @@
       </if>
       <if test="subscribeTime != null" >
         #{subscribeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="qrcodeTicket != null" >
+        #{qrcodeTicket,jdbcType=VARCHAR},
+      </if>
+      <if test="qrcodeUrl != null" >
+        #{qrcodeUrl,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -247,6 +262,12 @@
       <if test="subscribeTime != null" >
         subscribe_time = #{subscribeTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="qrcodeTicket != null" >
+        qrcode_ticket = #{qrcodeTicket,jdbcType=VARCHAR},
+      </if>
+      <if test="qrcodeUrl != null" >
+        qrcode_url = #{qrcodeUrl,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -278,6 +299,8 @@
       country = #{country,jdbcType=VARCHAR},
       source_id = #{sourceId,jdbcType=INTEGER},
       subscribe_time = #{subscribeTime,jdbcType=TIMESTAMP},
+      qrcode_ticket = #{qrcodeTicket,jdbcType=VARCHAR},
+      qrcode_url = #{qrcodeUrl,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

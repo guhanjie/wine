@@ -42,6 +42,10 @@ public class AccessTokenKit {
         return token;
     }
 
+    /**
+     * 定时刷新本微信公众号的access_token（access_token有效期是2小时，我们每1.5小时定时刷新）
+     * access_token是公众号的全局唯一接口调用凭据，公众号调用各接口时都需使用access_token。
+     */
     @Scheduled(fixedRate=6000000)
     public synchronized void refreshToken() {
         LOGGER.info("Starting to refresh access token...");

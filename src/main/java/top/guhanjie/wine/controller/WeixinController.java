@@ -57,6 +57,9 @@ public class WeixinController extends BaseController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 启用公众号服务初始化，验证微信服务器
+     */
     @RequestMapping(value="",method=RequestMethod.GET)
     public void init(HttpServletRequest req,HttpServletResponse resp) throws IOException {
     	String echostr = req.getParameter("echostr");
@@ -67,20 +70,14 @@ public class WeixinController extends BaseController {
         }
     }
     
+    /**
+     * 接受消息-被动回复
+     */
     @RequestMapping(value="",method=RequestMethod.POST)
     public void receiveMsg(HttpServletRequest req,HttpServletResponse resp) throws IOException {
         if(checkSignature(req)) {
             Map<String,String> msgMap = MessageKit.reqMsg2Map(req);        
             LOGGER.debug("Weixin msg request="+msgMap);
-//            //建立用户会话
-//            String openid = msgMap.get("FromUserName");
-//            if(StringUtils.isNotBlank(openid)) {
-//                User user = userService.getUserByOpenId(openid);
-//                if(user != null) {
-//                    setSessionUser(user);
-//                    req.getSession().setAttribute(AppConstants.SESSION_KEY_OPEN_ID, openid);
-//                }
-//            }
             String respCon = MessageKit.handlerMsg(msgMap);
             resp.setContentType("application/xml;charset=UTF-8");
             resp.setCharacterEncoding("UTF-8");
@@ -90,6 +87,9 @@ public class WeixinController extends BaseController {
         }
     }    
 
+    /**
+     * 用户授权回调页面 微信服务器前置一次性安全性验证
+     */
     @RequestMapping(value="oauth2/MP_verify_QYJCPcnAIwjF06ba.txt",method=RequestMethod.GET)
     public void oauth2verify(HttpServletRequest req,HttpServletResponse resp) throws IOException {
         resp.getWriter().println("QYJCPcnAIwjF06ba");
@@ -97,6 +97,10 @@ public class WeixinController extends BaseController {
         return;
     }
     
+    /**
+     * 用户网页授权回调页面，获取用户基本信息<br/>
+     * 参见: https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140842
+     */
     @RequestMapping(value="oauth2",method=RequestMethod.GET)
     public void oauth2(HttpServletRequest req,HttpServletResponse resp) throws IOException {
     	LOGGER.debug("entering oauth2 return url for weixin...");
@@ -125,8 +129,6 @@ public class WeixinController extends BaseController {
                     final String token = at.getAccess_token();
                     final String openid = at.getOpenid();
                     LOGGER.info("User authentication successful, access token:[{}], openid:[{}].", token, openid);
-                	session.setAttribute(AppConstants.SESSION_KEY_ACCESS_TOKEN, token);
-                	session.setAttribute(AppConstants.SESSION_KEY_OPEN_ID, openid);
                 	User user = userService.getUserByOpenId(openid);
                 	if(user == null) {
                 	    user = new User();
@@ -145,6 +147,9 @@ public class WeixinController extends BaseController {
                         }
                 		userService.addUser(user);
                 	}
+                	//将用户身份信息添加到session会话中
+                	session.setAttribute(AppConstants.SESSION_KEY_ACCESS_TOKEN, token);
+                	session.setAttribute(AppConstants.SESSION_KEY_OPEN_ID, openid);
             		session.setAttribute(AppConstants.SESSION_KEY_USER, user);
                 	try {
 	                	String returnURL = (String)session.getAttribute(AppConstants.SESSION_KEY_RETURN_URL);
@@ -167,11 +172,6 @@ public class WeixinController extends BaseController {
             }
         });
     }    
-    
-    @RequestMapping(value="testpay",method=RequestMethod.GET)
-    public void pay() {
-    	
-    }
     
     private boolean checkSignature(HttpServletRequest req) {
 //      signature   微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。

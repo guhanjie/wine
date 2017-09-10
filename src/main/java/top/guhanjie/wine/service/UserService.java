@@ -101,7 +101,7 @@ public class UserService {
     @Transactional
     public int consumePoints(Integer userid, Integer points, Integer orderId) {
 		LOGGER.debug("sub points[{}] to user[{}].", points, userid);
-		if(points != null && points == 0) {
+		if(points == null || points == 0) {
 			return 0;
 		}
 		PointDetail pd = new PointDetail();

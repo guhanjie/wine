@@ -47,6 +47,7 @@ public class WeixinConstants {
     public final static String EVENT_LOCATION = "LOCATION";						//上报地理位置事件
     public final static String EVENT_CLICK = "CLICK";										//点击菜单拉取消息时的事件推送
     public final static String EVENT_VIEW = "VIEW";										//点击菜单跳转链接时的事件推送
+    public final static String EVENTKEY_PROMOTE_QRCODE = "PROMOTE_QRCODE";				//点击事件key值，获取推广二维码
     
     public final static String API_ACCESS_TOKEN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
     public final static String API_MENU_ADD = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
@@ -67,5 +68,8 @@ public class WeixinConstants {
     public final static String OAUTH2_ACCESS_TOKEN="https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
     public final static String OAUTH2_REFRESH_TOKEN="https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=APPID&grant_type=refresh_token&refresh_token=REFRESH_TOKEN";
     public final static String OAUTH2_GET_USER_INFO="https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
+
+    public final static String API_QRCODE_CREATE="https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=ACCESS_TOKEN";
+    public final static String API_QRCODE_SHOW="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=TICKET";
     
 }

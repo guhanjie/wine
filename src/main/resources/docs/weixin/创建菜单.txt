@@ -1,0 +1,35 @@
+#自定义菜单: 自定义菜单创建接口 /menu/create
+
+POST url:
+https://api.weixin.qq.com/cgi-bin/menu/create?access_token=w_ivgUn5wK5mr4pnUxohWu8Qvl-uwJYieYFjLjqs9LvIRhv1GLA_o1inVtZkjeNdLW-5Jl1akudwrUXyVmf65Yhvmog7Qt5FIqN9kMvOgbec-GsJT8KxUzKxYXytd2ERSKKfAAAEWW
+
+body:
+{
+  "button":[
+    {   
+      "type":"click",
+      "name":"推广会员",
+      "key":"PROMOTE_QRCODE"
+    },
+    { 
+      "type":"view",
+      "name":"微信商城",
+      "url":"http://www.guhanjie.top/wine/index"
+    }, 
+    { 
+      "name": "个人中心",
+      "sub_button": [
+        {
+          "type":"view",
+          "name":"个人信息",
+          "url":"http://www.guhanjie.top/wine/user"
+        },
+        {
+          "type":"view",
+          "name":"历史订单",
+          "url":"http://www.guhanjie.top/wine/order/list"
+        }
+      ]
+    }
+  ]
+}
