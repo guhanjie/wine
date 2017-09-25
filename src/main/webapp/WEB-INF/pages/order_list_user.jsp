@@ -48,7 +48,7 @@
                 订单ID： <span class="text-blue" id="start_time"> ${order.id}</span>
               </p>
               <p>
-                订单金额：<span id="amount" class="text-red">${order.amount} 元</span>
+                订单金额：<span id="amount" class="text-red">${order.payAmount} 元</span>
               </p>
               <div class="order-detail">
                 <p>

@@ -84,6 +84,19 @@
                selectByExampleQueryId="false">
                <generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table> -->
+		<table tableName="vip_item" domainObjectName="VipItem" 
+               enableInsert="true"
+               enableSelectByPrimaryKey="true"
+               enableSelectByExample="false"
+               enableUpdateByPrimaryKey="true"
+               enableDeleteByPrimaryKey="true"
+               enableDeleteByExample="false"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               selectByPrimaryKeyQueryId="false"
+               selectByExampleQueryId="false">
+               <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
 		<!-- <table tableName="order" domainObjectName="Order" 
 			   enableInsert="true"
                enableSelectByPrimaryKey="true"

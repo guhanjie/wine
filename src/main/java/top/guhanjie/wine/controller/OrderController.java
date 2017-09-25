@@ -165,8 +165,9 @@ public class OrderController extends BaseController {
 		return success(order);
 	}
 
+	@ResponseBody
     @RequestMapping(value="list_admin",method=RequestMethod.GET)
-    public String listOrdersAdmin(HttpServletRequest req, HttpServletResponse resp, Model model, 
+    public Map<String, Object> listOrdersAdmin(HttpServletRequest req, HttpServletResponse resp, Model model, 
                     @RequestParam(required=false) String beginDate, //yyyy-mm-dd
                     @RequestParam(required=false) String endDate,    //yyyy-mm-dd
                     @PageableDefault(page=0, size=5) Pageable pageable) {        
@@ -180,12 +181,13 @@ public class OrderController extends BaseController {
             endTime = DateTimeUtil.getDate(endDate + " 23:59:59", "yyyy-MM-dd HH:mm:ss");
         }
         PageImpl<Order> page = orderService.listOrders(beginTime, endTime, pageable);
-
-        model.addAttribute("orders", page.getContent());
-        model.addAttribute("current", page.getNumber());
-        model.addAttribute("pages", page.getTotalPages());
-        model.addAttribute("now", new Date());
-        return "order_list_admin";
+        
+        Map<String, Object> rt = success();
+        rt.put("orders", page.getContent());
+        rt.put("current", page.getNumber());
+        rt.put("pages", page.getTotalPages());
+        rt.put("now", new Date());
+        return rt;
     }
 	
 	@RequestMapping(value="list",method=RequestMethod.GET)

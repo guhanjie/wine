@@ -59,5 +59,6 @@ public interface ItemMapper {
     Item selectById(int id);
     List<Item> selectByCategory(int category);
     int addSales(@Param("itemid")Integer itemid, @Param("sales")Integer sales);
+    List<Item> selectAll();
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }

@@ -33,9 +33,10 @@
 	    			p:prefix="/WEB-INF/pages/"  
 	    			p:suffix=".jsp" /> -->
     
-	<!-- <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" 
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" 
 					p:defaultEncoding="UTF-8" 
-					p:maxUploadSize="5400000" /> -->
+					p:maxUploadSize="5400000"
+					p:uploadTempDir="upload/temp" />
 													
 	<bean id="localResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"
 					p:cookieName="clientLanguage"

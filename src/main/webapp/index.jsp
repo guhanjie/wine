@@ -8,9 +8,9 @@
     <title>Weixin-Boot</title>
 </head>
 <body>
-	<h1>Weixin-Boot</h1>
-	<p>This is a web application framework for weixin.</p>
-	<p>enjoy it, :)</p>
-	<p>Any question, please contact with me, mail: <b>guhanjiehao@163.com</b>.</p>
+    <h1>Weixin-Boot</h1>
+    <p>This is a web application framework for weixin.</p>
+    <p>enjoy it, :)</p>
+    <p>Any question, please contact with me, mail: <b>guhanjiehao@163.com</b>.</p>
 </body>
 </html>

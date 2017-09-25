@@ -56,6 +56,7 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
     //------------------------- custom add -----------------------------
+    User selectLikeName(String name);
     User selectByOpenId(String openid);
     
     User selectByPhone(String phone);

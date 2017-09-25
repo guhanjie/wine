@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSON;
+
 import top.guhanjie.wine.mapper.ItemMapper;
 import top.guhanjie.wine.model.Item;
 import top.guhanjie.wine.util.TTLCache;
@@ -38,7 +40,29 @@ public class ItemService {
     @Autowired
     private ItemMapper itemMapper;
     
-    //白酒
+    public void addItem(Item item) {
+		LOGGER.info("Add a new item[{}]...", JSON.toJSONString(item, true));
+		itemMapper.insertSelective(item);
+		ITEM_CACHE.put(item.getId(), item);
+		GROUPED_ITEMS_CACHE.clear();  //disable cache to update info
+	}
+
+    public void updateItem(Item item) {
+		LOGGER.info("Update item[{}]...", JSON.toJSONString(item, true));
+		itemMapper.updateByPrimaryKeySelective(item);
+		ITEM_CACHE.put(item.getId(), item);
+		GROUPED_ITEMS_CACHE.clear();  //disable cache to update info
+	}
+    
+    public void deleteItem(Item item) {
+    	LOGGER.info("Delete item[{}]...", JSON.toJSONString(item, true));
+    	//item.setStatus(3); //商品删除状态
+    	itemMapper.deleteByPrimaryKey(item.getId());
+    	ITEM_CACHE.remove(item.getId());
+    	GROUPED_ITEMS_CACHE.clear();  //disable cache to update info
+    }
+
+	//白酒
     public List<Item> listWhiteWine() {
         List<Item> items = GROUPED_ITEMS_CACHE.get(CATEGORY_WRITE);
         if(items == null) {
@@ -71,10 +95,15 @@ public class ItemService {
         return items;
     }
     
+    public List<Item> listAllItems() {
+    	List<Item> items = itemMapper.selectAll();
+        return items;
+    }
+    
     public Item getItem(Integer itemId) {
         Item item = ITEM_CACHE.get(itemId);
         if(item == null) {
-            LOGGER.info("Item not hit cache, updating...");
+            LOGGER.info("Item cache not hit, updating...");
             item = itemMapper.selectById(itemId);
             ITEM_CACHE.put(itemId, item);
         }

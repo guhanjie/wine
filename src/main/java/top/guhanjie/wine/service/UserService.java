@@ -51,6 +51,23 @@ public class UserService {
         return userMapper.selectByPhone(phone);
     }
 	
+   /**
+    * 查找用户（按id、名字、手机号码）
+    */
+   public User findUser(String str) {
+	   User user = null;
+	   if(StringUtils.isNumeric(str)) {
+		   user = userMapper.selectByPrimaryKey(Integer.parseInt(str));
+		   if(user == null) {
+			   user = userMapper.selectByPhone(str);
+		   }
+	   }
+	   if(user == null) {
+		   user = userMapper.selectLikeName("%"+str+"%");
+	   }
+	   return user;
+   }
+   
 	public int addUser(User user) {
 		LOGGER.debug("add user[{}]...", JSON.toJSONString(user));
 	    if(user.getOpenId() != null) {

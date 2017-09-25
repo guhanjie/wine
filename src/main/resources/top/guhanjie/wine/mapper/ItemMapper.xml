@@ -263,5 +263,12 @@
     set sales = sales + #{sales}
     where id = #{itemid}
   </update>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from item 
+    where status = 1 or status = 2 order by create_time desc 
+  </select>
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 </mapper>

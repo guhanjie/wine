@@ -8,12 +8,16 @@
  */  
 package top.guhanjie.wine.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import top.guhanjie.wine.model.Item;
 import top.guhanjie.wine.service.BannarService;
@@ -51,4 +55,18 @@ public class ItemController extends BaseController{
         model.addAttribute("items", itemService.getRelativeItems(categoryId));
         return "items";
     }
+    
+
+	@ResponseBody
+	@RequestMapping(value="/admin/item/all", method=RequestMethod.GET)
+	public Map<String, Object> listAllItems(Model model) {
+		return success(itemService.listAllItems());
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/admin/item", method=RequestMethod.POST, consumes="application/json")
+	public Map<String, Object> addItem(@RequestBody Item item) {
+		itemService.addItem(item);
+		return success();
+	}
 }

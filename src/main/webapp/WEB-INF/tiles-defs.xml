@@ -51,6 +51,9 @@
         <put-attribute name="footer" value="/WEB-INF/pages/layout/footer.jsp" cascade="true"/>
     </definition>
     
+    <definition name="admin" template="/WEB-INF/pages/admin.jsp">
+    </definition>
+    
     <definition name="error" template="/WEB-INF/pages/error.jsp"/>
     
 </tiles-definitions>

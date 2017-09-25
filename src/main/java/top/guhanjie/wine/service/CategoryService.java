@@ -30,29 +30,29 @@ public class CategoryService {
     private CategoryMapper categoryMapper;
     
     public synchronized void addCategory(Category category) {
+    	LOGGER.info("Add a new category[{}]...", JSON.toJSONString(category));
         try {
             categoryMapper.insertSelective(category);
         } catch(DuplicateKeyException e) {
-            LOGGER.error("当前位置的bannar已存在，无法添加", e);
+            LOGGER.error("当前位置的category已存在，无法添加", e);
         }
         CACHE.put(category.getId(), category);
-        categoryListCache = null;  //disable listcached to update info
-        LOGGER.debug("Added a new bannar[{}]...", JSON.toJSONString(category));
+        categoryListCache = null;  //disable list cache to update info
     }
     
     public synchronized void updateCategory(Category category) {
+    	LOGGER.info("Update category[{}]...", JSON.toJSONString(category));
         categoryMapper.updateByPrimaryKeySelective(category);
         category = categoryMapper.selectByPrimaryKey(category.getId());
         CACHE.put(category.getId(), category);
-        categoryListCache = null;  //disable listcached to update info
-        LOGGER.debug("Updated bannar[{}]...", JSON.toJSONString(category));
+        categoryListCache = null;  //disable list cache to update info
     }
     
     public synchronized void deleteCategory(Category category) {
+    	LOGGER.info("Delete category[{}]...", JSON.toJSONString(category));
         categoryMapper.deleteByPrimaryKey(category.getId());
         CACHE.remove(category.getId());
-        categoryListCache = null;  //disable listcached to update info
-        LOGGER.debug("Deleted bannar[{}]...", JSON.toJSONString(category));
+        categoryListCache = null;  //disable list cache to update info
     }
     
     public List<Category> listCategory() {
@@ -113,7 +113,7 @@ public class CategoryService {
 	public Category getCategory(int id) {
         Category c = CACHE.get(id);
         if(c == null) {
-            LOGGER.info("Category not hit cache, updating...");
+            LOGGER.info("Category cache not hit, updating...");
             c = categoryMapper.selectByPrimaryKey(id);
             if(c != null) {
                 synchronized(this) {

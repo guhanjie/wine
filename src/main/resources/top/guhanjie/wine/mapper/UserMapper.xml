@@ -307,6 +307,11 @@
   </update>
   
   <!-- Add custom -->
+  <select id="selectLikeName" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from user
+    where name like #{name} limit 1 
+  </select>
   <select id="selectByOpenId" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" />
     from user
