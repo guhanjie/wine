@@ -329,7 +329,7 @@
     var titleUploadCount = 0, titleUploadList = [];
     var $titleImgsCount = $("#titleImgsCount");
     weui.uploader('#title_imgs-uploader', {
-        url: 'http://' + location.hostname + ':8080/wine/upload',
+        url: '/wine/upload',
         auto: true,
         type: 'file',
         fileVal: 'file',
@@ -426,7 +426,7 @@
     var detailUploadCount = 0, detailUploadList = [];
     var $detailImgsCount = $("#detailImgsCount");
     weui.uploader('#detail_imgs-uploader', {
-        url: 'http://' + location.hostname + ':8080/wine/upload',
+        url: '/wine/upload',
         auto: true,
         type: 'file',
         fileVal: 'file',
