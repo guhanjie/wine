@@ -30,7 +30,8 @@ public class UploadController extends BaseController{
 			int suffixIdx = name.lastIndexOf('.');
 			String suffix = (suffixIdx != -1) ? name.substring(suffixIdx) : ".jpg";
 			String destFileName = type+"-"+IdGenerator.getShortUuid()+suffix;
-			File destFile = new File(servletContext.getRealPath("/")+"/WEB-INF/assets/images/"+destFileName);
+			//File destFile = new File(servletContext.getRealPath("/")+"/WEB-INF/assets/images/"+destFileName);
+			File destFile = new File("/data/wwwroot/www.guhanjie.top/wine/resources/images/"+destFileName);
 			LOGGER.info("uploading image file[{}]", destFile.getAbsolutePath());
 			if(!destFile.exists()) {
 				destFile.createNewFile();
