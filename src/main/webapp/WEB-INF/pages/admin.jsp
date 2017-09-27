@@ -28,12 +28,15 @@
     <div class="weui-tab__panel">
         <div class="weui-tab__content">
             <div id="item-list">
-              <div class="weui-cells__title">管理后台--商品列表</div>
+              <div class="weui-cells__title">管理后台--商品信息</div>
               <div class="weui-grids"></div>
               <a id="add-item" class="weui-footer_fixed-bottom weui-btn weui-btn_primary">添加商品</a>
             </div>
             <div id="item-form">
-                <div class="weui-cells__title">管理后台--商品信息</div>
+                <div class="weui-cells__title">
+                  <span>管理后台--商品列表</span>
+                  <a href="javascript:;" class="back-item-list">返回列表</a>
+                </div>
                 <div class="weui-cells weui-cells_form">
                     <div class="weui-cell">
                         <div class="weui-cell__hd"><label class="weui-label">商品名称</label></div>
@@ -97,15 +100,15 @@
                 </div> 
                 <div class="weui-cells__title">商品图片</div>
                 <div class="weui-cells weui-cells_form">
-                    <div class="weui-cell" id="icon-uploader">
+                    <div class="weui-cell" id="icon_imgs-uploader">
                         <div class="weui-cell__bd">
                             <div class="weui-uploader">
                                 <div class="weui-uploader__hd">
                                     <p class="weui-uploader__title">商品缩略图</p>
-                                    <div class="weui-uploader__info"><span id="iconCount">0</span>/1</div>
+                                    <div class="weui-uploader__info"><span id="iconImgsCount">0</span>/1</div>
                                 </div>
                                 <div class="weui-uploader__bd">
-                                    <ul class="weui-uploader__files" id="iconFiles"></ul>
+                                    <ul class="weui-uploader__files" id="iconImgsFiles"></ul>
                                     <div class="weui-uploader__input-box">
                                         <input id="icon" class="weui-uploader__input" type="file" accept="image/*" capture="camera"/>
                                     </div>
@@ -151,7 +154,7 @@
                     <div class="weui-cell weui-cell_switch">
                         <div class="weui-cell__bd">商品上架</div>
                         <div class="weui-cell__ft">
-                            <input class="weui-switch" name="state" value="1" checked="" type="checkbox">
+                            <input class="weui-switch" name="state" checked="" type="checkbox">
                         </div>
                     </div>
                 </div>

@@ -7,6 +7,10 @@ body {
 	font-family: -apple-system-font, Helvetica Neue, Helvetica, sans-serif;
 }
 
+.weui-input, .weui-textarea {
+	color: #135ad0;
+}
+
 .item {
 	padding: 10px 0;
 }
@@ -22,6 +26,10 @@ body {
 
 .item__ctn {
 	padding: 0 15px;
+}
+
+.back-item-list {
+	float: right;
 }
 
 .price {

@@ -69,4 +69,11 @@ public class ItemController extends BaseController{
 		itemService.addItem(item);
 		return success();
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="/admin/item", method=RequestMethod.POST, consumes="application/json")
+	public Map<String, Object> deleteItem(@RequestBody Item item) {
+		itemService.addItem(item);
+		return success();
+	}
 }
