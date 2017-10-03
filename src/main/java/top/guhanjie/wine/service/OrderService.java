@@ -51,6 +51,9 @@ public class OrderService {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private PointService pointService;
 
 	@Autowired
 	private ItemService itemService;
@@ -114,7 +117,7 @@ public class OrderService {
 		}
 		// 2. 检查订单总额
 		double total = 0.0;
-		StringBuilder purchases = new StringBuilder("\n商品名称    数量\n");
+		StringBuilder purchases = new StringBuilder("\n商品名称\t数量\n");
 		String items = order.getItems();
 		String[] it = items.split(",");
 		for(String str : it) {
@@ -122,7 +125,7 @@ public class OrderService {
 			Integer itemId = Integer.parseInt(iteminfo[0]);
 			Integer count = Integer.parseInt(iteminfo[1]);
 			Item item = itemService.getItem(itemId);
-			purchases.append(item.getName()+"  "+count+"\n");
+			purchases.append(item.getName()+"\t"+count+"\n");
 			total += count * item.getVipPrice().doubleValue();
 		}
 		double totalAmount = order.getTotalAmount().doubleValue();
@@ -138,7 +141,7 @@ public class OrderService {
 		order.setStatus(Order.StatusEnum.NEW.code());
 		orderMapper.insertSelective(order);	//插入订单记录
         itemService.addSales(items);	//插入商品销售记录
-		userService.consumePoints(user.getId(), order.getCoupons(), order.getId());	//更新用户积分
+        pointService.consumePoints(user.getId(), order.getCoupons(), order.getId());	//更新用户积分
 		
 		// 4. 发送微信消息通知客服
 		StringBuilder sb = new StringBuilder("主人，您有新的订单：\n");
@@ -148,7 +151,7 @@ public class OrderService {
 		sb.append("联系电话：").append(order.getPhone()).append("\n");
 		sb.append("购买商品：").append(purchases);
 		sb.append("创建时间：").append(DateTimeUtil.formatDate(order.getCreateTime(), "yyyy-MM-dd HH:mm")).append("\n");
-		sb.append("备注：").append(order.getRemark()).append("\n");
+		sb.append("备注：").append(order.getRemark()==null?"无":order.getRemark()).append("\n");
 		MessageKit.sendKFMsg(weixinConstants.KF_OPENIDS, sb.toString());
 		
 		return order;
@@ -297,7 +300,7 @@ public class OrderService {
 			order.setUpdateTime(new Date());
 			if(1 == orderMapper.updateByStatus(order, Order.StatusEnum.NEW.code())) {
 				//撤销用户因此单扣减的积分
-			    userService.refundPoints(order.getUserId(), order.getCoupons(), order.getId());
+				pointService.refundPoints(order.getUserId(), order.getCoupons(), order.getId());
 			    LOGGER.info("success to cancel order[{}]", order.getId());
 			    // 订单被取消，发送微信消息通知客服
 	            StringBuffer sb = new StringBuffer("主人，您有一笔订单已取消：\n");
@@ -386,7 +389,7 @@ public class OrderService {
         	int points = amount / 2;
         	LOGGER.info("===[Promotion Assginment]===");
         	LOGGER.info("order[{}] amount=[{}], promote points=[{}] to user[{}]", orderid, amount, points, promoterid);
-        	userService.addPoints(promoterid, points, userid);
+        	pointService.addPointsForAgent(promoterid, points, userid);
         	LOGGER.info("success to assign promote points[{}] to user[{}] for order[{}]", points, promoterid, orderid);
         }
         

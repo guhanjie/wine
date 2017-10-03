@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,6 +40,24 @@ public class UserController extends BaseController{
 	@RequestMapping(value="/admin/user", method=RequestMethod.GET)
 	public Map<String, Object> findUser(@RequestParam("search") String str) {
 		return success(userService.findUser(str));
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/admin/user/points", method=RequestMethod.PUT)
+	public Map<String, Object> updateUserPoints(@RequestParam("id") Integer userid, @RequestParam("points")Integer points) {
+		User user = new User();
+		user.setId(userid);
+		user.setPoints(points);
+		return success(userService.updateUserPoint(user));
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/admin/user/type", method=RequestMethod.PUT)
+	public Map<String, Object> updateUserType(@RequestParam("id") Integer userid, @RequestParam("type")Integer type) {
+		User user = new User();
+		user.setId(userid);
+		user.setType(type);
+		return success(userService.updateUser(user));
 	}
 	
 	@RequestMapping(value="/promote", method=RequestMethod.GET)

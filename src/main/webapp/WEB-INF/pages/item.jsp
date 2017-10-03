@@ -3,12 +3,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<%-- <link href="${pageContext.request.contextPath}/resources/css/form.css" rel="stylesheet" type="text/css" media="all" /> --%>
-<link href="${pageContext.request.contextPath}/resources/css/flexslider.css" rel="stylesheet" type="text/css" media="screen" />
+<%-- <link href="<c:url value="/resources/css/css/form.css" />" rel="stylesheet" type="text/css" media="all" /> --%>
+<link href="<c:url value="/resources/css/flexslider.css" />" rel="stylesheet" type="text/css" media="screen" />
 
 <!-- item -->
 <ol class="breadcrumb">
-  <li><a href="${pageContext.request.contextPath}/index">首页</a></li>
+  <li><a href="<c:url value="/index"/>">首页</a></li>
   <c:forEach var="category" items="${categorySeq}" varStatus="status">
     <c:if test="${status.index < fn:length(categorySeq)-1}">
       <li>${category.name}</li>
@@ -54,19 +54,25 @@
               <span class="hidden item_itemid">${item.id}</span>
               <span class="hidden item_name">${item.name}</span>
               <span class="hidden item_img">${pageContext.request.contextPath}/resources/${item.icon}</span>
+              <c:if test="${user.agent}">
               <h5 class="item_price">￥ ${item.vipPrice}</h5>
+              <div class="normal-price-info">
+                <p class="pric1 normal-price">
+                  原价
+                  <del class="item_normalprice">${item.normalPrice}</del>
+                </p>
+                <span class="disc">[<fmt:formatNumber type="percent"
+                    maxIntegerDigits="2" value="${item.vipPrice/item.normalPrice}" /> Off]
+                </span>
+              </div>
+              </c:if>
+              <c:if test="${not user.agent}">
+              <span class="hide item_normalprice">${item.normalPrice}</span>
+              <h5 class="item_price">￥ ${item.normalPrice}</h5>
+              </c:if>
               <a href="#" class="add-cart item_add">立即购买</a>
             </div>
             <div class="clear-fix"></div>
-            <div class="ofr">
-              <p class="pric1">
-                原价
-                <del class="item_normalprice">${item.normalPrice}</del>
-              </p>
-              <span class="disc">[<fmt:formatNumber type="percent"
-                  maxIntegerDigits="2" value="${item.vipPrice/item.normalPrice}" /> Off]
-              </span>
-            </div>
             <p class="para">${item.detail}</p>
             <!-- <div class="prdt-info-grid">
               <ul>
@@ -100,18 +106,25 @@
       <div class="btm-grid-sec">
         <h3>相关商品</h3>
         <c:forEach var="r" items="${relatives}" varStatus="status">
-          <div class="col-md-2 btm-grid">
+          <div class="col-md-2 btm-grid relate-item">
             <a href="${pageContext.request.contextPath}/item/${r.id}"> <img src="${pageContext.request.contextPath}/resources/${r.icon}"
               class="img-responsive" alt="" />
               <h4>${r.name}</h4>
-              <p class="vip">
-                <span>会员价 </span> ￥<em>${r.vipPrice}</em>元
+              <c:if test="${not user.agent}">
+              <p class="normal-price">
+                <span>会员价 </span> ￥<em>${r.normalPrice}</em>元
               </p>
-              <p class="normal">
+              </c:if>
+              <c:if test="${user.agent}">
+              <p class="vip">
+                <span>代理价 </span> ￥<em>${r.vipPrice}</em>元
+              </p>
+              <p class="normal-price">
                 <span>原价 </span><span class="pric1"> ￥<del>${r.normalPrice}</del></span> <span class="disc">[<fmt:formatNumber type="percent"
                     maxIntegerDigits="2" value="${r.vipPrice/r.normalPrice}" /> Off]
                 </span>
               </p>
+              </c:if>
             </a>
           </div>
         </c:forEach>

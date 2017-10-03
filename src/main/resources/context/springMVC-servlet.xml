@@ -46,7 +46,7 @@
 
 	<bean id="exceptionResolver" class="top.guhanjie.wine.exception.WebExceptionHandler" />
 	
-    <!-- <mvc:interceptors>
+    <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/user/**"/>
             <mvc:mapping path="/promote/**"/>
@@ -62,6 +62,6 @@
             <mvc:mapping path="/order/payed"/>
             <ref bean="AdminAuthIntercepter"/>
         </mvc:interceptor>
-    </mvc:interceptors> -->
+    </mvc:interceptors>
 
 </beans>

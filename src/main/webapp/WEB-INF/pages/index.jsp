@@ -5,13 +5,13 @@
 <script src="${pageContext.request.contextPath}/resources/js/responsiveslides.min.js"></script>
 <script>
     $(function() {
-	$("#slider").responsiveSlides({
-	    auto : true,
-	    nav : true,
-	    speed : 500,
-	    namespace : "callbacks",
-	    pager : false,
-	});
+        $("#slider").responsiveSlides({
+            auto : true,
+            nav : true,
+            speed : 500,
+            namespace : "callbacks",
+            pager : false,
+        });
     });
 </script>
 
@@ -33,8 +33,37 @@
   </div>
 </div>
 <!-- //slider bar -->
-
 <!-- items -->
+<div class="items">
+  <c:forEach var="category" items="${indexCategories}" varStatus="status">
+    <div class="container items-sec">
+      <h3>${category.name}</h3>
+      <c:forEach var="item" items="${indexItems[status.index]}" varStatus="status">
+        <div class="col-md-3 feature-grid">
+          <a href="item/${item.id}"><img src="${pageContext.request.contextPath}/resources/${item.icon}" alt="" />
+            <div class="arrival-info">
+              <h4>${item.name}</h4>
+              <p class="normal_price">
+                <span>会员价 </span> ￥<em>${item.normalPrice}</em>元
+              </p>
+              <c:if test="${user.agent}">
+                <p class="agent_price">
+                  <span>代理价 </span>
+                  <span> ￥<em>${item.vipPrice}</em></span>
+                  <span class="disc">[<fmt:formatNumber type="percent"
+                      maxIntegerDigits="2" value="${item.vipPrice/item.normalPrice}" /> Off]
+                  </span>
+                </p>
+              </c:if>
+            </div> </a>
+        </div>
+      </c:forEach>
+      <div class="clearfix"></div>
+    </div>
+  </c:forEach>
+</div>
+<!---->
+<%-- <!-- items -->
 <div class="items">
   <div class="container items-sec">
     <h3>国酒典藏</h3>
@@ -43,15 +72,17 @@
         <a href="item/${white.id}"><img src="${pageContext.request.contextPath}/resources/${white.icon}" alt="" />
           <div class="arrival-info">
             <h4>${white.name}</h4>
-            <p class="vip">
-              <span>会员价 </span> ￥<em>${white.vipPrice}</em>元
+            <p class="normal_price">
+              <span>会员价 </span> ￥<em>${white.normalPrice}</em>元
             </p>
-            <p class="normal">
-              <span>原价 </span><span class="pric1"> ￥<del>${white.normalPrice}</del></span>
+            <c:if test="${user.agent}">
+            <p class="agent_price">
+              <span>代理价 </span><span class="pric1"> ￥<strong>${white.vipPrice}</strong></span>
               <span class="disc">[<fmt:formatNumber type="percent"
                   maxIntegerDigits="2" value="${white.vipPrice/white.normalPrice}" /> Off]
               </span>
             </p>
+            </c:if>
           </div> </a>
       </div>
     </c:forEach>
@@ -64,14 +95,16 @@
         <a href="item/${wine.id}"><img src="${pageContext.request.contextPath}/resources/${wine.icon}" alt="" />
           <div class="arrival-info">
             <h4>${wine.name}</h4>
-            <p class="vip">
-              <span>会员价 </span> ￥<em>${wine.vipPrice}</em>元
+            <p class="normal_price">
+              <span>会员价 </span> ￥<em>${wine.normalPrice}</em>元
             </p>
-            <p class="normal">
-              <span>原价 </span><span class="pric1"> ￥<del>${wine.normalPrice}</del></span> <span class="disc">[<fmt:formatNumber type="percent"
+            <c:if test="${is_agent}">
+            <p class="agent_price">
+              <span>代理价 </span><span class="pric1"> ￥<strong>${wine.vipPrice}</strong></span> <span class="disc">[<fmt:formatNumber type="percent"
                   maxIntegerDigits="2" value="${wine.vipPrice/wine.normalPrice}" /> Off]
               </span>
             </p>
+            </c:if>
           </div> </a>
       </div>
     </c:forEach>
@@ -84,22 +117,24 @@
         <a href="item/${beer.id}"><img src="${pageContext.request.contextPath}/resources/${beer.icon}" alt="" />
           <div class="arrival-info">
             <h4>${beer.name}</h4>
-            <p class="vip">
-              <span>会员价 </span> ￥<em>${beer.vipPrice}</em>元
+            <p class="normal_price">
+              <span>会员价 </span> ￥<em>${beer.normalPrice}</em>元
             </p>
-            <p class="normal">
-              <span>原价 </span><span class="pric1"> ￥<del>${beer.normalPrice}</del></span> <span class="disc">[<fmt:formatNumber type="percent"
+            <c:if test="${is_agent}">
+            <p class="agent_price">
+              <span>代理价 </span><span class="pric1"> ￥<strong>${beer.vipPrice}</strong></span> <span class="disc">[<fmt:formatNumber type="percent"
                   maxIntegerDigits="2" value="${beer.vipPrice/beer.normalPrice}" /> Off]
               </span>
             </p>
+            </c:if>
           </div> </a>
       </div>
     </c:forEach>
     <div class="clearfix"></div>
   </div>
-</div>
+</div> --%>
 <!---->
-<div class="offers">
+<%-- <div class="offers">
   <div class="container">
     <h3>『 一 · 元 · 购 』</h3>
     <div class="offer-grids">
@@ -125,5 +160,5 @@
       <div class="clearfix"></div>
     </div>
   </div>
-</div>
+</div> --%>
 <!---->

@@ -271,7 +271,7 @@ public class PointDetail {
     
     /**
      * Class Name:    TypeEnum<br/>
-     * <b>来源类型:    </b>
+     * <b>积分来源类型:    </b>
      * <ul>
      * <li>+：加分，</li>
      * <li>-：减分</li>
@@ -296,6 +296,34 @@ public class PointDetail {
         
         public String desc() {
             return desc;
+        }
+    }
+    
+    /**
+     * Class Name:    RemarkEnum<br/>
+     * <b>积分明细备注:    </b>
+     * <ul>
+     * <li>+：加分，</li>
+     * <li>-：减分</li>
+     * </ul>
+     */
+    public static enum RemarkEnum {
+
+        USER_SIGN_UP("会员注册奖励"),
+        AGENT_RETURN("代理商提成奖励"),
+        ADD_BY_ADMIN("管理员加分"),
+        SUB_BY_ADMIN("管理员减分"),
+        REFUND("订单取消积分返还"),
+        CONSUME("积分消费");
+        
+        private String remark;
+        
+        private RemarkEnum(String remark) {
+            this.remark = remark;
+        }
+        
+        public String remark() {
+            return remark;
         }
     }
 }

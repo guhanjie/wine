@@ -465,7 +465,7 @@ public class Item {
         this.category = category;
     }
     
-    //--------------------------------------------
+    //------------------------- custom add -----------------------------
     private int count;	//used in order buy
 
 	public int getCount() {
@@ -492,4 +492,5 @@ public class Item {
 		}
 		return copy;
 	}
+	//------------------------- custom add -----------------------------
 }

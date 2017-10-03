@@ -33,21 +33,22 @@
           <div data-id="${item.id}" data-price="${item.vipPrice}" class="product-info simpleCart_shelfItem product-item">
             <div class="product-info-cust prt_name">
               <h4>${item.name}</h4>
-              <span class="hidden item_itemid">${item.id}</span>
-              <span class="hidden item_name">${item.name}</span>
-              <span class="hidden item_img">${pageContext.request.contextPath}/resources/${item.icon}</span>
-              <span class="item_price">￥${item.vipPrice}</span>
-              <div class="ofr">
-                <p class="pric1">
-                  原价
-                  <del class="item_normalprice">${item.normalPrice}</del>
-                </p>
-                <span class="disc">[<fmt:formatNumber type="percent"
-                    maxIntegerDigits="2" value="${item.vipPrice/item.normalPrice}" /> Off]
-                </span>
-              </div>
-              <input type="text" class="item_quantity" value="1"> 
-              <input type="button" class="add-cart item_add" value="立即下单">
+              <span class="hidden item_itemid">${item.id}</span> <span class="hidden item_name">${item.name}</span> <span class="hidden item_img">${pageContext.request.contextPath}/resources/${item.icon}</span>
+              <c:if test="${not user.agent}">
+                <span class="item_price">￥${item.normalPrice}</span>
+                <span class="hide item_normalprice">${item.normalPrice}</span>
+              </c:if>
+              <c:if test="${user.agent}">
+                <span class="item_price">￥${item.vipPrice}</span>
+                <div class="ofr">
+                  <p class="pric1">
+                    原价 <strong class="item_normalprice">${item.normalPrice}</strong>
+                  </p>
+                  <span class="disc">[<fmt:formatNumber type="percent" maxIntegerDigits="2" value="${item.vipPrice/item.normalPrice}" /> Off]
+                  </span>
+                </div>
+              </c:if>
+              <input type="text" class="item_quantity" value="1"> <input type="button" class="add-cart item_add" value="立即下单">
               <div class="clearfix"></div>
             </div>
           </div>

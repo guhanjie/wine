@@ -12,7 +12,9 @@
       <ul class="memenu skyblue">
         <li class="active"><a href="${pageContext.request.contextPath}/index">首页</a></li>
         <c:forEach var="c1" items="${categories}" varStatus="status1">
-          <li class="grid"><a href="#">${c1.name}</a>
+          <li class="grid">
+            <c:set var="cateurl" value="${pageContext.request.contextPath}/items/${c1.id}" />
+            <a href="${empty c1.subItems ? cateurl : '#'}">${c1.name}</a>
             <div class="mepanel">
               <div class="row">
                 <c:forEach var="c2" items="${c1.subItems}" varStatus="status2">
@@ -29,7 +31,8 @@
                       </div>
                     </c:forEach> --%>
               </div>
-            </div></li>
+            </div>
+          </li>
         </c:forEach>
       </ul>
     </div>

@@ -70,3 +70,20 @@ label>* {
     color: #09BB07;
     white-space: nowrap;
 }
+
+#item-list {
+	margin-bottom: 46px;
+}
+
+.hide {
+	display: none;
+}
+
+input.points {
+	border: 1px solid #1aac19;
+}
+
+#user-form .weui-btn + .weui-btn {
+    margin-top: 0px;
+    margin-left: 10px;
+}

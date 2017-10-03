@@ -149,7 +149,7 @@
 			        	var tip = $parent.find('#tip').val();
 			        	$.ajax({
 			        	    type: 'GET',
-			        	    url: 'pay',
+			        	    url: '/wine/order/pay',
 			        	    data: {
 			        		'orderid': orderid,
 			        		'tip': tip

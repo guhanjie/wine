@@ -1,6 +1,7 @@
 <%@ page  contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="t" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%-- <%@ page import="top.guhanjie.wine.model.User" %> --%>
 <%
 	String path = request.getContextPath();
 	if("/".equals(path)){
@@ -96,11 +97,12 @@
         <!--//start menu-->
         <script src="${resourcePath}/js/bootstrap.js"></script>
         <script src="${resourcePath}/js/weui-0.3.0.js"></script>
+        <script src="${resourcePath}/js/order.js"></script>
+        <script src="${resourcePath}/js/pay.js"></script>
     </head>
     <body ontouchstart>
         <t:insertAttribute name="header" />
 		<t:insertAttribute name="main" />
         <t:insertAttribute name="footer" />
-        <script src="${resourcePath}/js/order.js"></script>
     </body>
 </html>

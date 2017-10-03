@@ -255,7 +255,7 @@
     select 
     <include refid="Base_Column_List" />
     from item 
-    where category_id = #{categoryId,jdbcType=INTEGER} and status = 1
+    where category_id = #{categoryId,jdbcType=INTEGER} and status = 1 order by create_time desc
   </select>
   
   <update id="addSales">

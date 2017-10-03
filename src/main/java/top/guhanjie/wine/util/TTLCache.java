@@ -109,6 +109,10 @@ public class TTLCache<K, V> {
         }
         return values;
     }
+    
+    public Map<K,V> maps() {
+        return (Map<K,V>)map.clone();
+    }
 
     /**
      * Method Name: forceRemoveExpires<br/>

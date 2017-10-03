@@ -64,16 +64,23 @@ public class ItemController extends BaseController{
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/admin/item", method=RequestMethod.POST, consumes="application/json")
+	@RequestMapping(value="/admin/item/add", method=RequestMethod.POST, consumes="application/json")
 	public Map<String, Object> addItem(@RequestBody Item item) {
 		itemService.addItem(item);
 		return success();
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/admin/item", method=RequestMethod.POST, consumes="application/json")
+	@RequestMapping(value="/admin/item/modify", method=RequestMethod.PUT, consumes="application/json")
+	public Map<String, Object> modifyItem(@RequestBody Item item) {
+		itemService.updateItem(item);
+		return success();
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/admin/item/delete", method=RequestMethod.DELETE, consumes="application/json")
 	public Map<String, Object> deleteItem(@RequestBody Item item) {
-		itemService.addItem(item);
+		itemService.deleteItem(item);
 		return success();
 	}
 }

@@ -18,77 +18,128 @@ import top.guhanjie.wine.model.Category;
 import top.guhanjie.wine.util.TTLCache;
 
 @Service
-public class CategoryService {  
+public class CategoryService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CategoryService.class);
+    private static final Logger LOGGER = LoggerFactory
+            .getLogger(CategoryService.class);
 
-    private static final TTLCache<Integer, Category> CACHE = new TTLCache<Integer, Category>(-1); //失效时间为20分钟，按进入时间超时逐出
-    
-    private volatile List<Category> categoryListCache; //缓存汇聚结果
-    
+    private static final TTLCache<Integer, Category> CACHE = new TTLCache<Integer, Category>(
+            20 * 60); // 失效时间为20分钟，按进入时间超时逐出
+
+    private volatile List<Category> categoryListCache; // 缓存汇聚结果（所有分类条目组成的树状结构）
+
     @Autowired
     private CategoryMapper categoryMapper;
-    
+
     public synchronized void addCategory(Category category) {
-    	LOGGER.info("Add a new category[{}]...", JSON.toJSONString(category));
+        LOGGER.info("Add a new category[{}]...", JSON.toJSONString(category));
         try {
             categoryMapper.insertSelective(category);
-        } catch(DuplicateKeyException e) {
+        } catch (DuplicateKeyException e) {
             LOGGER.error("当前位置的category已存在，无法添加", e);
         }
         CACHE.put(category.getId(), category);
-        categoryListCache = null;  //disable list cache to update info
+        categoryListCache = null; // disable list cache to update info
     }
-    
+
     public synchronized void updateCategory(Category category) {
-    	LOGGER.info("Update category[{}]...", JSON.toJSONString(category));
+        LOGGER.info("Update category[{}]...", JSON.toJSONString(category));
         categoryMapper.updateByPrimaryKeySelective(category);
         category = categoryMapper.selectByPrimaryKey(category.getId());
         CACHE.put(category.getId(), category);
-        categoryListCache = null;  //disable list cache to update info
+        categoryListCache = null; // disable list cache to update info
     }
-    
+
     public synchronized void deleteCategory(Category category) {
-    	LOGGER.info("Delete category[{}]...", JSON.toJSONString(category));
+        LOGGER.info("Delete category[{}]...", JSON.toJSONString(category));
         categoryMapper.deleteByPrimaryKey(category.getId());
         CACHE.remove(category.getId());
-        categoryListCache = null;  //disable list cache to update info
+        categoryListCache = null; // disable list cache to update info
     }
-    
+
+    public Category getCategory(int id) {
+        Category c = CACHE.get(id);
+        if (c == null) {
+            LOGGER.info("Category cache not hit, updating...");
+            c = categoryMapper.selectByPrimaryKey(id);
+            if (c != null) {
+                synchronized (this) {
+                    CACHE.put(id, c);
+                }
+            }
+        }
+        return c;
+    }
+
+    /**
+     * 根据具体某个category获取其序列（从根到叶子节点的序列）
+     */
+    public List<Category> getCategorySequence(int id) {
+        List<Category> cSeq = new ArrayList<Category>();
+        Category c = getCategory(id);
+        cSeq.add(c);
+        while (c != null && c.getParentId() != 0) {
+            c = getCategory(c.getParentId());
+            cSeq.add(c);
+        }
+        Collections.reverse(cSeq);
+        return cSeq;
+    }
+
     public List<Category> listCategory() {
-        if(categoryListCache == null) {
+        if (categoryListCache == null) {
             categoryListCache = constructList();
         }
         return categoryListCache;
     }
-    
+
+    /**
+     * 获取所有叶子节点的的分类条目列表
+     */
+    public List<Category> listLeafCategory() {
+        List<Category> leafCategories = new ArrayList<Category>();
+        List<Category> allCategories = listCategory();
+        addLeafCategory(allCategories, leafCategories);
+        return leafCategories;
+    }
+
+    private void addLeafCategory(List<Category> list, List<Category> leafList) {
+        for (Category c : list) {
+            if (c.getSubItems() != null && !c.getSubItems().isEmpty()) {
+                addLeafCategory(c.getSubItems(), leafList);
+            } else {
+                leafList.add(c);
+            }
+        }
+    }
+
     private synchronized List<Category> constructList() {
-        if(CACHE.size() == 0) {
+        if (CACHE.size() == 0) {
             LOGGER.info("Category cache set up...");
             List<Category> list = categoryMapper.selectAll();
-            for(Category c : list) {
+            for (Category c : list) {
                 CACHE.put(c.getId(), c);
             }
         }
-        //Double check in lock
-        if(categoryListCache != null) {
-        	return categoryListCache;
+        // Double check in lock
+        if (categoryListCache != null) {
+            return categoryListCache;
         }
-        //TreeMap<K,V> pattern: <parentid-idx, category>
-        //Attention!!! this just support up to 0-9, such case will be error:  1-1, 11-1, 2-1, 3-1
+        // TreeMap<K,V> pattern: <parentid-idx, category>
+        // Attention!!! this just support up to 0-9, such case will be error:
+        // 1-1, 11-1, 2-1, 3-1
         TreeMap<String, Category> orderedMap = new TreeMap<String, Category>();
-        for(Category c : CACHE.values()) {
-            orderedMap.put(c.getParentId()+"-"+c.getIdx(), c);
+        for (Category c : CACHE.values()) {
+            orderedMap.put(c.getParentId() + "-" + c.getIdx(), c);
         }
         List<Category> items = new ArrayList<Category>();
-        for(Category item : orderedMap.values()) {
+        for (Category item : orderedMap.values()) {
             item.getSubItems().clear();
-            if(item.getParentId() == 0) {
+            if (item.getParentId() == 0) {
                 items.add(item);
-            }
-            else {
+            } else {
                 Category parent = findParent(items, item);
-                if(parent != null) {
+                if (parent != null) {
                     parent.getSubItems().add(item);
                 }
             }
@@ -96,44 +147,21 @@ public class CategoryService {
         return items;
     }
 
-    //广度优先查找父目录
-	private Category findParent(List<Category> items, Category c) {
-	    for(Category item : items) {
-	        if(item.getId() == c.getParentId()) {
-	            return item;
-	        }
-	    }
-	    for(Category item : items) {
-	        return findParent(item.getSubItems(), c);
-	    }
-	    LOGGER.error("can not find parent category for: [{}]", JSON.toJSONString(c));
-	    return null;
-	}
-
-	public Category getCategory(int id) {
-        Category c = CACHE.get(id);
-        if(c == null) {
-            LOGGER.info("Category cache not hit, updating...");
-            c = categoryMapper.selectByPrimaryKey(id);
-            if(c != null) {
-                synchronized(this) {
-                    CACHE.put(id, c);
-                }
+    /**
+     * 广度优先查找父目录
+     */
+    private Category findParent(List<Category> items, Category c) {
+        for (Category item : items) {
+            if (item.getId() == c.getParentId()) {
+                return item;
             }
         }
-        return c;
+        for (Category item : items) {
+            return findParent(item.getSubItems(), c);
+        }
+        LOGGER.error("can not find parent category for: [{}]",
+                JSON.toJSONString(c));
+        return null;
     }
-    
-    public List<Category> getCategorySequence(int id) {
-		List<Category> cSeq = new ArrayList<Category>();
-		Category c = getCategory(id);
-    	cSeq.add(c);
-		while(c!=null && c.getParentId()!=0) {
-			c = getCategory(c.getParentId());
-			cSeq.add(c);
-	    }
-		Collections.reverse(cSeq);
-	    return cSeq;
-	}
-    
+
 }

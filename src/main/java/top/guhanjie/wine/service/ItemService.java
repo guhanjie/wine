@@ -8,7 +8,9 @@
  */  
 package top.guhanjie.wine.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSON;
 
 import top.guhanjie.wine.mapper.ItemMapper;
+import top.guhanjie.wine.model.Category;
 import top.guhanjie.wine.model.Item;
 import top.guhanjie.wine.util.TTLCache;
 
@@ -27,7 +30,7 @@ public class ItemService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ItemService.class);
     
-    private static final Integer CATEGORY_WRITE = 5; //白酒
+    private static final Integer CATEGORY_WHITE = 5; //白酒
     private static final Integer CATEGORY_WINE = 6;	//红酒
     private static final Integer CATEGORY_BEER = 7; //啤酒
     
@@ -40,11 +43,24 @@ public class ItemService {
     @Autowired
     private ItemMapper itemMapper;
     
+    @Autowired
+    private CategoryService categoryService;
+    
     public void addItem(Item item) {
 		LOGGER.info("Add a new item[{}]...", JSON.toJSONString(item, true));
 		itemMapper.insertSelective(item);
 		ITEM_CACHE.put(item.getId(), item);
-		GROUPED_ITEMS_CACHE.clear();  //disable cache to update info
+//		//update cache for new item info
+//		List<Item> items = GROUPED_ITEMS_CACHE.get(item.getCategoryId());
+//		if(items == null) {
+//			items = new ArrayList<Item>();
+//			items.add(item);
+//			GROUPED_ITEMS_CACHE.put(item.getCategoryId(), items);
+//		}
+//		else {
+//			items.add(item);
+//		}
+		GROUPED_ITEMS_CACHE.clear();  //disable cache to update info 
 	}
 
     public void updateItem(Item item) {
@@ -61,14 +77,35 @@ public class ItemService {
     	ITEM_CACHE.remove(item.getId());
     	GROUPED_ITEMS_CACHE.clear();  //disable cache to update info
     }
+    
+    //前台首页显示
+    public List<Item> listIndexItems(Integer categoryId) {
+        List<Item> items = GROUPED_ITEMS_CACHE.get(categoryId);
+        if(items == null) {
+            LOGGER.info("items for category[{}] cache not hit, updating...", categoryId);
+            items = itemMapper.selectByCategory(categoryId);
+            GROUPED_ITEMS_CACHE.put(categoryId, items);
+            LOGGER.info("items for category[{}] cache updated", categoryId);
+        }
+        return items;
+//        List<Category> cateList = categoryService.listLeafCategory();
+//        List<Item> items = null;
+//        if(GROUPED_ITEMS_CACHE.size() == 0) {
+//            for(Category c : cateList) {
+//                items = itemMapper.selectByCategory(c.getId());
+//                GROUPED_ITEMS_CACHE.put(c.getId(), items);
+//            }
+//        }
+//        return (Map<Integer, List<Item>>)GROUPED_ITEMS_CACHE.maps();
+    }
 
 	//白酒
     public List<Item> listWhiteWine() {
-        List<Item> items = GROUPED_ITEMS_CACHE.get(CATEGORY_WRITE);
+        List<Item> items = GROUPED_ITEMS_CACHE.get(CATEGORY_WHITE);
         if(items == null) {
             LOGGER.info("white wine Item not hit cache, updating...");
-            items = itemMapper.selectByCategory(CATEGORY_WRITE);
-            GROUPED_ITEMS_CACHE.put(CATEGORY_WRITE, items);
+            items = itemMapper.selectByCategory(CATEGORY_WHITE);
+            GROUPED_ITEMS_CACHE.put(CATEGORY_WHITE, items);
         }
         return items;
     }
@@ -95,6 +132,7 @@ public class ItemService {
         return items;
     }
     
+    //后台管理用
     public List<Item> listAllItems() {
     	List<Item> items = itemMapper.selectAll();
         return items;

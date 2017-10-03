@@ -28,13 +28,13 @@
     <div class="weui-tab__panel">
         <div class="weui-tab__content">
             <div id="item-list">
-              <div class="weui-cells__title">管理后台--商品信息</div>
+              <div class="weui-cells__title">管理后台--商品列表</div>
               <div class="weui-grids"></div>
               <a id="add-item" class="weui-footer_fixed-bottom weui-btn weui-btn_primary">添加商品</a>
             </div>
             <div id="item-form">
                 <div class="weui-cells__title">
-                  <span>管理后台--商品列表</span>
+                  <span>管理后台--商品信息</span>
                   <a href="javascript:;" class="back-item-list">返回列表</a>
                 </div>
                 <div class="weui-cells weui-cells_form">
@@ -69,7 +69,7 @@
                         </div>
                     </div>
                     <div class="weui-cell">
-                        <div class="weui-cell__hd"><label class="weui-label">普通价格</label></div>
+                        <div class="weui-cell__hd"><label class="weui-label">会员价格</label></div>
                         <div class="weui-cell__bd">
                             <input class="weui-input" type="number" name="normalPrice" required pattern="^\d+(\.\d+)?$" maxlength="10" placeholder="输入普通价格" emptyTips="请输入普通价格" notMatchTips="普通价格只能输入数字">
                         </div>
@@ -79,7 +79,7 @@
                         </div>
                     </div>
                     <div class="weui-cell">
-                        <div class="weui-cell__hd"><label class="weui-label">会员价格</label></div>
+                        <div class="weui-cell__hd"><label class="weui-label">代理价格</label></div>
                         <div class="weui-cell__bd">
                             <input class="weui-input" type="number" name="vipPrice" required pattern="^\d+(\.\d+)?$" maxlength="10" placeholder="输入会员价格" emptyTips="请输入会员价格" notMatchTips="会员价格只能输入数字">
                         </div>
@@ -212,6 +212,9 @@
                       <div class="weui-cell__bd">
                           <input class="weui-input" type="number" name="points" disabled>
                       </div>
+                      <a href="javascript:;" id="modifyPoints" class="hide weui-btn weui-btn_mini weui-btn_primary">修改</a>
+                      <a href="javascript:;" id="submitPoints" class="hide weui-btn weui-btn_mini weui-btn_primary">提交</a>
+                      <a href="javascript:;" id="cancelPoints" class="hide weui-btn weui-btn_mini weui-btn_default">取消</a>
                       <div class="weui-cell__ft">
                           <i class="weui-icon-warn"></i>
                       </div>
@@ -219,8 +222,8 @@
                   <div class="weui-cell weui-cell_switch">
                       <div class="weui-cell__hd"><label class="weui-label">用户类型</label></div>
                       <div class="weui-cell__bd text-center">
-                        <input id="user-normal" class="weui-input" type="text" style="display:none" value="普通用户" disabled>
-                        <input id="user-vip" class="weui-input" type="text" style="display:none" value="会员" disabled>
+                        <input id="user-normal" class="weui-input" type="text" style="display:none" value="普通会员" disabled>
+                        <input id="user-vip" class="weui-input" type="text" style="display:none" value="代理商" disabled>
                       </div>
                       <div class="weui-cell__ft">
                           <input id="user-type" class="weui-switch" type="checkbox">

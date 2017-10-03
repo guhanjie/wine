@@ -10,7 +10,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="SMALLINT" />
+    <result column="type" property="type" jdbcType="INTEGER" />
     <result column="points" property="points" jdbcType="INTEGER" />
     <result column="open_id" property="openId" jdbcType="VARCHAR" />
     <result column="unionid" property="unionid" jdbcType="VARCHAR" />
@@ -72,7 +72,7 @@
       address, city, province, 
       country, source_id, subscribe_time, qrcode_ticket, qrcode_url, 
       create_time, update_time)
-    values (#{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{type,jdbcType=SMALLINT}, 
+    values (#{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
       #{points,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{unionid,jdbcType=VARCHAR}, 
       #{nickname,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, #{language,jdbcType=VARCHAR}, 
       #{address,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
@@ -157,7 +157,7 @@
         #{phone,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
-        #{type,jdbcType=SMALLINT},
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="points != null" >
         #{points,jdbcType=INTEGER},
@@ -224,7 +224,7 @@
         phone = #{phone,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
-        type = #{type,jdbcType=SMALLINT},
+        type = #{type,jdbcType=INTEGER},
       </if>
       <if test="points != null" >
         points = #{points,jdbcType=INTEGER},
@@ -286,7 +286,7 @@
     update user
     set name = #{name,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
-      type = #{type,jdbcType=SMALLINT},
+      type = #{type,jdbcType=INTEGER},
       points = #{points,jdbcType=INTEGER},
       open_id = #{openId,jdbcType=VARCHAR},
       unionid = #{unionid,jdbcType=VARCHAR},
