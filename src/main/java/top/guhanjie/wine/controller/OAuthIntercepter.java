@@ -29,7 +29,6 @@ public class OAuthIntercepter implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();
-        
         Object user = session.getAttribute(AppConstants.SESSION_KEY_USER);
         if(user != null && user instanceof User) {
             LOGGER.debug("user[{}] login...", JSON.toJSONString(user));
@@ -51,7 +50,7 @@ public class OAuthIntercepter implements HandlerInterceptor {
             response.sendRedirect(url);
 	        return false;
 	    }
-	    LOGGER.debug("user[{}] login...", openid);
+	    LOGGER.debug("user openid[{}] login...", openid);
 	    return true;
 //        LOGGER.debug("intercept request, getScheme: [{}]", request.getScheme());
 //        LOGGER.debug("intercept request, getProtocol: [{}]", request.getProtocol());

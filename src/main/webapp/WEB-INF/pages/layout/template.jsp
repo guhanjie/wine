@@ -97,12 +97,12 @@
         <!--//start menu-->
         <script src="${resourcePath}/js/bootstrap.js"></script>
         <script src="${resourcePath}/js/weui-0.3.0.js"></script>
-        <script src="${resourcePath}/js/order.js"></script>
-        <script src="${resourcePath}/js/pay.js"></script>
     </head>
     <body ontouchstart>
         <t:insertAttribute name="header" />
 		<t:insertAttribute name="main" />
         <t:insertAttribute name="footer" />
+        <script src="${resourcePath}/js/order.js"></script>
+        <script src="${resourcePath}/js/pay.js"></script>
     </body>
 </html>

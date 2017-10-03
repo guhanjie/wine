@@ -32,7 +32,7 @@ public abstract class BaseController {
     protected User getSessionUser() {
     	HttpSession session = request.getSession();
     	
-//    	//调试用
+    	//调试用
 //	    User u = new User();
 //	    u.setId(2);
 //	    u.setName("印霞");
