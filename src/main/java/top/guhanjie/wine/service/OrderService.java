@@ -133,6 +133,8 @@ public class OrderService {
 		double payAmount = order.getPayAmount().doubleValue();
 		//校验订单金额（计算金额与前端展示金额误差在1.0以内）
 		if(Math.abs(total-totalAmount) > 0.1 || Math.abs(pay-payAmount) > 0.1) {
+		    LOGGER.error("order payment error: total[{}]-totalAmount[{}], pay[{}]-payAmount[{}]", 
+		            total, totalAmount, pay, payAmount);
 		    throw WebExceptionFactory.exception(WebExceptionEnum.VALIDATE_ERROR, "订单金额有误");
 		}
 		
