@@ -126,7 +126,8 @@ public class OrderService {
 			Integer count = Integer.parseInt(iteminfo[1]);
 			Item item = itemService.getItem(itemId);
 			purchases.append(item.getName()+"\t"+count+"\n");
-			total += count * item.getVipPrice().doubleValue();
+			double price = user.isAgent()? item.getVipPrice().doubleValue() : item.getNormalPrice().doubleValue();
+			total += count * price;
 		}
 		double totalAmount = order.getTotalAmount().doubleValue();
 		double pay = total + order.getShips().doubleValue() - order.getCoupons();
