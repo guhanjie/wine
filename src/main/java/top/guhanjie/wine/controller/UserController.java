@@ -33,6 +33,15 @@ public class UserController extends BaseController{
 	public String getUser(Model model) {
 		//User user = userService.getUserById(1);
         User user = getSessionUser();
+
+        if(user != null && user instanceof User) {
+             Integer userid = ((User)user).getId();
+             user = userService.getUserById(userid);
+        }
+        else {
+            String openid = (String)request.getSession().getAttribute(AppConstants.SESSION_KEY_OPEN_ID);
+            user = userService.getUserByOpenId(openid);
+        }
 		model.addAttribute("user", user);
 		model.addAttribute("promotees", userService.getPromotees(user.getId()));
 		return "user";
