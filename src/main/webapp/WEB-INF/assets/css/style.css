@@ -658,6 +658,7 @@ background-position:-167px -36px;
 .product-model-sec {
     margin: 4em 0 0 0;
     float: right;
+    width: 100%;
 }
 .rsidebar {
     display: block;

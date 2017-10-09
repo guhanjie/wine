@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,9 +30,7 @@ public class UserController extends BaseController{
 	
 	@RequestMapping(value="/user", method=RequestMethod.GET)
 	public String getUser(Model model) {
-		//User user = userService.getUserById(1);
         User user = getSessionUser();
-
         if(user != null && user instanceof User) {
              Integer userid = ((User)user).getId();
              user = userService.getUserById(userid);
@@ -56,24 +53,33 @@ public class UserController extends BaseController{
 	@ResponseBody
 	@RequestMapping(value="/admin/user/points", method=RequestMethod.PUT)
 	public Map<String, Object> updateUserPoints(@RequestParam("id") Integer userid, @RequestParam("points")Integer points) {
-		User user = new User();
+	    LOGGER.info("update user[{}] points[{}]", userid, points);
+	    User user = new User();
 		user.setId(userid);
 		user.setPoints(points);
-		return success(userService.updateUserPoint(user));
+		userService.updateUserPoint(user);
+		LOGGER.debug("refresh session for user[{}]", JSON.toJSONString(user));
+		user = userService.getUserById(userid);
+		setSessionUser(user);
+		return success();
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/admin/user/type", method=RequestMethod.PUT)
 	public Map<String, Object> updateUserType(@RequestParam("id") Integer userid, @RequestParam("type")Integer type) {
-		User user = new User();
+	    LOGGER.info("update user[{}] type[{}]", userid, type);
+	    User user = new User();
 		user.setId(userid);
 		user.setType(type);
-		return success(userService.updateUser(user));
+		userService.updateUser(user);
+        LOGGER.debug("refresh session for user[{}]", JSON.toJSONString(user));
+        user = userService.getUserById(userid);
+        setSessionUser(user);
+        return success();
 	}
 	
 	@RequestMapping(value="/promote", method=RequestMethod.GET)
 	public String promote(Model model) {
-		//User user = userService.getUserById(1);
         User user = getSessionUser();
 		model.addAttribute("user", user);
 		model.addAttribute("spm", DESUtil.encrypt(DESUtil.ALGORITHOM_BLOWFISH, String.valueOf(user.getId()), AppConstants.DES_KEY));

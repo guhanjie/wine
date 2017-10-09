@@ -8,6 +8,7 @@
 package top.guhanjie.wine.weixin.pay;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,7 +83,7 @@ public class PayKit {
         //map.put("attach", "附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据");
         map.put("out_trade_no", order.getId().toString());                                  //商户订单号
         map.put("fee_type", "CNY");                                                                 //货币类型
-        int money = order.getPayAmount().intValue()*100;                   
+        int money = order.getPayAmount().multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_DOWN).intValue();
 //        if(order.getTip() != null) {
 //            money += order.getTip().intValue()*100;
 //        }
