@@ -21,12 +21,12 @@
             <label class="col-xs-3 control-label">用户名</label> <label class="col-xs-9 control-label">${user.name}</label>
           </div>
           <div class="form-group">
-            <label class="col-xs-3 control-label">用户类型</label> <label class="col-xs-9 control-label"> <c:if
-                test="${user.type == 0}">
-                <span class="label label-default">普通会员</span>
-              </c:if> <c:if test="${user.type == 1}">
-                <span class="label label-warning">代理商</span>
-              </c:if>
+            <label class="col-xs-3 control-label">用户类型</label> <label class="col-xs-9 control-label">
+            <c:if test="${user.type == 0}">
+              <span class="label label-default">普通会员</span>
+            </c:if> <c:if test="${user.type == 1}">
+              <span class="label label-warning">代理商</span>
+            </c:if>
             </label>
           </div>
           <div class="form-group">

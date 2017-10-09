@@ -40,6 +40,7 @@
         var $cpn = $(this).siblings('p').find('strong');
         var maxcpns = parseInt($cpn.text());
         var total = simpleCart.total();
+        var all = simpleCart.all();
         if (simpleCart.total() == 0) {
             $.weui.alert('购物车内空空如也，请先加入商品');
             return;
@@ -56,15 +57,15 @@
             $.weui.alert('使用积分不能超过最大积分');
             return;
         }
-        if (cpns > total) {
+        if (cpns > all) {
             $.weui.alert('使用积分不能超过订单总额');
             return;
         }
         simpleCart["coupons"] = cpns;
         // $cpn.text(maxcpns-cpns);
         $('.coupons-discount').find('span.delcpns').text('-￥' + cpns);
-        var all = simpleCart.all();
-        $('.simpleCart_all').text('¥' + (all - cpns));
+        var num = new Number(all - cpns);
+        $('.simpleCart_all').text('¥' + num.toFixed(1));
         $('.coupons-discount').fadeIn('slow', function(e) {
         });
     });

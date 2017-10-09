@@ -50,6 +50,8 @@
         <mvc:interceptor>
             <mvc:mapping path="/user/**"/>
             <mvc:mapping path="/promote/**"/>
+            <mvc:mapping path="/item/**"/>
+            <mvc:mapping path="/items/**"/>
             <mvc:mapping path="/order/**"/>
             <mvc:exclude-mapping path="/order/pre"/>
             <mvc:exclude-mapping path="/order/put"/>

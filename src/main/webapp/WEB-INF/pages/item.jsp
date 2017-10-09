@@ -54,28 +54,28 @@
               <span class="hidden item_itemid">${item.id}</span>
               <span class="hidden item_name">${item.name}</span>
               <span class="hidden item_img">${pageContext.request.contextPath}/resources/${item.icon}</span>
-              <c:if test="${user.agent}">
-              <h5 class="item_price">￥ ${item.vipPrice}</h5>
-              <div class="item-info">
-                <p class="pric1 normal-price">
-                  原价
-                  <del class="item_normalprice">${item.normalPrice}</del>
-                  <span class="disc">[<fmt:formatNumber type="percent"
-                      maxIntegerDigits="2" value="${item.vipPrice/item.normalPrice}" /> Off]
-                  </span>
-                </p>
-                <p class="item_sales">
-                  <span>已销售 </span> <em>${item.sales}</em> 件
-                </p>
-              </div>
-              </c:if>
               <c:if test="${not user.agent}">
-              <span class="hide item_normalprice">${item.normalPrice}</span>
-              <h5 class="item_price">￥ ${item.normalPrice}</h5>
+                <span class="hide item_normalprice">${item.normalPrice}</span>
+                <h5 class="item_price">￥ ${item.normalPrice}</h5>
+              </c:if>
+              <c:if test="${user.agent}">
+                <h5 class="item_price">￥ ${item.vipPrice}</h5>
+                <div class="item-info">
+                  <p class="pric1 normal-price">
+                    原价
+                    <del class="item_normalprice">${item.normalPrice}</del>
+                    <span class="disc">[<fmt:formatNumber type="percent"
+                        maxIntegerDigits="2" value="${item.vipPrice/item.normalPrice}" /> Off]
+                    </span>
+                  </p>
+                </div>
               </c:if>
               <a href="#" class="add-cart item_add">立即购买</a>
             </div>
             <div class="clear-fix"></div>
+            <p class="item_sales">
+              <span>已销售 </span> <em>${item.sales}</em> 件
+            </p>
             <p class="para">${item.detail}</p>
             <!-- <div class="prdt-info-grid">
               <ul>
@@ -110,24 +110,24 @@
         <h3>相关商品</h3>
         <c:forEach var="r" items="${relatives}" varStatus="status">
           <div class="col-md-2 btm-grid relate-item">
-            <a href="${pageContext.request.contextPath}/item/${r.id}"> <img src="${pageContext.request.contextPath}/resources/${r.icon}"
-              class="img-responsive" alt="" />
+            <a href="${pageContext.request.contextPath}/item/${r.id}">
+              <img src="${pageContext.request.contextPath}/resources/${r.icon}" class="img-responsive" alt="" />
               <h4>${r.name}</h4>
               <c:if test="${not user.agent}">
-              <p class="normal-price">
-                <span>会员价 </span> ￥<em>${r.normalPrice}</em>元
-              </p>
+                <p class="normal-price">
+                  <span>会员价 </span> ￥<em>${r.normalPrice}</em>元
+                </p>
               </c:if>
               <c:if test="${user.agent}">
-              <p class="vip">
-                <span>代理价 </span> ￥<em>${r.vipPrice}</em>元
-              </p>
-              <p class="normal-price">
-                <span>原价 </span><span class="pric1"> ￥<del>${r.normalPrice}</del></span> <span class="disc">[<fmt:formatNumber type="percent"
-                    maxIntegerDigits="2" value="${r.vipPrice/r.normalPrice}" /> Off]
-                </span>
-              </p>
+                <p class="vip">
+                  <span>代理价 </span> ￥<em>${r.vipPrice}</em>元
+                </p>
+                <p class="normal-price">
+                  <span>原价 </span><span class="pric1"> ￥<del>${r.normalPrice}</del></span>
+                  <span class="disc">[<fmt:formatNumber type="percent" maxIntegerDigits="2" value="${r.vipPrice/r.normalPrice}" /> Off]</span>
+                </p>
               </c:if>
+              <p class="item_sales"><span>已销售 </span> <em>${item.sales}</em> 件</p>
             </a>
           </div>
         </c:forEach>
