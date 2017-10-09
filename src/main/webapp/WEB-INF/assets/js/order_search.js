@@ -1,12 +1,10 @@
 $(function() {
-    $('.order-item').on('click', '.weui_cell_bd',
-    function() {
+    $('.order-item').on('click', '.weui_cell_bd', function() {
         $(this).find('.order-detail').fadeToggle(600);
         return false;
     });
 
-    $('.order-list').on('click', '.btn_cancel',
-    function() {
+    $('.order-list').on('click', '.btn_cancel', function() {
         var orderid = $(this).parents('.order-item').data('id');
         var $that = $(this);
         $.weui.dialog({
@@ -47,8 +45,7 @@ $(function() {
         });
     });
 
-    $('.order-list').on('click', '.btn_success',
-    function() {
+    $('.order-list').on('click', '.btn_success', function() {
         var orderid = $(this).parents('.order-item').data('id');
         var $that = $(this);
         $.weui.dialog({
@@ -88,8 +85,7 @@ $(function() {
         });
     });
 
-    $('.order-list').on('click', '.btn_pay',
-    function() {
+    $('.order-list').on('click', '.btn_pay', function() {
         var $item = $(this).parents('.order-item');
         $('.order-list').hide();
         $('.weui_msg .order-item').data('id', $item.data('id'));
@@ -97,42 +93,11 @@ $(function() {
         $('.weui_msg').fadeIn();
     });
 
-    $('.weui_msg').on('click', '.btn_back',
-    function() {
+    $('.weui_msg.weixin_pay').on('click', '.btn_back', function(event) {
+        event.preventDefault();
         $('.weui_msg').hide();
         $('.order-list').fadeIn();
+        return false;
     });
 
-    $('.weui_msg').on('click', '.order-pay',
-    function() {
-        var $parent = $(this).parents('.weui_msg');
-        var orderid = $parent.find('.order-item').data('id');
-        var tip = $parent.find('#tip').val();
-        $.ajax({
-            type: 'GET',
-            url: 'pay',
-            data: {
-                'orderid': orderid,
-                'tip': tip
-            },
-            dataType: 'json',
-            success: function(data) {
-                if (data.success) {
-                    callWeixinPay(data.content,
-                    function() {
-                        $('body').html('<div class="weui_msg">' + '   <div class="weui_icon_area">' + '  		<i class="weui_icon_success weui_icon_msg"></i>' + '	</div>' + '	<div class="weui_text_area">' + '		<h2 class="weui_msg_title">支付成功</h2>' + '		<p class="weui_msg_desc">尊涵搬家，竭诚为您服务！</p>' + '	</div>' + '</div>')
-
-                    },
-                    function() {
-                        $('body').html('<div class="weui_msg">' + '   <div class="weui_icon_area">' + '  		<i class="weui_icon_warn weui_icon_msg"></i>' + '	</div>' + '	<div class="weui_text_area">' + '		<h2 class="weui_msg_title">微信支付失败</h2>' + '		<p class="weui_msg_desc">给您带来不便，敬请谅解。<br/>请联系客服，尝试其他支付方式，或直接面付。</p>' + '	</div>' + '	<div class="weui_opr_area">' + '		<p class="weui_btn_area">' + '			<a href="/weixin-boot/order/search" class="weui_btn weui_btn_primary">返回我的订单</a>' + '		</p>' + '	</div>' + '</div>')
-                    });
-                } else {
-                    $.weui.alert(data.description);
-                }
-            },
-            error: function(xhr, type) {
-                $.weui.topTips('订单支付失败');
-            }
-        });
-    });
 });

@@ -232,7 +232,7 @@ public class OrderController extends BaseController {
 	
 	@RequestMapping(value="pay",method=RequestMethod.GET)
     @ResponseBody
-	public Map<String, Object> payOrder(HttpServletRequest req, HttpServletResponse resp, final Integer orderid, final Integer tip) {
+	public Map<String, Object> payOrder(HttpServletRequest req, HttpServletResponse resp, final Integer orderid) {
 	    resp.setHeader("Cache-Control", "no-cache");
 	    final String APPID = weixinContants.APPID;
 	    final String MCH_ID = weixinContants.MCH_ID;
@@ -253,10 +253,6 @@ public class OrderController extends BaseController {
                 }
             }
             if(prepayid == null) {  //第一次发起支付或支付已关闭
-                //设置订单小费（只有在第一次支付时可以设，数据模型有问题，建议订单和支付单独两个表，1:N关系）
-                if(tip != null) {
-                    //order.setTip(new BigDecimal(tip));
-                }
                 prepayid = PayKit.unifiedorder(req, order, APPID, MCH_ID, MCH_KEY);
                 order.setPayId(prepayid);
                 orderService.updatePayInfo(order);

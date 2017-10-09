@@ -102,7 +102,5 @@
         <t:insertAttribute name="header" />
 		<t:insertAttribute name="main" />
         <t:insertAttribute name="footer" />
-        <script src="${resourcePath}/js/order.js"></script>
-        <script src="${resourcePath}/js/pay.js"></script>
     </body>
 </html>

@@ -34,12 +34,12 @@
 </div>
 <!-- //slider bar -->
 <!-- items -->
-<div class="items">
+<div class="container-fluid items">
   <c:forEach var="category" items="${indexCategories}" varStatus="status">
-    <div class="container items-sec">
-      <h3>${category.name}</h3>
+    <div class="row items-sec">
+      <h3><a href="${pageContext.request.contextPath}/items/${category.id}" >${category.name}</a></h3>
       <c:forEach var="item" items="${indexItems[status.index]}" varStatus="status">
-        <div class="col-md-3 feature-grid">
+        <div class="col-xs-4 feature-grid">
           <a href="item/${item.id}"><img src="${pageContext.request.contextPath}/resources/${item.icon}" alt="" />
             <div class="arrival-info">
               <h4>${item.name}</h4>
@@ -55,6 +55,9 @@
                   </span>
                 </p>
               </c:if>
+              <p class="item_sales">
+                <span>已销售 </span> <em>${item.sales}</em> 件
+              </p>
             </div> </a>
         </div>
       </c:forEach>
@@ -62,103 +65,4 @@
     </div>
   </c:forEach>
 </div>
-<!---->
-<%-- <!-- items -->
-<div class="items">
-  <div class="container items-sec">
-    <h3>国酒典藏</h3>
-    <c:forEach var="white" items="${whitewines}" varStatus="status">
-      <div class="col-md-3 feature-grid">
-        <a href="item/${white.id}"><img src="${pageContext.request.contextPath}/resources/${white.icon}" alt="" />
-          <div class="arrival-info">
-            <h4>${white.name}</h4>
-            <p class="normal_price">
-              <span>会员价 </span> ￥<em>${white.normalPrice}</em>元
-            </p>
-            <c:if test="${user.agent}">
-            <p class="agent_price">
-              <span>代理价 </span><span class="pric1"> ￥<strong>${white.vipPrice}</strong></span>
-              <span class="disc">[<fmt:formatNumber type="percent"
-                  maxIntegerDigits="2" value="${white.vipPrice/white.normalPrice}" /> Off]
-              </span>
-            </p>
-            </c:if>
-          </div> </a>
-      </div>
-    </c:forEach>
-    <div class="clearfix"></div>
-  </div>
-  <div class="container items-sec">
-    <h3>精美红酒系列</h3>
-    <c:forEach var="wine" items="${wines}" varStatus="status">
-      <div class="col-md-3 feature-grid">
-        <a href="item/${wine.id}"><img src="${pageContext.request.contextPath}/resources/${wine.icon}" alt="" />
-          <div class="arrival-info">
-            <h4>${wine.name}</h4>
-            <p class="normal_price">
-              <span>会员价 </span> ￥<em>${wine.normalPrice}</em>元
-            </p>
-            <c:if test="${is_agent}">
-            <p class="agent_price">
-              <span>代理价 </span><span class="pric1"> ￥<strong>${wine.vipPrice}</strong></span> <span class="disc">[<fmt:formatNumber type="percent"
-                  maxIntegerDigits="2" value="${wine.vipPrice/wine.normalPrice}" /> Off]
-              </span>
-            </p>
-            </c:if>
-          </div> </a>
-      </div>
-    </c:forEach>
-    <div class="clearfix"></div>
-  </div>
-  <div class="container items-sec">
-    <h3>沁爽啤酒系列</h3>
-    <c:forEach var="beer" items="${beers}" varStatus="status">
-      <div class="col-md-3 feature-grid">
-        <a href="item/${beer.id}"><img src="${pageContext.request.contextPath}/resources/${beer.icon}" alt="" />
-          <div class="arrival-info">
-            <h4>${beer.name}</h4>
-            <p class="normal_price">
-              <span>会员价 </span> ￥<em>${beer.normalPrice}</em>元
-            </p>
-            <c:if test="${is_agent}">
-            <p class="agent_price">
-              <span>代理价 </span><span class="pric1"> ￥<strong>${beer.vipPrice}</strong></span> <span class="disc">[<fmt:formatNumber type="percent"
-                  maxIntegerDigits="2" value="${beer.vipPrice/beer.normalPrice}" /> Off]
-              </span>
-            </p>
-            </c:if>
-          </div> </a>
-      </div>
-    </c:forEach>
-    <div class="clearfix"></div>
-  </div>
-</div> --%>
-<!---->
-<%-- <div class="offers">
-  <div class="container">
-    <h3>『 一 · 元 · 购 』</h3>
-    <div class="offer-grids">
-      <c:forEach var="rush" items="${rushItems}" varStatus="status">
-        <div class="col-md-6">
-          <a href="#">
-            <div class="offer-grid">
-              <div class="ofr-pic">
-                <img src="${pageContext.request.contextPath}/resources/${rush.icon}" class="img-responsive center-block" alt="" />
-              </div>
-              <div class="ofr-pic-info pull-right text-right">
-                <h4>一元抢购 · ${rush.name}</h4>
-                <p class="status">
-                  已抢购 <span>${rush.counts}</span> 份，<span>${rush.buyers}</span> 人参加
-                </p>
-                <p class="buy">立即抢购</p>
-              </div>
-              <div class="clearfix"></div>
-            </div>
-          </a>
-        </div>
-      </c:forEach>
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</div> --%>
-<!---->
+<!-- //items -->

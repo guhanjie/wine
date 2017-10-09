@@ -4,7 +4,8 @@
   <div class="header-bottom">
     <div class="logo">
       <h1>
-        <a href="index.html">如果商城</a>
+        <a class="hidden" href="index.html">如果商城</a>
+        <img class="img-responsive" alt="" src="${pageContext.request.contextPath}/resources/images/title.png">
       </h1>
     </div>
     <!-- top nav bar -->

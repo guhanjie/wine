@@ -84,7 +84,7 @@
   </div>
   <!-- //check out -->
 
-  <div class="weui_msg" style="display: none;">
+  <div class="weui_msg weixin_pay" style="display: none;">
     <div class="weui_icon_area">
       <i class="weui_icon_safe weui_icon_safe_success"></i>
     </div>
@@ -102,16 +102,6 @@
             <span id="res_amount" class="text-red"></span>
           </div>
         </div>
-        <!-- <div class="weui_cell">
-          <div class="weui_cell_hd">
-            <p>
-              <i class="weui_icon_success_circle"></i>小费 ： ￥
-            </p>
-          </div>
-          <div class="weui_cell_bd weui_cell_primary">
-            <input id="tip" class="order_tip weui_input text-red" type="number" placeholder="打赏小费~"></input>元
-          </div>
-        </div> -->
       </div>
     </div>
     <div class="weui_opr_area">
@@ -123,3 +113,6 @@
     <div class="weui_extra_area"></div>
   </div>
 </div>
+<!-- check out -->
+<script src="${pageContext.request.contextPath}/resources/js/order.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/pay.js"></script>

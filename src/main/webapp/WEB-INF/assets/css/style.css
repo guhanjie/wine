@@ -49,8 +49,17 @@ h1.b1,h2.b2,h3.b3 {
     color: #564343;
 }
 /*----*/
+.logo h1{
+	background-color: #ed645c;
+    font-size: 1em;
+    position: absolute;
+    width: 100%;
+    height: 61px;
+    /* background-image: url("/wine/resources/images/title.png"); */
+}
 .logo img{
 	width:100%;
+	padding: 9px 0;
 }
 .login a{
 	font-size:13px;
@@ -273,6 +282,8 @@ display:inline-block;
 }
 .items-sec{
 	padding: 1em 0;
+	margin-right: 0px;
+    margin-left: 0px;
 }
 .feature-grid img {
     width: 100%;
@@ -286,7 +297,8 @@ display:inline-block;
     text-decoration: none;
 }
 .arrival-info {
-	margin: 0 1.5em;
+	/* margin: 0 1.5em; */
+	margin: 0 4px;
 }
 .arrival-info h4 {
     color: #333;
@@ -307,10 +319,10 @@ display:inline-block;
 .arrival-info p.normal_price span {
     font-size: 0.6em;
 }
-.arrival-info p.normal_price em {
+.arrival-info p.normal_price em, .arrival-info p.sales em {
 	color: #ed645c;
 }
-.arrival-info p.agent_price {
+.arrival-info p.agent_price, .arrival-info p.sales {
 	font-size: 0.6em;
 }
 p.normal_price span.pric1 {
@@ -356,6 +368,13 @@ span.disc {
 }
 .feature-grid:hover div.viw{
 	display:block;
+}
+/*--sales--*/
+p.item_sales{
+    color: #337ab7 !important; 
+}
+p.item_sales em{
+    color: #ed645c;
 }
 /*----*/
 .offers{
@@ -482,7 +501,7 @@ span.disc {
 	float:left;
 	margin-top:2.2em;
 }
-.normal-price-info {
+.item-info {
     display: inline-block;
 }
 /*----subscribe---*/
@@ -2288,7 +2307,7 @@ label {
 	    width: 76%;
 	}
 	.box_1 {
-	    margin-top: 12px;
+	    margin-top: 10px;
 	    margin-right: 5px;
 	    position: relative;
 	    width: auto;
@@ -2491,6 +2510,9 @@ label {
 	}
 } */
 @media (max-width: 360px){
+    .box_1 {
+       margin-top: 6px;
+    }
     .single-top {
         width: 92%;
         margin: 0 auto;
@@ -2511,6 +2533,9 @@ label {
 	    padding: 1em 0;
 	    text-align: center;
 	} */
+	.box_1 {
+	   margin-top: 5px;
+	}
 	.feature-grid {
 	    width: 100%;
 	    margin: 1em 0em 1.5em;

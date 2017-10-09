@@ -1,3 +1,4 @@
+//Weixin JSAPI
 function callWeixinPay(param, success, fail) {
     function onBridgeReady() {
         WeixinJSBridge.invoke('getBrandWCPayRequest', param,
@@ -35,3 +36,54 @@ function callWeixinPay(param, success, fail) {
         onBridgeReady();
     }
 }
+
+//event binding
+$('.weui_msg.weixin_pay').on('click', '.order-pay', function() {
+    var $parent = $(this).parents('.weui_msg');
+    var orderid = $parent.find('.order-item').data('id');
+    $.ajax({
+        type : 'GET',
+        url : '/wine/order/pay',
+        data : {
+            'orderid' : orderid
+        },
+        dataType : 'json',
+        success : function(data) {
+            if (data.success) {
+                callWeixinPay(data.content, function() {
+                    $('body').html(
+                        '<div class="weui_msg">' 
+                      + '  <div class="weui_icon_area">'
+                      + '    <i class="weui_icon_success weui_icon_msg"></i>' 
+                      + '  </div>'
+                      + '  <div class="weui_text_area">' 
+                      + '    <h2 class="weui_msg_title">支付成功</h2>'
+                      + '    <p class="weui_msg_desc">如果商城，竭诚为您服务！</p>' 
+                      + '  </div>' 
+                      + '</div>');
+
+                }, function() {
+                    $('body').html(
+                        '<div class="weui_msg">' 
+                      + '  <div class="weui_icon_area">'
+                      + '    <i class="weui_icon_warn weui_icon_msg"></i>' 
+                      + '  </div>'
+                      + '  <div class="weui_text_area">' 
+                      + '    <h2 class="weui_msg_title">微信支付失败</h2>'
+                      + '    <p class="weui_msg_desc">给您带来不便，敬请谅解。<br/>请联系客服，尝试其他支付方式，或直接面付。</p>' 
+                      + '  </div>'
+                      + '  <div class="weui_opr_area">' 
+                      + '    <p class="weui_btn_area">'
+                      + '      <a href="/wine/order/search" class="weui_btn weui_btn_primary">返回我的订单</a>'
+                      + '    </p>' 
+                      + '  </div>' 
+                      + '</div>')
+                });
+            } else {
+                $.weui.alert(data.description);
+            }
+        }, error : function(xhr, type) {
+            $.weui.alert('订单支付失败');
+        }
+    });
+});

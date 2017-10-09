@@ -40,6 +40,7 @@
               </c:if>
               <c:if test="${user.agent}">
                 <span class="item_price">￥${item.vipPrice}</span>
+                <p class="item_sales"><span>已销售 </span> <em>${item.sales}</em> 件</p>
                 <div class="ofr">
                   <p class="pric1">
                     原价 <strong class="item_normalprice">${item.normalPrice}</strong>

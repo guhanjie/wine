@@ -56,6 +56,9 @@ public class WeixinConstants {
     public final static String API_GET_MEDIA="https://api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID";
     public final static String API_USER_INFO="https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
     public final static String API_KF_SEND_MSG="https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=ACCESS_TOKEN";
+
+    public final static String API_QRCODE_CREATE="https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=ACCESS_TOKEN";
+    public final static String API_QRCODE_SHOW="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=TICKET";
     
     public final static String API_PAY_UNIFIEDORDER = "https://api.mch.weixin.qq.com/pay/unifiedorder";
     public final static String API_PAY_ORDERQUERY = "https://api.mch.weixin.qq.com/pay/orderquery";
@@ -70,7 +73,4 @@ public class WeixinConstants {
     public final static String OAUTH2_REFRESH_TOKEN="https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=APPID&grant_type=refresh_token&refresh_token=REFRESH_TOKEN";
     public final static String OAUTH2_GET_USER_INFO="https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
 
-    public final static String API_QRCODE_CREATE="https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=ACCESS_TOKEN";
-    public final static String API_QRCODE_SHOW="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=TICKET";
-    
 }

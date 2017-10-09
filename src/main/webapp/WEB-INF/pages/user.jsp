@@ -15,15 +15,18 @@
       <div class="panel-body">
         <form class="form-horizontal">
           <div class="form-group">
+            <label class="col-xs-3 control-label">用户ID</label> <label class="col-xs-9 control-label">${user.id}</label>
+          </div>
+          <div class="form-group">
             <label class="col-xs-3 control-label">用户名</label> <label class="col-xs-9 control-label">${user.name}</label>
           </div>
           <div class="form-group">
-            <label class="col-xs-3 control-label">用户类型</label> <label class="col-xs-9 control-label"> <c:if test="${user.type == 0}">
-                <span class="label label-default">普通用户</span>
+            <label class="col-xs-3 control-label">用户类型</label> <label class="col-xs-9 control-label"> <c:if
+                test="${user.type == 0}">
+                <span class="label label-default">普通会员</span>
               </c:if> <c:if test="${user.type == 1}">
-                <span class="label label-warning">会员</span>
+                <span class="label label-warning">代理商</span>
               </c:if>
-
             </label>
           </div>
           <div class="form-group">
@@ -42,8 +45,8 @@
       <div class="panel-body">
         <form class="form-horizontal">
           <div class="form-group">
-            <label class="col-xs-3 control-label">可用积分</label> <label class="col-xs-9 control-label"> <span class="badge badge-success">${user.points}</span>
-              <%-- <span class="label label-info text-danger">${user.points}</span> --%>
+            <label class="col-xs-3 control-label">可用积分</label> <label class="col-xs-9 control-label"> <span
+              class="badge badge-success">${user.points}</span> <%-- <span class="label label-info text-danger">${user.points}</span> --%>
             </label>
           </div>
         </form>
@@ -83,7 +86,8 @@
   <div class="container">
     <h3>推荐好友</h3>
     <form>
-      <input type="text" class="text" value="Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email';}">
+      <input type="text" class="text" value="Email" onfocus="this.value = '';"
+        onblur="if (this.value == '') {this.value = 'Email';}">
       <!-- <input type="submit" value="立即推荐"/> -->
       <a class="btn" href="${pageContext.request.contextPath}/promote">立即推荐</a>
     </form>

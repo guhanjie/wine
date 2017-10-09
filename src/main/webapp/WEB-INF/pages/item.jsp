@@ -56,14 +56,17 @@
               <span class="hidden item_img">${pageContext.request.contextPath}/resources/${item.icon}</span>
               <c:if test="${user.agent}">
               <h5 class="item_price">￥ ${item.vipPrice}</h5>
-              <div class="normal-price-info">
+              <div class="item-info">
                 <p class="pric1 normal-price">
                   原价
                   <del class="item_normalprice">${item.normalPrice}</del>
+                  <span class="disc">[<fmt:formatNumber type="percent"
+                      maxIntegerDigits="2" value="${item.vipPrice/item.normalPrice}" /> Off]
+                  </span>
                 </p>
-                <span class="disc">[<fmt:formatNumber type="percent"
-                    maxIntegerDigits="2" value="${item.vipPrice/item.normalPrice}" /> Off]
-                </span>
+                <p class="item_sales">
+                  <span>已销售 </span> <em>${item.sales}</em> 件
+                </p>
               </div>
               </c:if>
               <c:if test="${not user.agent}">
