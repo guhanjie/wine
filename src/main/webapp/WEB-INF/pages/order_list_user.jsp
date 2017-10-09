@@ -117,5 +117,5 @@
     </div>
   </div>
 </div>
-<script src="${pageContext.request.contextPath}/resources/js/order_search.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/pay.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/order_search.js"></script>

@@ -1,5 +1,6 @@
 //Weixin JSAPI
 function callWeixinPay(param, success, fail) {
+    alert("hello!");
     function onBridgeReady() {
         WeixinJSBridge.invoke('getBrandWCPayRequest', param,
         // {
@@ -74,7 +75,7 @@ $('.weui_msg.weixin_pay').on('click', '.order-pay', function() {
                       + '  </div>'
                       + '  <div class="weui_opr_area">' 
                       + '    <p class="weui_btn_area">'
-                      + '      <a href="/wine/order/search" class="weui_btn weui_btn_primary">返回我的订单</a>'
+                      + '      <a href="/wine/order/list" class="weui_btn weui_btn_primary">返回我的订单</a>'
                       + '    </p>' 
                       + '  </div>' 
                       + '</div>')

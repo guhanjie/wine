@@ -125,5 +125,5 @@
   <!-- //pay msg -->
 </div>
 
-<script src="${pageContext.request.contextPath}/resources/js/order.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/pay.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/order.js"></script>
