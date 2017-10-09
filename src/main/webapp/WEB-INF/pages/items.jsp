@@ -18,7 +18,7 @@
 <!--breadcrumb//-->
 <div class="product-model container">
   <h2>商品列表</h2>
-  <div class="col-sm-12 product-model-sec">
+  <div class="col-xs-12 product-model-sec">
     <c:forEach var="item" items="${items}" varStatus="status">
       <div class="product-grid">
         <a href="${pageContext.request.contextPath}/item/${item.id}">

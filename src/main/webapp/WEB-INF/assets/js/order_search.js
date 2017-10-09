@@ -90,7 +90,7 @@ $(function() {
         $('.order-list').hide();
         $('.weui_msg .order-item').data('id', $item.data('id'));
         $('#res_amount').text($item.find('#amount').text());
-        $('.weui_msg').fadeIn();
+        $('.weui_msg.weixin_pay').fadeIn();
     });
 
     $('.weui_msg.weixin_pay').on('click', '.btn_back', function(event) {

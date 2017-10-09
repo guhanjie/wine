@@ -141,7 +141,8 @@
                                         $('.my-cart').hide();
                                         $('.weui_msg.weixin_pay .order-item').data('id', data.content.id);
                                         $('#res_amount').text('' + data.content.payAmount + ' 元');
-                                        $('.weui_msg.weixin_pay').fadeIn();
+                                        $('.pay-msg').fadeIn();
+                                        window.scrollTo(0,0); //页面滚动回顶端
                                     }
                                 } ]
                     });
