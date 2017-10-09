@@ -31,7 +31,6 @@ public abstract class BaseController {
     
     protected User getSessionUser() {
     	HttpSession session = request.getSession();
-    	
     	Object user = session.getAttribute(AppConstants.SESSION_KEY_USER);
     	if(user != null && user instanceof User) {
     		return (User)user;
