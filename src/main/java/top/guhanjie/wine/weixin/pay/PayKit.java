@@ -78,7 +78,7 @@ public class PayKit {
         map.put("mch_id", mchid);                                                                   //商户号
         map.put("device_info", "WEB");                                                              //设备号(PC网页或公众号内支付请传"WEB")
         map.put("nonce_str", nonceStr);                                                         //随机字符串
-        map.put("body", "如果酒业-酒类");                                         //商品描述
+        map.put("body", "如东如果酒业-食品");                                         //商品描述
         //map.put("detail", "商品详细列表，使用Json格式，传输签名前请务必使用CDATA标签将JSON文本串保护起来。");          //商品详情
         //map.put("attach", "附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据");
         map.put("out_trade_no", order.getId().toString());                                  //商户订单号

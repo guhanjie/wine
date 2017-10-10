@@ -1,7 +1,7 @@
 //Weixin JSAPI
 function callWeixinPay(param, success, fail) {
-    alert("hello!");
     function onBridgeReady() {
+        alert(JSON.stringify(param));
         WeixinJSBridge.invoke('getBrandWCPayRequest', param,
         // {
         // "appId" : "wx425b5e47d51971d5", //公众号名称，由商户传入
