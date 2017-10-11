@@ -252,8 +252,9 @@ public class PayKit {
                     result.put("err_msg", "订单支付不成功："+trade_state_desc);
                     return;
                 }
-                if(order.getTotalAmount().intValue() != Integer.valueOf(total_fee)/100) {    //支付金额与订单金额不一致
-                    LOGGER.warn("trade exception, amount not matched: topay=[{}], payed=[{}]", order.getTotalAmount(), total_fee);
+                int payAmount = order.getPayAmount().multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_DOWN).intValue();
+                if(payAmount != Integer.valueOf(total_fee)) {    //支付金额与订单金额不一致
+                    LOGGER.warn("trade exception, amount not matched: topay=[{}], payed=[{}]", payAmount, total_fee);
 //                    result.put("result", "FAIL");
 //                    result.put("err_msg", "订单支付金额有误：topay="+order.getAmount()+", payed="+ total_fee);
 //                    return;
