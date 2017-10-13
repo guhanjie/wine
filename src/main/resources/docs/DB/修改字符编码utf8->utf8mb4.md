@@ -55,8 +55,10 @@ MySQL [(none)]> show create database wine;
 >SHOW CREATE TABLE user;
 
 3.5 修改table的字符编码
-- 只修改表默认的字符集 ALTER TABLE table_name DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-- 修改表默认的字符集和所有字符列的字符集 ALTER TABLE table_name CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+- 只修改表默认的字符集 
+> ALTER TABLE table_name DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+- 修改表默认的字符集和所有字符列的字符集
+> ALTER TABLE table_name CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 3.6 查看column的字符编码
 >SHOW FULL COLUMNS FROM user;
