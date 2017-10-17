@@ -68,7 +68,7 @@ public class PayKit {
             LOGGER.warn("order can not be nulll in unified order.");
             return null;
         }
-        LOGGER.info("starting to unified order to weixin for order:[{}]...", order.getId());
+        LOGGER.info("starting to unified order to weixin for order[{}]...", order.getId());
 
         final StringBuilder prepayId = new StringBuilder();        
         
@@ -196,7 +196,8 @@ public class PayKit {
                 String return_msg = map.get("return_msg");                                          //返回信息
                 if(!"SUCCESS".equals(return_code)) {
                 	LOGGER.error("fail to get response for weixin search payment api, cause:[{}]", return_msg);
-                    result.put("result", return_code);
+                    result.put("result", "FAIL");
+                    result.put("return_code", return_code);
                     result.put("err_msg", "订单查询失败: " + return_msg);
                 	return;
                 }
@@ -223,8 +224,10 @@ public class PayKit {
                     String err_code = map.get("err_code");                                              //错误代码
                     String err_code_des = map.get("err_code_des");                              //错误代码描述
                     LOGGER.error("error in weixin search payment, cause: err_code=[{}], err_code_des=[{}]", err_code, err_code_des);
-                    result.put("result", result_code);
-                    result.put("err_msg", "pay search fail: "+err_code + ", " + err_code_des);
+                    result.put("result", "FAIL");
+                    result.put("return_code", return_code);
+                    result.put("result_code", result_code);
+                    result.put("err_msg", "pay search fail, err_code: "+err_code + ", err_code_des:" + err_code_des);
                     return;
                 }
                 String openid = map.get("openid");                                        			//用户OpenId
@@ -246,23 +249,31 @@ public class PayKit {
                 LOGGER.info("success to search weixin payment for order:[{}]: "
                 				+ "openid=[{}], trade_state=[{}], total_fee=[{}], out_trade_no=[{}], time_end=[{}], trade_state_desc=[{}]", 
                 				order.getId(), openid, trade_state, total_fee, out_trade_no, time_end, trade_state_desc);
-                if(!"SUCCESS".equals(trade_state)) {    //支付不成功
-                    LOGGER.warn("trade failed, trade_state:[{}], trade_state_desc:[{}]", trade_state, trade_state_desc);
-                    result.put("result", trade_state);
-                    result.put("err_msg", "订单支付不成功："+trade_state_desc);
-                    return;
-                }
-                int payAmount = order.getPayAmount().multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_DOWN).intValue();
-                if(payAmount != Integer.valueOf(total_fee)) {    //支付金额与订单金额不一致
-                    LOGGER.warn("trade exception, amount not matched: topay=[{}], payed=[{}]", payAmount, total_fee);
-//                    result.put("result", "FAIL");
-//                    result.put("err_msg", "订单支付金额有误：topay="+order.getAmount()+", payed="+ total_fee);
+                //以下这段有歧义，因此考虑删除，比如用户未支付，不代表支付不成功
+//                if(!"SUCCESS".equals(trade_state)) {    //支付不成功
+//                    LOGGER.warn("trade failed, trade_state:[{}], trade_state_desc:[{}]", trade_state, trade_state_desc);
+//                    result.put("result", trade_state);
+//                    result.put("err_msg", "订单支付不成功："+trade_state_desc);
 //                    return;
+//                }
+                if(!"NOTPAY".equals(trade_state)) {
+                    int payAmount = order.getPayAmount().multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_DOWN).intValue();
+                    if(payAmount != Integer.valueOf(total_fee)) {    //支付金额与订单金额不一致
+                        LOGGER.warn("trade payment changed, original topay=[{}], but now topay=[{}], must re-generate new prepayid", total_fee, payAmount);
+                        //LOGGER.warn("trade exception, amount not matched: topay=[{}], payed=[{}]", payAmount, total_fee);
+                        result.put("result", "FAIL");
+                       //result.put("err_msg", "交易异常，订单支付金额有误：to pay="+payAmount+", actually payed="+ total_fee);
+                        //result.put("err_msg", "交易异常，订单支付金额有误：to pay="+payAmount+", actually payed="+ total_fee);
+                        return;
+                    }
                 }
                 result.put("total_fee", total_fee);
                 result.put("time_end", time_end);
                 result.put("openid", openid);
                 result.put("result", "SUCCESS");
+                result.put("return_code", return_code);
+                result.put("result_code", result_code);
+                result.put("trade_state", trade_state);
             }
         });
         return result;

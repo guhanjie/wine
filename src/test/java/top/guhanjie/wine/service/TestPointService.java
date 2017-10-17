@@ -17,7 +17,7 @@ public class TestPointService {
 		
 	@Test
     public void testAddPoints() {
-		pointService.addPointsForAgent(1, 1000, 1);
+		pointService.addPointsForAgent(1, 1000, 1, 1);
 	}
 	
 	@Test

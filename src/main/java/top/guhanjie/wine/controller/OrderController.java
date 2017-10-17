@@ -247,12 +247,16 @@ public class OrderController extends BaseController {
         try {
             if(prepayid != null) {  //若先前发起过支付，需要验证prepayid是否已关闭
                 Map<String, String>map = PayKit.search(order, APPID, MCH_ID, MCH_KEY);
-                String payStatus = map.get("result");
-                if("CLOSED".equals(payStatus)) {        //若该prepayid已失效则重新下单
-                    prepayid = null;
+                String result = map.get("result");
+                //若该prepayid对应的支付请求已失效或者异常则重新下单
+                if("FAIL".equals(result)) {
+                    String payStatus = map.get("trade_state");
+                    if(!"USERPAYING".equals(payStatus)) {  //只要不是用户正在支付的状态，其他都属于异常，重新生成prepayid
+                        prepayid = null;
+                    }
                 }
             }
-            if(prepayid == null) {  //第一次发起支付或支付已关闭
+            if(prepayid == null) {  //第一次发起支付，或支付已关闭，或支付价格变更，或者其他异常
                 prepayid = PayKit.unifiedorder(req, order, APPID, MCH_ID, MCH_KEY);
                 order.setPayId(prepayid);
                 orderService.updatePayInfo(order);
@@ -262,6 +266,7 @@ public class OrderController extends BaseController {
         	taskScheduler.schedule(new Runnable() {
                 @Override
                 public void run() {
+                    LOGGER.info("search order[{}] in timed schedule...", order.getId());
                     Map<String, String> map;
                     try {
                         map = PayKit.search(order, APPID, MCH_ID, MCH_KEY);
@@ -301,7 +306,7 @@ public class OrderController extends BaseController {
 	 */
 	@RequestMapping(value="paycallback")
 	public void paycallback(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		LOGGER.debug("getting callback from weixin pay...");
+		LOGGER.info("getting callback from weixin pay...");
 		
 		Map<String, String> map = PayKit.callback(req, weixinContants.MCH_KEY);
 		String result = map.get("result");

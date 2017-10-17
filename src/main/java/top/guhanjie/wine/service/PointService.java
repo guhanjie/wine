@@ -107,8 +107,9 @@ public class PointService {
 	 * 用户购买商品，给代理商提成加分
 	 */
 	@Transactional
-	public int addPointsForAgent(int agentid, Integer points, int userid) {
-		LOGGER.info("starting to add points[{}] to agent[{}] for user[{}].", points, agentid, userid);
+	public int addPointsForAgent(int agentid, Integer points, int userid, int orderid) {
+		LOGGER.info("starting to add points[{}] to agent[{}], promotee[{}] in order[{}].", 
+		        points, agentid, userid, orderid);
 		if (points != null && points == 0) {
 			return 0;
 		}
@@ -119,6 +120,7 @@ public class PointService {
 		}
 		PointDetail pd = new PointDetail();
 		pd.setUserId(agentid);
+		pd.setOrderId(orderid);
 		pd.setPromoteeId(userid);
 		pd.setPoints(points);
 		pd.setType(PointDetail.TypeEnum.ADD.code());
@@ -129,7 +131,8 @@ public class PointService {
 			throw new RuntimeException(
 					"add points[" + points + "] to user[" + agentid + "] failed, transaction rollback....");
 		}
-		LOGGER.info("success to add points[{}] to agent[{}] for user[{}].", points, agentid, userid);
+		LOGGER.info("success to add points[{}] to agent[{}], promotee[{}] in order[{}].", 
+		        points, agentid, userid, orderid);
 		return res;
 	}
 

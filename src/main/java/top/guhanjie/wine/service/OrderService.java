@@ -7,6 +7,7 @@
  */  
 package top.guhanjie.wine.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -261,9 +262,11 @@ public class OrderService {
             order.setPayStatus(Order.PayStatusEnum.SUCCESS.code());
             order.setPayType(PayTypeEnum.WEIXIN.code());
             order.setPayTime(DateTimeUtil.getDate(time_end, "yyyyMMddHHmmss"));
-            if(order.getTotalAmount().intValue() != Integer.valueOf(total_fee)/100) {
-            	LOGGER.warn("Pay amount not matched: topay=[{}], actual payed=[{}]", order.getTotalAmount(), total_fee);
-//            	order.setPayStatus(PayStatusEnum.PAYERROR.code());
+            int payAmount = order.getPayAmount().multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_DOWN).intValue();
+            if(payAmount != Integer.valueOf(total_fee).intValue()) {
+            	LOGGER.error("Pay amount not matched: topay=[{}], actual payed=[{}]", payAmount, total_fee);
+            	//这个地方有点小问题：订单待支付的和实际支付的金额不吻合，订单状态置为错误，但是用户实际支付的钱怎么办呢？
+            	order.setPayStatus(PayStatusEnum.PAYERROR.code());
             }
         }
         //更新订单支付状态
@@ -392,7 +395,7 @@ public class OrderService {
         	int points = amount / 2;
         	LOGGER.info("===[Promotion Assginment]===");
         	LOGGER.info("order[{}] amount=[{}], promote points=[{}] to user[{}]", orderid, amount, points, promoterid);
-        	pointService.addPointsForAgent(promoterid, points, userid);
+        	pointService.addPointsForAgent(promoterid, points, userid, orderid);
         	LOGGER.info("success to assign promote points[{}] to user[{}] for order[{}]", points, promoterid, orderid);
         }
         
