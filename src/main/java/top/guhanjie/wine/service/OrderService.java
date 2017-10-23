@@ -368,7 +368,7 @@ public class OrderService {
     /**
      * 分配推广积分<br/>
      * 推广有两种模式：1：代理商推广用户购买，2：代理商平推代理商
-     * 模式1：推广用户完成订单支付后，给推广人相应订单的积分（提成50%），每单都算
+     * 模式1：推广用户完成订单支付后，给推广人相应订单的积分（提成按“正常价-代理商价”的差价计算），每单都算
      * 模式2：代理商平推某个用户成为代理商，给推广人购买成为代理商订单总额的一半积分，仅一次有效
      */
     private void assignPromotePoints(Order order) {
@@ -391,9 +391,19 @@ public class OrderService {
         	return;
         }
         else {
+            LOGGER.info("===[Promotion Assginment]===");
+        	//统计该订单下差价提成
+        	int points = 0;
+        	String items = order.getItems();
+        	String[] itemPairs = items.split(",");
+        	for(String itemPair : itemPairs) {
+        	    String[] itemInfo = itemPair.split(":");
+        	    Integer itemId = Integer.valueOf(itemInfo[0]);
+        	    Integer count = Integer.valueOf(itemInfo[1]);
+        	    Item item = itemService.getItem(itemId);
+        	    points += (item.getNormalPrice().intValue()-item.getVipPrice().intValue())*count;
+        	}
         	int promoterid = promoter.getId();
-        	int points = amount / 2;
-        	LOGGER.info("===[Promotion Assginment]===");
         	LOGGER.info("order[{}] amount=[{}], promote points=[{}] to user[{}]", orderid, amount, points, promoterid);
         	pointService.addPointsForAgent(promoterid, points, userid, orderid);
         	LOGGER.info("success to assign promote points[{}] to user[{}] for order[{}]", points, promoterid, orderid);
