@@ -104,6 +104,7 @@ public class OrderService {
 		        throw WebExceptionFactory.exception(WebExceptionEnum.DATA_NOT_WELL, "缺失联系方式");
 		    }
 		    user.setPhone(phone);
+		    user.setAddress(user.getAddress());
 		    userService.updateUser(user);
 		}
 		if(StringUtils.isBlank(order.getContactor())) {

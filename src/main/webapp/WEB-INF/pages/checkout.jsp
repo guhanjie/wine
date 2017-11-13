@@ -35,7 +35,15 @@
             <span class="cpns">会员积分（扣减）</span> <span class="total1 "><span class="delcpns"></span>元</span>
           </div>
           <div>
-            <span>运送费</span> <span class="total1"><span class="simpleCart_shipping"></span>元</span>
+            <span class="shipType">
+              <label class="radio-inline">
+                <input type="radio" name="shipType" id="shipType2" value="2" checked> 同城快送
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="shipType" id="shipType1" value="1"> 快递
+              </label>
+            </span> 
+            <span class="total1"><span class="simpleCart_shipping"></span>元</span>
           </div>
           <div class="clearfix"></div>
         </div>

@@ -31,7 +31,20 @@
     // });
 
     $("body").on('click', '.simpleCart_increment,.simpleCart_decrement', function(e) {
+        simpleCart.update();
         $('input.points').val('');
+    });
+    
+    $("body").on('click', '.shipType :radio', function(e) {
+        //同城快送
+        if($('#shipType1').prop('checked')) {
+            ships = 6;
+        }
+        //快递
+        if($('#shipType2').prop('checked')) {
+            ships = 10;
+        }
+        simpleCart.update();
     });
 
     // use coupon
@@ -64,9 +77,9 @@
         simpleCart["coupons"] = cpns;
         // $cpn.text(maxcpns-cpns);
         $('.coupons-discount').find('span.delcpns').text('-￥' + cpns);
+        $('.coupons-discount').fadeIn('slow', function(e) {
         var num = new Number(all - cpns);
         $('.simpleCart_all').text('¥' + num.toFixed(1));
-        $('.coupons-discount').fadeIn('slow', function(e) {
         });
     });
 
@@ -92,6 +105,7 @@
         });
         order["items"] = items.substr(1);
         order["ships"] = ships;
+        order["shipType"] = $(':radio[name="shipType"]:checked').val();
         order["sourceType"] = "normal";
         order["contactor"] = $('#order-contactor').val();
         order["phone"] = $('#order-phone').val();

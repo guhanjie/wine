@@ -33,7 +33,7 @@
         <!--//theme style-->
         <script type="text/javascript">
           //Globals
-          ships = 6;
+          ships = 10; //同城快送
         </script>
         <script src="${resourcePath}/js/jquery-1.11.3.js"></script>
         <script type="application/x-javascript">

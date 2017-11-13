@@ -599,9 +599,6 @@ public class User {
     }
     
     //------------------------- custom add -----------------------------
-
-    public boolean agent;
-    
     /**
      * 判断用户是否为代理商
      */
