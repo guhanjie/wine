@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import top.guhanjie.wine.exception.WebException;
 import top.guhanjie.wine.exception.WebExceptionEnum;
 import top.guhanjie.wine.model.User;
+import top.guhanjie.wine.service.UserService;
 
 
 public abstract class BaseController {
@@ -23,6 +24,9 @@ public abstract class BaseController {
     
     @Autowired
     protected HttpServletRequest request;
+    
+    @Autowired
+    private UserService userService;
 	
     protected void setSessionUser(User user) {
         HttpSession session = request.getSession();
@@ -33,7 +37,13 @@ public abstract class BaseController {
     	HttpSession session = request.getSession();
     	Object user = session.getAttribute(AppConstants.SESSION_KEY_USER);
     	if(user != null && user instanceof User) {
-    		return (User)user;
+    	    User u = (User)user;
+    	    // get latest user info from DB for case user info refreshed.
+    	    if(u.getId() != null) {
+    	        u = userService.getUserById(u.getId());
+    	        setSessionUser(u);
+    	    }
+    		return u;
     	}
     	return null;
     }

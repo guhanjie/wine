@@ -84,7 +84,7 @@
     function initialImgUploader(uploader) {
         /* 图片自动上传 */
         weui.uploader('#' + uploader.type + '_imgs-uploader', {
-            url : '/wine/upload',
+            url : '/wine/admin/upload',
             auto : true,
             type : 'file',
             fileVal : 'file',

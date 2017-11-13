@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import top.guhanjie.wine.util.IdGenerator;
 
 /**
+ * Deprecated on 2017-11-13 12:00:52, moved to AdminController.
  * Created by guhanjie on 2017-09-18.
  */
 @Controller 
