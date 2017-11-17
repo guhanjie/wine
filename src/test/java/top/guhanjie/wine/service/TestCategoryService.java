@@ -57,4 +57,12 @@ public class TestCategoryService {
             System.out.println(JSON.toJSONString(b, true));
         }
     }
+    
+    @Test
+    public void testListLeafCategory() {
+        List<Category> c = categoryService.listLeafCategory(2);
+        for(Category b : c) {
+            System.out.println(JSON.toJSONString(b, true));
+        }
+    }
 }

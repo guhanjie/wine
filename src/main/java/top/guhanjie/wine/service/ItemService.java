@@ -150,7 +150,13 @@ public class ItemService {
     
     public List<Item> getRelativeItems(Integer categoryId) {
     	LOGGER.debug("get relative items for category[{}]", categoryId);
-    	return itemMapper.selectByCategory(categoryId);
+    	List<Item> res = new ArrayList<Item>();
+    	List<Category> categories = categoryService.listLeafCategory(categoryId);
+    	for(Category c : categories) {
+    	    List<Item> items = itemMapper.selectByCategory(c.getId());
+    	    res.addAll(items);
+    	}
+    	return res;
     }
     
     @Transactional

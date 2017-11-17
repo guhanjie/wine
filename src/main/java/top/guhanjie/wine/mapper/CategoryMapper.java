@@ -57,5 +57,6 @@ public interface CategoryMapper {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     List<Category> selectAll();
     List<Category> selectByLevel(int level);
+    List<Category> selectByParentId(int parentid);
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }

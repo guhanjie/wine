@@ -66,4 +66,12 @@ public class TestCategoryMapper {
         logger.debug(JSON.toJSONString(models, true));
         assertNotNull(models);
     }   
+    
+    @Test
+    public void testSelectByParentId() {
+        //Retrieve
+        List<Category> models = mapper.selectByParentId(1);
+        logger.debug(JSON.toJSONString(models, true));
+        assertNotNull(models);
+    }   
 }

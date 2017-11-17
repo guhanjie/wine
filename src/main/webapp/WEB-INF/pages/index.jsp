@@ -33,6 +33,82 @@
   </div>
 </div>
 <!-- //slider bar -->
+<div class="navbar container-fluid">
+  <div class="row">
+    <div class="col-xs-3">
+      <a class="navbar-info" href="/wine/items/1">
+        <div class="navbar-img color-1">
+          <span class="navbar-icon">酒</span>
+        </div>
+        <!-- <img src="..." class="img-responsive" alt="Responsive image"> -->
+        <span class="nav-title">酒水饮料</span>
+      </a>
+    </div>
+    <div class="col-xs-3">
+      <a class="navbar-info" href="/wine/items/2">
+        <div class="navbar-img color-2">
+          <span class="navbar-icon">茶</span>
+        </div>
+        <!-- <img src="..." class="img-responsive" alt="Responsive image"> -->
+        <span class="nav-title">茶叶礼品</span>
+      </a>
+    </div>
+    <div class="col-xs-3">
+      <a class="navbar-info" href="/wine/items/3">
+        <div class="navbar-img color-3">
+          <span class="navbar-icon">吃</span>
+        </div>
+        <!-- <img src="..." class="img-responsive" alt="Responsive image"> -->
+        <span class="nav-title">吃货天堂</span>
+      </a>
+    </div>
+    <div class="col-xs-3">
+      <a class="navbar-info" href="/wine/items/4">
+        <div class="navbar-img color-4">
+          <span class="navbar-icon">家</span>
+        </div>
+        <!-- <img src="..." class="img-responsive" alt="Responsive image"> -->
+        <span class="nav-title">家居百货</span>
+      </a>
+    </div>
+    <div class="col-xs-3">
+      <a class="navbar-info" href="/wine/items/5">
+        <div class="navbar-img color-5">
+          <span class="navbar-icon">数</span>
+        </div>
+        <!-- <img src="..." class="img-responsive" alt="Responsive image"> -->
+        <span class="nav-title">手机数码</span>
+      </a>
+    </div>
+    <div class="col-xs-3">
+      <a class="navbar-info" href="/wine/items/6">
+        <div class="navbar-img color-6">
+          <span class="navbar-icon">电</span>
+        </div>
+        <!-- <img src="..." class="img-responsive" alt="Responsive image"> -->
+        <span class="nav-title">电脑办公</span>
+      </a>
+    </div>
+    <div class="col-xs-3">
+      <a class="navbar-info" href="/wine/items/7">
+        <div class="navbar-img color-7">
+          <span class="navbar-icon">妆</span>
+        </div>
+        <!-- <img src="..." class="img-responsive" alt="Responsive image"> -->
+        <span class="nav-title">美妆护理</span>
+      </a>
+    </div>
+    <div class="col-xs-3">
+      <a class="navbar-info" href="#">
+        <div class="navbar-img color-8">
+          <span class="navbar-icon">杂</span>
+        </div>
+        <!-- <img src="..." class="img-responsive" alt="Responsive image"> -->
+        <span class="nav-title">其他</span>
+      </a>
+    </div>
+  </div>
+</div>
 <!-- items -->
 <div class="container-fluid items">
   <c:forEach var="category" items="${indexCategories}" varStatus="status">

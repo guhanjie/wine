@@ -102,6 +102,22 @@ public class CategoryService {
         addLeafCategory(allCategories, leafCategories);
         return leafCategories;
     }
+    
+    /**
+     * 获取指定category下面的叶子节点列表
+     */
+    public List<Category> listLeafCategory(int pid) {
+        List<Category> leafCategories = new ArrayList<Category>();
+        List<Category> allCategories = listCategory();
+        Category c = findCategory(allCategories, pid);
+        if (c.getSubItems() != null && !c.getSubItems().isEmpty()) {
+            addLeafCategory(c.getSubItems(), leafCategories);
+        }
+        else {
+            leafCategories.add(c);
+        }
+        return leafCategories;
+    }
 
     private void addLeafCategory(List<Category> list, List<Category> leafList) {
         for (Category c : list) {
@@ -150,18 +166,55 @@ public class CategoryService {
     /**
      * 广度优先查找父目录
      */
-    private Category findParent(List<Category> items, Category c) {
-        for (Category item : items) {
-            if (item.getId() == c.getParentId()) {
-                return item;
+    private Category findParent(List<Category> categories, Category c) {
+        for (Category i : categories) {
+            if (i.getId() == c.getParentId()) {
+                return i;
             }
         }
-        for (Category item : items) {
-            return findParent(item.getSubItems(), c);
+        for (Category i : categories) {
+            return findParent(i.getSubItems(), c);
         }
         LOGGER.error("can not find parent category for: [{}]",
                 JSON.toJSONString(c));
         return null;
     }
+    
+    /**
+     * 广度优先查找指定category
+     */
+    private Category findCategory(List<Category> categories, int cid) {
+        for (Category i : categories) {
+            if (i.getId() == cid) {
+                return i;
+            }
+        }
+        for (Category i : categories) {
+            return findCategory(i.getSubItems(), cid);
+        }
+        LOGGER.error("can not find parent category for: [{}]", cid);
+        return null;
+    }
+//   
+//    /**
+//     * 根据cid获取其所有的叶子节点
+//     * 如果本身是叶子目录，则直接返回
+//     */
+//    public void getChildCategories(int pid, List<Category> ) {
+//        List<Category> res = new ArrayList<Category>();
+//        List<Category> list = categoryMapper.selectByParentId(pid);
+//        //本身是叶子目录
+//        if(list.size()==0) {
+//            Category c = categoryMapper.selectByPrimaryKey(pid);
+//            if(c != null) {
+//                res.add(c);
+//            }
+//        }
+//        else {
+//            for(Category i : list) {
+//                List<Category> list = getChildCategories(i.getId());
+//            }
+//        }
+//    }
 
 }

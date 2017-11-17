@@ -169,5 +169,13 @@
     where level = #{level,jdbcType=INTEGER} 
     order by idx
   </select>
+  
+  <select id="selectByParentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from category 
+    where parent_id = #{parentid,jdbcType=INTEGER} 
+    order by idx
+  </select>
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 </mapper>
