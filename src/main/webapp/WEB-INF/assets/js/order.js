@@ -36,11 +36,11 @@
     });
     
     $("body").on('click', '.shipType :radio', function(e) {
-        //同城快送
-        if($('#shipType1').prop('checked')) {
-            ships = 6;
-        }
         //快递
+        if($('#shipType1').prop('checked')) {
+            ships = 5;
+        }
+        //同城快送
         if($('#shipType2').prop('checked')) {
             ships = 10;
         }
