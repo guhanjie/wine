@@ -31,14 +31,14 @@ public class OAuthIntercepter implements HandlerInterceptor {
         HttpSession session = request.getSession();
         
         //调试用
-        User u = new User();
-        u.setId(2);
-        u.setName("印霞");
-        u.setPhone("13122876562");
-        u.setType(1);
-        u.setAddress("如东县环镇乡");
-        u.setPoints(2000);
-        session.setAttribute(AppConstants.SESSION_KEY_USER, u);
+//        User u = new User();
+//        u.setId(2);
+//        u.setName("印霞");
+//        u.setPhone("13122876562");
+//        u.setType(1);
+//        u.setAddress("如东县环镇乡");
+//        u.setPoints(2000);
+//        session.setAttribute(AppConstants.SESSION_KEY_USER, u);
         //------------------------------------------------------------------
         Object user = session.getAttribute(AppConstants.SESSION_KEY_USER);
         if(user != null && user instanceof User) {
