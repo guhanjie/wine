@@ -119,7 +119,7 @@ public class OrderService {
 		}
 		// 2. 检查订单总额
 		double total = 0.0;
-		StringBuilder purchases = new StringBuilder("\n商品名称\t数量\n");
+		StringBuilder purchases = new StringBuilder("");
 		String items = order.getItems();
 		String[] it = items.split(",");
 		for(String str : it) {
@@ -127,7 +127,7 @@ public class OrderService {
 			Integer itemId = Integer.parseInt(iteminfo[0]);
 			Integer count = Integer.parseInt(iteminfo[1]);
 			Item item = itemService.getItem(itemId);
-			purchases.append(item.getName()+"\t"+count+"\n");
+			purchases.append(item.getName()+"\t"+count+"件\n");
 			double price = user.isAgent()? item.getVipPrice().doubleValue() : item.getNormalPrice().doubleValue();
 			total += count * price;
 		}
@@ -155,6 +155,8 @@ public class OrderService {
 		sb.append("联系人：").append(order.getContactor()).append("\n");
 		sb.append("联系电话：").append(order.getPhone()).append("\n");
 		sb.append("购买商品：").append(purchases);
+		sb.append("配送地址：").append(order.getAddress());
+		sb.append("配送方式：").append(order.getShipType());
 		sb.append("创建时间：").append(DateTimeUtil.formatDate(order.getCreateTime(), "yyyy-MM-dd HH:mm")).append("\n");
 		sb.append("备注：").append(order.getRemark()==null?"无":order.getRemark()).append("\n");
 		MessageKit.sendKFMsg(weixinConstants.KF_OPENIDS, sb.toString());
@@ -281,7 +283,7 @@ public class OrderService {
     		// 支付成功，发送微信消息通知客服
     		StringBuffer sb = new StringBuffer("主人，您有一笔订单已完成支付：\n");
     		sb.append("订单ID：").append(orderid).append("\n");
-    		sb.append("支付金额：").append(Integer.valueOf(total_fee)/100).append("元\n");
+    		sb.append("支付金额：").append(Double.valueOf(total_fee)/100).append("元\n");
     		sb.append("支付时间：").append(DateTimeUtil.formatDate(order.getPayTime())).append("\n");
     		sb.append("联系人：").append(order.getContactor()).append("\n");
     		sb.append("联系电话：").append(order.getPhone()).append("\n");

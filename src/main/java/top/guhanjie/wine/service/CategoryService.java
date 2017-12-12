@@ -184,17 +184,21 @@ public class CategoryService {
      * 广度优先查找指定category
      */
     private Category findCategory(List<Category> categories, int cid) {
-        for (Category i : categories) {
-            if (i.getId() == cid) {
-                return i;
+        if(categories != null) {
+            for (Category i : categories) {
+                if (i.getId() == cid) {
+                    return i;
+                }
+            }
+            for (Category i : categories) {
+                if(i.getSubItems() != null) {
+                    return findCategory(i.getSubItems(), cid);
+                }
             }
         }
-        for (Category i : categories) {
-            return findCategory(i.getSubItems(), cid);
-        }
-        LOGGER.error("can not find parent category for: [{}]", cid);
         return null;
     }
+    
 //   
 //    /**
 //     * 根据cid获取其所有的叶子节点

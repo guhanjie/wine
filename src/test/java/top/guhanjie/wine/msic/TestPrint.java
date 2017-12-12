@@ -18,9 +18,12 @@ public class TestPrint {
 //        System.out.printf("%#016x\n", 127);
 //        System.out.println(String.format("%16s", Integer.toBinaryString(7)));
 //        System.out.println(0x01<<2 | 0x01<<1 | 0x01);
-    	Integer i = null;
-    	if(0 != i) {
-    		System.out.println(i);
-    	}
+//    	Integer i = null;
+//    	if(0 != i) {
+//    		System.out.println(i);
+//    	}
+    	
+    	String total_fee = "1185";
+    	System.out.println(Double.valueOf(total_fee)/100);
     }
 }
