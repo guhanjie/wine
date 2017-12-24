@@ -64,13 +64,6 @@ label>* {
 	text-align: center;
 }
 
-.weui-search-bar__search-btn {
-    margin-left: 10px;
-    line-height: 28px;
-    color: #09BB07;
-    white-space: nowrap;
-}
-
 #item-list {
 	margin-bottom: 46px;
 }

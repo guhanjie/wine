@@ -57,28 +57,28 @@
         </div>
         <div class="owner-info">
           <h3>收件人信息</h3>
-          <div class="weui_cell">
-            <div class="weui_cell_hd">
-              <label class="weui_label">联系人</label>
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <label class="weui-label">联系人</label>
             </div>
-            <div class="weui_cell_bd weui_cell_primary">
-              <input id="order-contactor" class="weui_input" type="text" value="${user.name}" placeholder="请输入联系人名字">
-            </div>
-          </div>
-          <div class="weui_cell">
-            <div class="weui_cell_hd">
-              <label class="weui_label">联系电话</label>
-            </div>
-            <div class="weui_cell_bd weui_cell_primary">
-              <input id="order-phone" class="weui_input" type="number" pattern="[0-9]*" value="${user.phone}" placeholder="请输入手机号码">
+            <div class="weui-cell__bd">
+              <input id="order-contactor" class="weui-input" type="text" value="${user.name}" placeholder="请输入联系人名字">
             </div>
           </div>
-          <div class="weui_cell">
-            <div class="weui_cell_hd">
-              <label class="weui_label">收货地址</label>
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <label class="weui-label">联系电话</label>
             </div>
-            <div class="weui_cell_bd weui_cell_primary">
-              <input id="order-address" class="weui_input" type="text" value="${user.address}" placeholder="请输入收货地址">
+            <div class="weui-cell__bd">
+              <input id="order-phone" class="weui-input" type="number" pattern="[0-9]*" value="${user.phone}" placeholder="请输入手机号码">
+            </div>
+          </div>
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
+              <label class="weui-label">收货地址</label>
+            </div>
+            <div class="weui-cell__bd">
+              <input id="order-address" class="weui-input" type="text" value="${user.address}" placeholder="请输入收货地址">
             </div>
           </div>
         </div>
@@ -101,37 +101,34 @@
       <a class="back-buy" href="${pageContext.request.contextPath}/index">返回商品页</a>
       <a class="go-order-list" href="${pageContext.request.contextPath}/order/list" >前往订单中心</a>
     </div>
-    <div class="weui_msg weixin_pay">
-      <div class="weui_icon_area">
-        <i class="weui_icon_safe weui_icon_safe_success"></i>
+    <div class="weui-msg weixin_pay">
+      <div class="weui-msg__icon-area">
+        <i class="weui-icon-safe-success"></i>
       </div>
-      <div class="weui_text_area">
-        <h2 class="weui_msg_title">订单支付</h2>
-        <p class="weui_msg_desc">请您完成支付，如果茶酒商城给您最好的商品和服务！</p>
-        <div class="weui_cells order-item">
-          <div class="weui_cell">
-            <div class="weui_cell_hd">
+      <div class="weui-msg__text-area">
+        <h2 class="weui-msg__title">订单支付</h2>
+        <p class="weui-msg__desc">请您完成支付，如果茶酒商城给您最好的商品和服务！</p>
+        <div class="weui-cells order-item">
+          <div class="weui-cell">
+            <div class="weui-cell__hd">
               <p>
-                <i class="weui_icon_success_circle"></i>订单金额：
+                <i class="weui-icon-success-circle"></i>订单金额：
               </p>
             </div>
-            <div class="weui_cell_bd weui_cell_primary">
+            <div class="weui-cell__bd">
               <span id="res_amount" class="text-red"></span>
             </div>
           </div>
         </div>
       </div>
-      <div class="weui_opr_area">
-        <p class="weui_btn_area">
-          <a href="javascript:;" class="weui_btn weui_btn_primary order-pay">微信支付</a>
+      <div class="weui-msg__opr-area">
+        <p class="weui-btn-area">
+          <a href="javascript:;" class="weui-btn weui-btn_primary order-pay">微信支付</a>
         </p>
         <a class="btn_back" href="#">返回订单列表</a>
       </div>
-      <div class="weui_extra_area"></div>
+      <div class="weui-msg__extra-area"></div>
     </div>
   </div>
   <!-- //pay msg -->
 </div>
-
-<script src="${pageContext.request.contextPath}/resources/js/pay.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/order.js"></script>

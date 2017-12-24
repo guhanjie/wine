@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import top.guhanjie.wine.model.Item;
@@ -56,6 +57,14 @@ public class ItemController extends BaseController{
         return "items";
     }
     
+    @RequestMapping(value="/items/search", method=RequestMethod.GET)
+    public String searchItems(Model model, @RequestParam("query") String query) {
+        model.addAttribute("bannars", bannarService.listBannar());
+        model.addAttribute("categories", categoryService.listCategory());
+        model.addAttribute("query", query);
+        model.addAttribute("items", itemService.searchItems(query));
+        return "items-search";
+    }
 
 	@ResponseBody
 	@RequestMapping(value="/admin/item/all", method=RequestMethod.GET)

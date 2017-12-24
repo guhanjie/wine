@@ -1,7 +1,12 @@
 (function($) {
+    // buy item now
+    $('body').on('click', '.buy-now', function() {
+        window.location.href = "/wine/order/checkout";
+    });
+    
     // add item into cart
     $("body").on('click', '.add-cart', function(e) {
-        $.weui.toast('已加入购物车', 1000);
+        weui.toast('已加入购物车', 1000);
         // var data = {};
         // var $prod = $(this).parents('.product-item');
         // data["itemId"] = $prod.data('id');
@@ -55,23 +60,23 @@
         var total = simpleCart.total();
         var all = simpleCart.all();
         if (simpleCart.total() == 0) {
-            $.weui.alert('购物车内空空如也，请先加入商品');
+            weui.alert('购物车内空空如也，请先加入商品');
             return;
         }
         if (isNaN(cpns)) {
-            $.weui.alert('使用积分只能填入数字');
+            weui.alert('使用积分只能填入数字');
             return;
         }
         if (cpns < 0) {
-            $.weui.alert('使用积分不能为负数');
+            weui.alert('使用积分不能为负数');
             return;
         }
         if (cpns > maxcpns) {
-            $.weui.alert('使用积分不能超过最大积分');
+            weui.alert('使用积分不能超过最大积分');
             return;
         }
         if (cpns > all) {
-            $.weui.alert('使用积分不能超过订单总额');
+            weui.alert('使用积分不能超过订单总额');
             return;
         }
         simpleCart["coupons"] = cpns;
@@ -89,7 +94,7 @@
             return;
         }
         if (simpleCart.total() == 0) {
-            $.weui.alert('购物车内空空如也，请先加入商品');
+            weui.alert('购物车内空空如也，请先加入商品');
             return;
         }
         // 1.收集数据
@@ -112,35 +117,35 @@
         order["address"] = $('#order-address').val();
         // 2.验证订单
         if (!order["contactor"]) {
-            $.weui.alert('请输入联系人');
+            weui.alert('请输入联系人');
             $('#order-contactor').addClass('warn');
             $('#submit').removeClass('disabled');
             return;
         }
         if (!order["phone"]) {
-            $.weui.alert('请输入联系电话');
+            weui.alert('请输入联系电话');
             $('#order-phone').addClass('warn');
             $('#submit').removeClass('disabled');
             return;
         }
         if (!order["address"]) {
-            $.weui.alert('请输入收货地址');
+            weui.alert('请输入收货地址');
             $('#order-address').addClass('warn');
             $('#submit').removeClass('disabled');
             return;
         }
         $(this).addClass('disabled');
-        $.weui.loading('订单提交中...');
+        weui.loading('订单提交中...');
         $.ajax({
             type : 'POST',
             url : '/wine/order/put',
             data : JSON.stringify(order),
             contentType : 'application/json',
             success : function(data) {
-                $.weui.hideLoading();
+                weui.hideLoading();
                 if (data.success) {
                     simpleCart.empty();
-                    $.weui.dialog({
+                    weui.dialog({
                         title : '订单提交成功',
                         content : '订单已提交，请尽快完成支付',
                         className : 'submit-success',
@@ -153,7 +158,7 @@
                                 {
                                     label : '去支付', type : 'primary', onClick : function() {
                                         $('.my-cart').hide();
-                                        $('.weui_msg.weixin_pay .order-item').data('id', data.content.id);
+                                        $('.weui-msg.weixin_pay .order-item').data('id', data.content.id);
                                         $('#res_amount').text('' + data.content.payAmount + ' 元');
                                         $('.pay-msg').fadeIn();
                                         window.scrollTo(0,0); //页面滚动回顶端
@@ -161,18 +166,18 @@
                                 } ]
                     });
                 } else {
-                    $.weui.alert(data.description);
+                    weui.alert(data.description);
                 }
                 $('#submit').removeClass('disabled');
             }, error : function(xhr, type) {
-                $.weui.alert('订单信息有误，提交失败');
+                weui.alert('订单信息有误，提交失败');
                 $('#submit').removeClass('disabled');
             }
         });
     });
     
     // weixin-pay msg btn-back
-    $('.weui_msg.weixin_pay').on('click', '.btn_back', function() {
+    $('.weui-msg.weixin_pay').on('click', '.btn_back', function() {
         window.location.href = "/wine/order/list";
     });
 

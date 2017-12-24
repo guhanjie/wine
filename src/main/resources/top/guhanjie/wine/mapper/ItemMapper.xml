@@ -270,5 +270,12 @@
     from item 
     where status = 1 or status = 2 order by create_time desc 
   </select>
+  
+  <select id="searchItems" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from item 
+    where (name like #{query} or detail like #{query}) and status = 1 order by create_time desc 
+  </select>
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 </mapper>

@@ -159,6 +159,11 @@ public class ItemService {
     	return res;
     }
     
+    public List<Item> searchItems(String query) {
+        LOGGER.debug("get search items for query[{}]", query);
+        return itemMapper.searchItems("%"+query+"%");
+    }
+    
     @Transactional
     public void addSales(String items) {
     	LOGGER.debug("add sales for items:[{}]", items);

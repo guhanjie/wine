@@ -27,15 +27,15 @@
         <link rel="stylesheet" href="${resourcePath}/css/bootstrap.css" media="all"/>
         <link rel="stylesheet" href="${resourcePath}/css/style.css" media="all"/>
         <link rel="stylesheet" href="${resourcePath}/css/font-awesome.css" media="all"/>
-        <link rel="stylesheet" href="${resourcePath}/css/weui-0.4.3.min.css" media="all"/>
+        <link rel="stylesheet" href="${resourcePath}/css/weui-1.1.2.min.css" media="all"/>
         <link rel="stylesheet" href="${resourcePath}/css/memenu.css" media="all" />
-        <link rel="stylesheet" href="${resourcePath}/css/order.css">
+        <link rel="stylesheet" href="${resourcePath}/css/app-order.css">
         <!--//theme style-->
+        <script src="${resourcePath}/js/jquery-1.11.3.js"></script>
         <script type="text/javascript">
           //Globals
           ships = 10; //同城快送
         </script>
-        <script src="${resourcePath}/js/jquery-1.11.3.js"></script>
         <script type="application/x-javascript">
           addEventListener("load", function() { 
               setTimeout(hideURLbar, 0); 
@@ -96,11 +96,14 @@
         <script>$(document).ready(function(){$(".memenu").memenu();});</script>
         <!--//start menu-->
         <script src="${resourcePath}/js/bootstrap.js"></script>
-        <script src="${resourcePath}/js/weui-0.3.0.js"></script>
+        <script src="${resourcePath}/js/weui-1.1.2.js"></script>
     </head>
     <body ontouchstart>
         <t:insertAttribute name="header" />
 		<t:insertAttribute name="main" />
         <t:insertAttribute name="footer" />
     </body>
+    <script src="${resourcePath}/js/app-index.js"></script>
+    <script src="${resourcePath}/js/app-order.js"></script>
+    <script src="${resourcePath}/js/app-pay.js"></script>
 </html>

@@ -70,7 +70,8 @@
                   </p>
                 </div>
               </c:if>
-              <a href="#" class="add-cart item_add">立即购买</a>
+              <a href="#" class="buy-now item_add">立即购买</a>
+              <a href="#" class="add-cart item_add">加入购物车</a>
             </div>
             <div class="clear-fix"></div>
             <p class="item_sales">

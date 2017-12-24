@@ -17,7 +17,7 @@ function callWeixinPay(param, success, fail) {
                     success.apply(this);
                 }
             } else if (res.err_msg == "get_brand_wcpay_request:cancel") { // 支付过程中用户取消
-                $.weui.toast('支付已取消');
+                weui.toast('支付已取消');
             } else if (res.err_msg == "get_brand_wcpay_request:fail") { // 支付失败
                 if (fail && typeof fail == "function") {
                     fail.apply(this);
@@ -38,8 +38,8 @@ function callWeixinPay(param, success, fail) {
 }
 
 //event binding
-$('.weui_msg.weixin_pay').on('click', '.order-pay', function() {
-    var $parent = $(this).parents('.weui_msg');
+$('.weui-msg.weixin_pay').on('click', '.order-pay', function() {
+    var $parent = $(this).parents('.weui-msg');
     var orderid = $parent.find('.order-item').data('id');
     $.ajax({
         type : 'GET',
@@ -52,38 +52,38 @@ $('.weui_msg.weixin_pay').on('click', '.order-pay', function() {
             if (data.success) {
                 callWeixinPay(data.content, function() {
                     $('body').html(
-                        '<div class="weui_msg">' 
-                      + '  <div class="weui_icon_area">'
-                      + '    <i class="weui_icon_success weui_icon_msg"></i>' 
+                        '<div class="weui-msg">' 
+                      + '  <div class="weui-msg__icon-area">'
+                      + '    <i class="weui-icon-success weui-icon_msg"></i>' 
                       + '  </div>'
-                      + '  <div class="weui_text_area">' 
-                      + '    <h2 class="weui_msg_title">支付成功</h2>'
-                      + '    <p class="weui_msg_desc">如果商城，竭诚为您服务！</p>' 
+                      + '  <div class="weui-msg__text-area">' 
+                      + '    <h2 class="weui-msg__title">支付成功</h2>'
+                      + '    <p class="weui-msg__desc">如果商城，竭诚为您服务！</p>' 
                       + '  </div>' 
                       + '</div>');
 
                 }, function() {
                     $('body').html(
-                        '<div class="weui_msg">' 
-                      + '  <div class="weui_icon_area">'
-                      + '    <i class="weui_icon_warn weui_icon_msg"></i>' 
+                        '<div class="weui-msg">' 
+                      + '  <div class="weui-msg__icon-area">'
+                      + '    <i class="weui-icon-warn weui-icon_msg"></i>' 
                       + '  </div>'
-                      + '  <div class="weui_text_area">' 
-                      + '    <h2 class="weui_msg_title">微信支付失败</h2>'
-                      + '    <p class="weui_msg_desc">给您带来不便，敬请谅解。<br/>请联系客服，尝试其他支付方式，或直接面付。</p>' 
+                      + '  <div class="weui-msg__text-area">' 
+                      + '    <h2 class="weui-msg__title">微信支付失败</h2>'
+                      + '    <p class="weui-msg__desc">给您带来不便，敬请谅解。<br/>请联系客服，尝试其他支付方式，或直接面付。</p>' 
                       + '  </div>'
-                      + '  <div class="weui_opr_area">' 
-                      + '    <p class="weui_btn_area">'
-                      + '      <a href="/wine/order/list" class="weui_btn weui_btn_primary">返回我的订单</a>'
+                      + '  <div class="weui-msg__opr-area">' 
+                      + '    <p class="weui-btn-area">'
+                      + '      <a href="/wine/order/list" class="weui-btn weui-btn_primary">返回我的订单</a>'
                       + '    </p>' 
                       + '  </div>' 
                       + '</div>')
                 });
             } else {
-                $.weui.alert(data.description);
+                weui.alert(data.description);
             }
         }, error : function(xhr, type) {
-            $.weui.alert('订单支付失败');
+            weui.alert('订单支付失败');
         }
     });
 });

@@ -182,7 +182,6 @@
     weui.tab('#tab', {
         defaultIndex : 0,
         onChange : function(index) {
-            console.log(index);
             if (index == 0) { // 商品管理页面
 
             } else if (index == 1) { // 订单管理页面
@@ -440,9 +439,9 @@
         var len = text.length;
         $('#detail_count').text(len);
         if (len > max) {
-            $(this).closest('.weui_cell').addClass('weui_cell_warn');
+            $(this).closest('.weui-cell').addClass('weui-cell_warn');
         } else {
-            $(this).closest('.weui_cell').removeClass('weui_cell_warn');
+            $(this).closest('.weui-cell').removeClass('weui-cell_warn');
         }
     });
 

@@ -5,15 +5,8 @@
 
 <!-- item -->
 <ol class="breadcrumb">
-  <li><a href="${pageContext.request.contextPath}/index">首页</a></li>
-  <c:forEach var="category" items="${categorySeq}" varStatus="status">
-    <c:if test="${status.index < fn:length(categorySeq)-1}">
-      <li>${category.name}</li>
-    </c:if>
-    <c:if test="${status.index == fn:length(categorySeq)-1}">
-      <li class="active">${category.name}</li>
-    </c:if>
-  </c:forEach>
+  <li><a href="${pageContext.request.contextPath}/index">搜索商品</a></li>
+  <li class="text-danger">${query}</li>
 </ol>
 <!--breadcrumb//-->
 <div class="product-model container">

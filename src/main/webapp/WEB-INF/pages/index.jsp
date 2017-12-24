@@ -14,7 +14,31 @@
         });
     });
 </script>
-
+<!-- search bar -->
+<div class="weui-search-bar" id="item-searchBar">
+    <form class="weui-search-bar__form">
+        <div class="weui-search-bar__box">
+            <i class="weui-icon-search"></i>
+            <input type="search" class="weui-search-bar__input" placeholder="搜索想要的商品" required="">
+            <a href="javascript:" class="weui-icon-clear"></a>
+        </div>
+        <label class="weui-search-bar__label">
+            <i class="weui-icon-search"></i>
+            <span>搜索</span>
+        </label>
+    </form>
+    <a href="javascript:" class="weui-search-bar__search-btn">查询</a>
+    <a href="javascript:" class="weui-search-bar__cancel-btn">取消</a>
+</div>
+<!-- <div class="weui-cells weui-cells_access search_show" id="item-search_show">
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <p>实时搜索文本</p>
+        </div>
+    </div>
+    ...
+</div> -->
+<!-- //search bar -->
 <!-- slider bar -->
 <div class="slider">
   <div class="callbacks_container">

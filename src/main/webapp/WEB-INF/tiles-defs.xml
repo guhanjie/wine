@@ -21,6 +21,12 @@
         <put-attribute name="footer" value="/WEB-INF/pages/layout/footer.jsp" cascade="true"/>
     </definition>
     
+    <definition name="items-search" template="/WEB-INF/pages/layout/template.jsp">
+        <put-attribute name="header" value="/WEB-INF/pages/layout/header.jsp" cascade="true" />
+        <put-attribute name="main" value="/WEB-INF/pages/items-search.jsp"  cascade="true"/>
+        <put-attribute name="footer" value="/WEB-INF/pages/layout/footer.jsp" cascade="true"/>
+    </definition>
+    
     <definition name="checkout" template="/WEB-INF/pages/layout/template.jsp">
         <put-attribute name="header" value="/WEB-INF/pages/layout/header.jsp" cascade="true" />
         <put-attribute name="main" value="/WEB-INF/pages/checkout.jsp"  cascade="true"/>

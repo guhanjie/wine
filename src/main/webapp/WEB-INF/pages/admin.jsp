@@ -10,9 +10,10 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <title>管理控制台</title>
     <!-- 引入 WeUI -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/weui-1.1.2.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/order.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app-order.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app-admin.css"/>
     <script src="${pageContext.request.contextPath}/resources/js/jquery-1.11.3.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/weui-1.1.2.js"> </script>
 </head>
@@ -295,6 +296,6 @@
         </div>
     </div>
 </div>
-<script src="${pageContext.request.contextPath}/resources/js/admin.js"> </script>
+<script src="${pageContext.request.contextPath}/resources/js/app-admin.js"> </script>
 </body>
 </html>

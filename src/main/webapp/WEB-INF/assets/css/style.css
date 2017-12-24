@@ -1,4 +1,4 @@
-w/*--A Design by W3layouts 
+/*--A Design by W3layouts 
 Author: W3layout
 Author URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
@@ -853,25 +853,26 @@ background-position:-167px -36px;
 	padding: 0.8em 1.2em;
 } 
 .item_quantity {
+  /* width: 40%; */
   /*font-size: 0.85em;*/
-  padding: 5px 10px;
-  width: 40%;
+  padding: 0px 4px;
   display:inline-block;
-  float: left;
+  float: right;
   border-color: #ed645c;
   border-style: solid;
+  line-height: normal !important
 }
 .item_add{
 	color:#fff;
 	text-decoration:none;
-	font-weight:600;
-	padding:0.5em 2em;	
+	/* font-weight:100; */
+	font-size: xx-small;
 	display:inline-block;
 	border-radius:5px;
 	-moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     -o-border-radius: 5px;
-	margin: 0 0 0 5px;
+    padding:4px 4px !important;
 	background:#00a0dc;
 	border:none;
 	outline:none;
@@ -1330,7 +1331,8 @@ p.para {
 }
 .single-para .item_add {	
     position: relative;
-    top: -5.3em;
+    top: -4.7em;
+    margin: 0 5px;
 }
 .prdt-info-grid{
 	margin:1.5em 0;
@@ -1404,6 +1406,7 @@ h3.ghj {
 }
 .breadcrumb {
 	/*margin:1em 0 2em!important;*/
+	margin-bottom: 0;
 }
 .table {
 	margin-bottom: 0;
@@ -1548,7 +1551,7 @@ h3.ghj {
 	padding: 0 5px;
 }
 .check-sec{
-	margin:3em 0 2em;
+	margin: 1em 0 1em;
 }
 .cart-item-info h3{
 	font-size:1em;	
@@ -1605,6 +1608,7 @@ a.order:hover{
 }
 .cart-items{
 	margin-top:0em;
+	padding-top: 1em;
 	padding-bottom:1em;
 }
 .coupons-item{
@@ -2144,10 +2148,6 @@ label {
 	}
 	.item_add {
 	    padding: 0.5em 1em;
-	}
-	.single-para .item_add {	
-	    position: relative;
-	    top: -4.5em;
 	}
 }
 @media (max-width: 991px){
@@ -2694,3 +2694,28 @@ label {
 	    width: 39%;
 	}
 }
+
+/*addon for weui-1.1.2.css*/
+.weui-search-bar__search-btn {
+  display: none;
+  margin-left: 10px;
+  line-height: 28px;
+  color: #09BB07;
+  white-space: nowrap;
+}
+.weui-search-bar.weui-search-bar_focusing .weui-search-bar__search-btn {
+  display: block;
+}
+#item-search_show.search_show {
+	display: none;
+    position: absolute;
+    width: 100%;
+    z-index: 99;
+    opacity: 0.9;
+    margin-top: 0;
+}
+#item-search_show.search_show .weui-cell p{
+    color: #999;
+    font-size: xx-small;
+}
+/***************************/
