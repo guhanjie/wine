@@ -123,12 +123,12 @@
       </a>
     </div>
     <div class="col-xs-3">
-      <a class="navbar-info" href="#">
+      <a class="navbar-info" href="/wine/items/15">
         <div class="navbar-img color-8">
-          <span class="navbar-icon">杂</span>
+          <span class="navbar-icon word-2">代理</span>
         </div>
         <!-- <img src="..." class="img-responsive" alt="Responsive image"> -->
-        <span class="nav-title">其他</span>
+        <span class="nav-title">代理专区</span>
       </a>
     </div>
   </div>

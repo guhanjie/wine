@@ -302,6 +302,9 @@ a.navbar-info {
     text-align: center;
     margin-left: 22px;
 }
+.navbar-img span.navbar-icon.word-2 {
+	margin-left: 14px;
+}
 .navbar-info span.nav-title {
 	position: absolute;
     width: 100%;
