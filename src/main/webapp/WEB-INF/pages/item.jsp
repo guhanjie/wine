@@ -128,7 +128,7 @@
                   <span class="disc">[<fmt:formatNumber type="percent" maxIntegerDigits="2" value="${r.vipPrice/r.normalPrice}" /> Off]</span>
                 </p>
               </c:if>
-              <p class="item_sales"><span>已销售 </span> <em>${item.sales}</em> 件</p>
+              <p class="item_sales"><span>已销售 </span> <em>${r.sales}</em> 件</p>
             </a>
           </div>
         </c:forEach>
