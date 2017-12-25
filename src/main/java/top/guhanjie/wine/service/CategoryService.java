@@ -2,8 +2,11 @@ package top.guhanjie.wine.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Queue;
 import java.util.TreeMap;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -166,17 +169,26 @@ public class CategoryService {
     /**
      * 广度优先查找父目录
      */
-    private Category findParent(List<Category> categories, Category c) {
-        for (Category i : categories) {
-            if (i.getId() == c.getParentId()) {
-                return i;
+    private Category findParent(List<Category> categories, Category child) {
+        Queue<Category> q = new LinkedBlockingQueue<Category>(categories);
+        if(!q.isEmpty()) {
+            Category c = q.poll();
+            while(c != null) {
+                if (c.getId() == child.getParentId()) {
+                    return c;
+                }
+                else {
+                    if(!c.getSubItems().isEmpty()) {
+                        for(Category e : c.getSubItems()) {
+                            q.offer(e);
+                        }
+                    }
+                }
+                c = q.poll();
             }
         }
-        for (Category i : categories) {
-            return findParent(i.getSubItems(), c);
-        }
         LOGGER.error("can not find parent category for: [{}]",
-                JSON.toJSONString(c));
+                JSON.toJSONString(child));
         return null;
     }
     
@@ -184,18 +196,24 @@ public class CategoryService {
      * 广度优先查找指定category
      */
     private Category findCategory(List<Category> categories, int cid) {
-        if(categories != null) {
-            for (Category i : categories) {
-                if (i.getId() == cid) {
-                    return i;
+        Queue<Category> q = new LinkedBlockingQueue<Category>(categories);
+        if(!q.isEmpty()) {
+            Category c = q.poll();
+            while(c != null) {
+                if (c.getId() == cid) {
+                    return c;
                 }
-            }
-            for (Category i : categories) {
-                if(i.getSubItems() != null) {
-                    return findCategory(i.getSubItems(), cid);
+                else {
+                    if(!c.getSubItems().isEmpty()) {
+                        for(Category e : c.getSubItems()) {
+                            q.offer(e);
+                        }
+                    }
                 }
+                c = q.poll();
             }
         }
+        LOGGER.error("can not find category for: [{}]", cid);
         return null;
     }
     

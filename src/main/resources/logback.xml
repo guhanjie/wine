@@ -29,8 +29,6 @@
 	<!-- TRACE < DEBUG < INFO < WARN < ERROR -->	 
 		
 	<logger name="top.guhanjie.wine" level="${log.app.level}"/>
-        
-    <logger name="org.springframework.web" level="Debug"/>
 
 	<root level="${log.root.level}">
 		<appender-ref ref="FILE" />
