@@ -1,6 +1,7 @@
 <%@ page  contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="t" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -12,6 +13,7 @@
     <!-- 引入 WeUI -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/weui-1.1.2.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.css" media="all"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app-order.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app-admin.css"/>
     <script src="${pageContext.request.contextPath}/resources/js/jquery-1.11.3.js"></script>
@@ -24,7 +26,7 @@
         <div class="weui-navbar__item">商品管理</div>
         <div class="weui-navbar__item">订单管理</div>
         <div class="weui-navbar__item">会员管理</div>
-        <div class="weui-navbar__item">其它</div>
+        <div class="weui-navbar__item">会员列表</div>
     </div>
     <div class="weui-tab__panel">
         <div class="weui-tab__content">
@@ -235,62 +237,57 @@
         </div>
         <div class="weui-tab__content">
             <div class="item">
-                <h4 class="item__title">搜索框</h4>
-                <div class="weui-search-bar" id="searchBar">
-                    <form class="weui-search-bar__form">
-                        <div class="weui-search-bar__box">
-                            <i class="weui-icon-search"></i>
-                            <input type="search" class="weui-search-bar__input" placeholder="搜索" required="">
-                            <a href="javascript:" class="weui-icon-clear"></a>
-                        </div>
-                        <label class="weui-search-bar__label">
-                            <i class="weui-icon-search"></i>
-                            <span>搜索</span>
-                        </label>
-                    </form>
-                    <a href="javascript:" class="weui-search-bar__cancel-btn">取消</a>
+                <p class="item__title bg-success">代理商</p>
+                <div class="table-responsive">
+                  <table class="table table-condensed table-striped">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>用户名</th>
+                        <th>积分</th>
+                        <th>电话</th>
+                        <th>注册时间</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <c:forEach var="nu" items="${agentUsers}" varStatus="status">
+                        <tr>
+                          <th scope="row">${nu.id}</th>
+                          <td>${nu.name}</td>
+                          <td>${nu.points}</td>
+                          <td>${nu.phone}</td>
+                          <td><fmt:formatDate type="BOTH" value="${nu.createTime}" /></td>
+                        </tr>
+                      </c:forEach>
+                    </tbody>
+                  </table>
                 </div>
             </div>
             <div class="item">
-                <h4 class="item__title">滑块</h4>
-                <div class="item__ctn">
-                    <div class="weui-slider-box">
-                        <div id="slider" class="weui-slider">
-                            <div class="weui-slider__inner">
-                                <div class="weui-slider__track"></div>
-                                <div class="weui-slider__handler"></div>
-                            </div>
-                        </div>
-                        <div id="sliderValue" class="weui-slider-box__value"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <h4 class="item__title">滑块(step=10)</h4>
-                <div class="item__ctn">
-                    <div class="weui-slider-box">
-                        <div id="sliderStep" class="weui-slider">
-                            <div class="weui-slider__inner">
-                                <div class="weui-slider__track"></div>
-                                <div class="weui-slider__handler"></div>
-                            </div>
-                        </div>
-                        <div id="sliderStepValue" class="weui-slider-box__value"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <h4 class="item__title">滑块(分3步)</h4>
-                <div class="item__ctn">
-                    <div class="weui-slider-box">
-                        <div id="sliderBlock" class="weui-slider">
-                            <div class="weui-slider__inner">
-                                <div class="weui-slider__track"></div>
-                                <div class="weui-slider__handler"></div>
-                            </div>
-                        </div>
-                        <div id="sliderBlockValue" class="weui-slider-box__value"></div>
-                    </div>
+                <p class="item__title bg-info">普通会员</p>
+                <div class="table-responsive">
+                  <table class="table table-condensed table-striped">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>用户名</th>
+                        <th>积分</th>
+                        <th>电话</th>
+                        <th>注册时间</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <c:forEach var="nu" items="${normalUsers}" varStatus="status">
+                        <tr>
+                          <th scope="row">${nu.id}</th>
+                          <td>${nu.name}</td>
+                          <td>${nu.points}</td>
+                          <td>${nu.phone}</td>
+                          <td><fmt:formatDate type="BOTH" value="${nu.createTime}" /></td>
+                        </tr>
+                      </c:forEach>
+                    </tbody>
+                  </table>
                 </div>
             </div>
         </div>

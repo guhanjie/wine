@@ -37,6 +37,8 @@ public class AdminController extends BaseController{
     
 	@RequestMapping(value="", method=RequestMethod.GET)
 	public String admin(Model model) {
+	    model.addAttribute("normalUsers", userService.listAllNormalUsers());
+	    model.addAttribute("agentUsers", userService.listAllAgentUsers());
 		return "admin";
 	}
 	

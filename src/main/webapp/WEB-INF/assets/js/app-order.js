@@ -135,14 +135,14 @@
             return;
         }
         $(this).addClass('disabled');
-        weui.loading('订单提交中...');
+        var loading = weui.loading('订单提交中...');
         $.ajax({
             type : 'POST',
             url : '/wine/order/put',
             data : JSON.stringify(order),
             contentType : 'application/json',
             success : function(data) {
-                weui.hideLoading();
+                loading.hide();
                 if (data.success) {
                     simpleCart.empty();
                     weui.dialog({

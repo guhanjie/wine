@@ -310,6 +310,7 @@ public class PointDetail {
     public static enum RemarkEnum {
 
         USER_SIGN_UP("会员注册奖励"),
+        AGENT_PROMOTE("代理商推广奖励"),
         AGENT_RETURN("代理商提成奖励"),
         ADD_BY_ADMIN("管理员加分"),
         SUB_BY_ADMIN("管理员减分"),

@@ -22,7 +22,7 @@ public class TestUserService {
 	@Test
     public void testGetUser() {
 		Integer userid = null;
-		User user = userService.getUserById(userid);
+		User user = userService.getUserById(10);
 		System.out.println(JSON.toJSONString(user));
 	}
 }

@@ -10,7 +10,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="total_amount" jdbcType="DECIMAL" property="totalAmount" />
     <result column="pay_amount" jdbcType="DECIMAL" property="payAmount" />
-    <result column="coupons" jdbcType="INTEGER" property="address" />
+    <result column="coupons" jdbcType="INTEGER" property="coupons" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="ships" jdbcType="DECIMAL" property="ships" />
     <result column="ship_type" jdbcType="INTEGER" property="shipType" />

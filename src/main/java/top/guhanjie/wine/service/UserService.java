@@ -108,4 +108,14 @@ public class UserService {
 			return pointService.subPointsByAdmin(user.getId(), oldPoints-newPoints);
 		}
 	}
+	
+	public List<User> listAllNormalUsers() {
+        LOGGER.info("get all normal users...");
+        return userMapper.selectByType(User.TypeEnum.NORMAL.code());
+	}
+	
+    public List<User> listAllAgentUsers() {
+        LOGGER.info("get all agent users...");
+        return userMapper.selectByType(User.TypeEnum.AGENT.code());
+    }
 }

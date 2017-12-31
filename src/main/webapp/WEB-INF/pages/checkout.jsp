@@ -103,7 +103,7 @@
     </div>
     <div class="weui-msg weixin_pay">
       <div class="weui-msg__icon-area">
-        <i class="weui-icon-safe-success"></i>
+        <i class="weui-icon-success weui-icon_msg"></i>
       </div>
       <div class="weui-msg__text-area">
         <h2 class="weui-msg__title">订单支付</h2>

@@ -329,6 +329,13 @@
     order by update_time
   </select>
   
+  <select id="selectByType" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from user
+    where type = #{type}
+    order by create_time
+  </select>
+  
   <update id="addPoints">
     update user
     set points = points + #{points}

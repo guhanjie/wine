@@ -1,5 +1,25 @@
 (function($) {
 
+    // ====================================0. 路由管理=====================================
+
+    // tab panel
+    weui.tab('#tab', {
+        defaultIndex : 0,
+        onChange : function(index) {
+            if (index == 0) { // 商品管理页面
+
+            } else if (index == 1) { // 订单管理页面
+                showOrderList();
+            } else if (index == 2) { // 积分管理页面
+
+            } else { // 其他
+
+            }
+        }
+    });
+
+
+    // ====================================1. 商品管理=====================================
     var cateMap = {}, categories = [];
     var iconUploader = {
         type : 'icon',
@@ -59,28 +79,9 @@
                 $('#item-' + e.id).data('item', e);
             });
         });
-    }
-    ;
+    };
     showItemList();
-
-    function showOrderList() {
-        $.get("/wine/order/list_admin", function(data) {
-            $('.order-list .weui-cells_access').empty();
-            if(data && data.success) {
-                $.each(data.orders, function(i, e) {
-                    var content = '<a class="weui-cell order-item" data-id="' + e.id + '" href="#pay">'
-                    + '  <div class="weui-cell__hd"></div>' + '  <div class="weui-cell__bd weui-cell_primary">'
-                    + '订单号：' + e.id + e.payAmount + '元' + '  </div>' + '</a>';
-                    // ' <div class="weui-uploader">'+
-                    // ' <div class="weui-uploader__hd weui-cell"></div>'+
-                    // ' <div class="weui-uploader__bd">'+
-                    // ' <ul class="weui-uploader__files">'
-                    $('.order-list .weui-cells_access').append(content);
-                });
-            }
-        });
-    }
-
+    
     function initialImgUploader(uploader) {
         /* 图片自动上传 */
         weui.uploader('#' + uploader.type + '_imgs-uploader', {
@@ -177,22 +178,6 @@
             });
         });
     }
-
-    // tab panel
-    weui.tab('#tab', {
-        defaultIndex : 0,
-        onChange : function(index) {
-            if (index == 0) { // 商品管理页面
-
-            } else if (index == 1) { // 订单管理页面
-                showOrderList();
-            } else if (index == 2) { // 积分管理页面
-
-            } else { // 其他
-
-            }
-        }
-    });
 
     // 删除商品信息
     $('#item-list').on("click", '.del-item', function(event) {
@@ -479,8 +464,29 @@
         $('#item-form').hide();
         $('#item-list').show();
     });
+    
 
-    // ====================================会员管理=====================================
+    // ====================================2. 订单管理=====================================
+    function showOrderList() {
+        $.get("/wine/order/list_admin", function(data) {
+            $('.order-list .weui-cells_access').empty();
+            if(data && data.success) {
+                $.each(data.orders, function(i, e) {
+                    var content = '<a class="weui-cell order-item" data-id="' + e.id + '" href="#pay">'
+                    + '  <div class="weui-cell__hd"></div>' + '  <div class="weui-cell__bd weui-cell_primary">'
+                    + '订单号：' + e.id + e.payAmount + '元' + '  </div>' + '</a>';
+                    // ' <div class="weui-uploader">'+
+                    // ' <div class="weui-uploader__hd weui-cell"></div>'+
+                    // ' <div class="weui-uploader__bd">'+
+                    // ' <ul class="weui-uploader__files">'
+                    $('.order-list .weui-cells_access').append(content);
+                });
+            }
+        });
+    };
+    
+
+    // ====================================3. 会员管理=====================================
 
     weui.searchBar('#user-searchBar');
 
@@ -493,6 +499,10 @@
             success : function(data) {
                 //console.log(data);
                 var user = data.content;
+                if(user == undefined) {
+                    weui.alert("用户不存在");
+                    return;
+                }
                 $('#user-form').data('id', user.id);
                 $('#user-form input[name="name"]').val(user.name);
                 $('#user-form input[name="phone"]').val(user.phone);

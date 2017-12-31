@@ -107,7 +107,7 @@ public class PointService {
 	 * 用户购买商品，给代理商提成加分
 	 */
 	@Transactional
-	public int addPointsForAgent(int agentid, Integer points, int userid, int orderid) {
+	public int addPointsForAgent(int agentid, Integer points, int userid, int orderid, String remark) {
 		LOGGER.info("starting to add points[{}] to agent[{}], promotee[{}] in order[{}].", 
 		        points, agentid, userid, orderid);
 		if (points != null && points == 0) {
@@ -124,7 +124,7 @@ public class PointService {
 		pd.setPromoteeId(userid);
 		pd.setPoints(points);
 		pd.setType(PointDetail.TypeEnum.ADD.code());
-		pd.setRemark(PointDetail.RemarkEnum.AGENT_RETURN.remark());
+		pd.setRemark(remark);
 		pointDetailMapper.insertSelective(pd);
 		int res = userMapper.addPoints(agentid, points);
 		if (0 == res) {

@@ -62,6 +62,7 @@ public interface UserMapper {
     User selectByPhone(String phone);
     
     List<User> selectBySourceId(Integer id);
+    List<User> selectByType(Integer id);
     
     int addPoints(@Param("userid")Integer userid, @Param("points")Integer points);
     int subPoints(@Param("userid")Integer userid, @Param("points")Integer points);

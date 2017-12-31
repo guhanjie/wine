@@ -27,10 +27,12 @@ import com.alibaba.fastjson.JSON;
 import top.guhanjie.wine.exception.WebExceptionEnum;
 import top.guhanjie.wine.exception.WebExceptionFactory;
 import top.guhanjie.wine.mapper.OrderMapper;
+import top.guhanjie.wine.model.Category;
 import top.guhanjie.wine.model.Item;
 import top.guhanjie.wine.model.Order;
 import top.guhanjie.wine.model.Order.PayStatusEnum;
 import top.guhanjie.wine.model.Order.PayTypeEnum;
+import top.guhanjie.wine.model.PointDetail;
 import top.guhanjie.wine.model.User;
 import top.guhanjie.wine.util.DateTimeUtil;
 import top.guhanjie.wine.weixin.WeixinConstants;
@@ -55,6 +57,9 @@ public class OrderService {
 	
 	@Autowired
 	private PointService pointService;
+	
+	@Autowired
+	private CategoryService categoryService;
 
 	@Autowired
 	private ItemService itemService;
@@ -89,6 +94,7 @@ public class OrderService {
 	            user = new User();
 	            user.setName(order.getContactor());
 	            user.setPhone(order.getPhone());
+	            user.setAddress(order.getAddress());
 	            user.setCreateTime(new Date());
 	            LOGGER.info("user first in while putting order, add an new user:[{}]", JSON.toJSONString(user));
 	            userService.addUser(user);
@@ -104,9 +110,16 @@ public class OrderService {
 		        throw WebExceptionFactory.exception(WebExceptionEnum.DATA_NOT_WELL, "缺失联系方式");
 		    }
 		    user.setPhone(phone);
-		    user.setAddress(user.getAddress());
 		    userService.updateUser(user);
 		}
+        if(StringUtils.isBlank(user.getAddress())) {    //用户信息默认不含地址，第一次用户填写信息时记录地址
+            String address = order.getAddress();
+            if(StringUtils.isBlank(address)) {
+                throw WebExceptionFactory.exception(WebExceptionEnum.DATA_NOT_WELL, "缺失收货地址");
+            }
+            user.setAddress(address);
+            userService.updateUser(user);
+        }
 		if(StringUtils.isBlank(order.getContactor())) {
 			String username = StringUtils.isBlank(user.getName()) ? user.getNickname() : user.getName();
 			order.setContactor(username);
@@ -268,7 +281,7 @@ public class OrderService {
             int payAmount = order.getPayAmount().multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_DOWN).intValue();
             if(payAmount != Integer.valueOf(total_fee).intValue()) {
             	LOGGER.error("Pay amount not matched: topay=[{}], actual payed=[{}]", payAmount, total_fee);
-            	//这个地方有点小问题：订单待支付的和实际支付的金额不吻合，订单状态置为错误，但是用户实际支付的钱怎么办呢？
+            	//这个地方有点小问题：订单待支付的和实际支付的金额不吻合，订单状态置为错误，但是用户实际支付的钱怎么办呢？（需要确保支付订单的金额和商城下订单时保持一致！！！）
             	order.setPayStatus(PayStatusEnum.PAYERROR.code());
             }
         }
@@ -276,22 +289,26 @@ public class OrderService {
         LOGGER.info("===updating order[{}] status:[{}]-->[{}], pay status:[{}]-->[{}].", orderid, oldOrderStatus, order.getStatus(), oldPayStatus, order.getPayStatus());
         if(1 == orderMapper.updateByPayStatus(order, oldOrderStatus, oldPayStatus)) {
             LOGGER.info("Success to update order[{}] pay! status:[{}]-->[{}], pay status:[{}]-->[{}].", orderid, oldOrderStatus, order.getStatus(), oldPayStatus, order.getPayStatus());
-            
-            // 推荐人的积分提成
-            assignPromotePoints(order);
-            
-    		// 支付成功，发送微信消息通知客服
-    		StringBuffer sb = new StringBuffer("主人，您有一笔订单已完成支付：\n");
-    		sb.append("订单ID：").append(orderid).append("\n");
-    		sb.append("支付金额：").append(Double.valueOf(total_fee)/100).append("元\n");
-    		sb.append("支付时间：").append(DateTimeUtil.formatDate(order.getPayTime())).append("\n");
-    		sb.append("联系人：").append(order.getContactor()).append("\n");
-    		sb.append("联系电话：").append(order.getPhone()).append("\n");
-    		sb.append("创建时间：").append(DateTimeUtil.formatDate(order.getCreateTime())).append("\n");
-    		MessageKit.sendKFMsg(weixinConstants.KF_OPENIDS, sb.toString());
         }
         else {
             LOGGER.warn("Failed to update order[{}] pay, maybe already been updated before", orderid);
+            return;
+        }
+        
+        // 当订单支付成功时，计算推广积分、发送客服通知短信
+        if(order.getStatus() == PayStatusEnum.SUCCESS.code()) {
+            // 推荐人的积分提成
+            processAgent(order);
+            
+            // 支付成功，发送微信消息通知客服
+            StringBuffer sb = new StringBuffer("主人，您有一笔订单已完成支付：\n");
+            sb.append("订单ID：").append(orderid).append("\n");
+            sb.append("支付金额：").append(Double.valueOf(total_fee)/100).append("元\n");
+            sb.append("支付时间：").append(DateTimeUtil.formatDate(order.getPayTime())).append("\n");
+            sb.append("联系人：").append(order.getContactor()).append("\n");
+            sb.append("联系电话：").append(order.getPhone()).append("\n");
+            sb.append("创建时间：").append(DateTimeUtil.formatDate(order.getCreateTime())).append("\n");
+            MessageKit.sendKFMsg(weixinConstants.KF_OPENIDS, sb.toString());
         }
 	}
 	
@@ -347,7 +364,7 @@ public class OrderService {
         order.setPayTime(new Date());
         if(1 == orderMapper.updateByPayStatus(order, oldOrderStatus, oldPayStatus)) {
         	// 推荐人的积分提成
-            assignPromotePoints(order);
+            processAgent(order);
             return true;
         }
         throw WebExceptionFactory.exception(WebExceptionEnum.PAY_ERROR, "当前订单支付出错");
@@ -369,48 +386,115 @@ public class OrderService {
     }
     
     /**
+     * 代理商的相关处理逻辑（升级代理商，返送积分）
+     */
+    private void processAgent(Order order) {
+        LOGGER.debug("Starting to process agent for order[{}]...", order.getId());
+    	if(order == null) {
+    		LOGGER.error("can not assign promote points, order is null");
+    		return;
+    	}
+    	// parse order owner
+        int userid =  order.getUserId();
+        User user = userService.getUserById(userid);
+        if(user == null) {
+            LOGGER.error("order[{}] malformed, user[{}] does not exist", order.getId(), userid);
+            return;
+        }
+        order.setUser(user);
+        // parse items for order
+        List<Item> itemList = new ArrayList<Item> ();
+        String items = order.getItems();
+        String[] itemPairs = items.split(",");
+        for(String itemPair : itemPairs) {
+            String[] itemInfo = itemPair.split(":");
+            Integer itemId = Integer.valueOf(itemInfo[0]);
+            Integer count = Integer.valueOf(itemInfo[1]);
+            Item item = itemService.getItem(itemId);
+            itemList.add(item);
+        }
+        order.setItemList(itemList);
+        //升级为代理商
+        boolean upgrade = upgradeAgent(order);
+        //分配提成积分给代理商
+        assignReturnPoints(order);
+        LOGGER.debug("End to process agent for order[{}].", order.getId());
+    }
+    
+    /**
+     * 升级代理商（通过校验该用户下单中是否购买了“代理专区”的商品，若有，且之前不是代理商，则升级为代理商）
+     */
+    private boolean upgradeAgent(Order order) {
+        boolean canAgent = false;
+        User user = order.getUser();
+        if(user.isAgent()) {
+            LOGGER.info("skip to upgrade agent, because user[{}] has been agent already.", order.getUserId());
+        }
+        else {
+            for(Item item : order.getItemList()) {
+                Category c = categoryService.getCategory(item.getCategoryId());
+                //WARNING!!! Hard coding for 代理专区 category id 15
+                if(c.getParentId() == 15) {
+                    canAgent = true;
+                    break;
+                }
+            }
+            if(canAgent) {
+                LOGGER.info("starting to upgrade agent for user[{}] in order[{}]...", order.getUserId(), order.getId());
+                user.setType(User.TypeEnum.AGENT.code());
+                userService.updateUser(user);
+                if(user.getSourceId() != null) {
+                    User promoter = userService.getUserById(user.getSourceId());
+                    if(promoter != null && promoter.isAgent()) {
+                        LOGGER.info("===[Upgrade Agent Points Assignment]===");
+                        LOGGER.info("starting to assign promote points for order[{}]...", order.getId());
+                        int promoterid = promoter.getId();
+                        int points = order.getTotalAmount().intValue() / 2;
+                        LOGGER.info("order[{}] amount=[{}], promote points=[{}] to user[{}].", order.getId(), order.getTotalAmount(), points, promoterid);
+                        pointService.addPointsForAgent(promoterid, points, order.getUserId(), order.getId(), PointDetail.RemarkEnum.AGENT_PROMOTE.remark());
+                        LOGGER.info("success to assign promote points[{}] to user[{}] for order[{}].", points, promoterid, order.getId());
+                    }
+                }
+                LOGGER.info("success to upgrade agent for user[{}] in order[{}].", order.getUserId(), order.getId());
+            }
+        }
+        return canAgent;
+    }
+    
+    /**
      * 分配推广积分<br/>
      * 推广有两种模式：1：代理商推广用户购买，2：代理商平推代理商
      * 模式1：推广用户完成订单支付后，给推广人相应订单的积分（提成按“正常价-代理商价”的差价计算），每单都算
      * 模式2：代理商平推某个用户成为代理商，给推广人购买成为代理商订单总额的一半积分，仅一次有效
      */
-    private void assignPromotePoints(Order order) {
-    	if(order == null) {
-    		LOGGER.error("can not assign promote points, order is null");
-    		return;
-    	}
-    	int orderid = order.getId();
-    	int amount = order.getTotalAmount()==null ? 0 :order.getTotalAmount().intValue();
-        int userid =  order.getUserId();
-        User user = userService.getUserById(userid);
-        if(user == null) {
-        	LOGGER.error("order[{}] malformed, user[{}] does not exist", orderid, userid);
-        	return;
+    private void assignReturnPoints(Order order) {
+        int orderid = order.getId();
+        int amount = order.getTotalAmount()==null ? 0 : order.getTotalAmount().intValue();
+        User user = order.getUser();
+        if(user.getSourceId() == null) {
+            LOGGER.info("skip to assign promote points, because order owner[{}] has no promoter.", order.getUserId());
+            return;
         }
         User promoter = userService.getUserById(user.getSourceId());
-        LOGGER.info("starting to assign promote points for order[{}]...", orderid);
-        if(promoter == null) {
-        	LOGGER.info("user[{}] has no promoter, skip assign promote process", userid);
-        	return;
+        //发分条件：1.用户为普通会员，2.有推广人，3.推广人是代理商
+        if(!user.isAgent() && promoter != null && promoter.isAgent()) {
+            LOGGER.info("===[Agent Points Assignment]===");
+            LOGGER.info("starting to assign return points for order[{}]...", orderid);
+            //统计该订单下差价提成
+            int points = 0;
+            String items = order.getItems();
+            String[] itemPairs = items.split(",");
+            for(String itemPair : itemPairs) {
+                String[] itemInfo = itemPair.split(":");
+                Integer itemId = Integer.valueOf(itemInfo[0]);
+                Integer count = Integer.valueOf(itemInfo[1]);
+                Item item = itemService.getItem(itemId);
+                points += (item.getNormalPrice().intValue()-item.getVipPrice().intValue())*count;
+            }
+            int promoterid = promoter.getId();
+            LOGGER.info("order[{}] amount=[{}], promote points=[{}] to user[{}].", orderid, amount, points, promoterid);
+            pointService.addPointsForAgent(promoterid, points, order.getUserId(), orderid, PointDetail.RemarkEnum.AGENT_RETURN.remark());
+            LOGGER.info("success to assign return points[{}] to user[{}] for order[{}].", points, promoterid, orderid);
         }
-        else {
-            LOGGER.info("===[Promotion Assginment]===");
-        	//统计该订单下差价提成
-        	int points = 0;
-        	String items = order.getItems();
-        	String[] itemPairs = items.split(",");
-        	for(String itemPair : itemPairs) {
-        	    String[] itemInfo = itemPair.split(":");
-        	    Integer itemId = Integer.valueOf(itemInfo[0]);
-        	    Integer count = Integer.valueOf(itemInfo[1]);
-        	    Item item = itemService.getItem(itemId);
-        	    points += (item.getNormalPrice().intValue()-item.getVipPrice().intValue())*count;
-        	}
-        	int promoterid = promoter.getId();
-        	LOGGER.info("order[{}] amount=[{}], promote points=[{}] to user[{}]", orderid, amount, points, promoterid);
-        	pointService.addPointsForAgent(promoterid, points, userid, orderid);
-        	LOGGER.info("success to assign promote points[{}] to user[{}] for order[{}]", points, promoterid, orderid);
-        }
-        
     }
 }
