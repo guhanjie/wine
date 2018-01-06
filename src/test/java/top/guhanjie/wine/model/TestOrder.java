@@ -3,8 +3,11 @@ package top.guhanjie.wine.model;
 import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 import org.junit.Test;
+
+import top.guhanjie.wine.model.Order.ShipTypeEnum;
 
 /**
  * Created by guhanjie on 2017-10-09.
@@ -24,6 +27,14 @@ public class TestOrder {
         System.out.println("double="+order.getPayAmount().doubleValue()*100);
         System.out.println("int="+(int)(order.getPayAmount().doubleValue()*100));
         System.out.println(order.getPayAmount().multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_DOWN).intValue());
+    }
+    
+    @Test
+    public void testShipTypeEnum() {
+        ShipTypeEnum e = ShipTypeEnum.valueOf("KUAIDI");
+        System.out.println(e);
+        ShipTypeEnum[] es = ShipTypeEnum.values();
+        System.out.println(Arrays.deepToString(es));
     }
 
 }

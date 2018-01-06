@@ -32,6 +32,7 @@ import top.guhanjie.wine.model.Item;
 import top.guhanjie.wine.model.Order;
 import top.guhanjie.wine.model.Order.PayStatusEnum;
 import top.guhanjie.wine.model.Order.PayTypeEnum;
+import top.guhanjie.wine.model.Order.ShipTypeEnum;
 import top.guhanjie.wine.model.PointDetail;
 import top.guhanjie.wine.model.User;
 import top.guhanjie.wine.util.DateTimeUtil;
@@ -167,9 +168,9 @@ public class OrderService {
 		sb.append("支付金额：").append(order.getTotalAmount()).append("元\n");
 		sb.append("联系人：").append(order.getContactor()).append("\n");
 		sb.append("联系电话：").append(order.getPhone()).append("\n");
-		sb.append("购买商品：").append(purchases);
-		sb.append("配送地址：").append(order.getAddress());
-		sb.append("配送方式：").append(order.getShipType());
+		sb.append("购买商品：").append(purchases).append("\n");
+		sb.append("配送地址：").append(order.getAddress()).append("\n");
+		sb.append("配送方式：").append(ShipTypeEnum.valueOf(order.getShipType()).desc()).append("\n");
 		sb.append("创建时间：").append(DateTimeUtil.formatDate(order.getCreateTime(), "yyyy-MM-dd HH:mm")).append("\n");
 		sb.append("备注：").append(order.getRemark()==null?"无":order.getRemark()).append("\n");
 		MessageKit.sendKFMsg(weixinConstants.KF_OPENIDS, sb.toString());
@@ -275,7 +276,7 @@ public class OrderService {
         if(success) {
         	LOGGER.info("Order[{}] pay complete successfully!!!", orderid);
             order.setStatus(Order.StatusEnum.PAYED.code());
-            order.setPayStatus(Order.PayStatusEnum.SUCCESS.code());
+            order.setPayStatus(PayStatusEnum.SUCCESS.code());
             order.setPayType(PayTypeEnum.WEIXIN.code());
             order.setPayTime(DateTimeUtil.getDate(time_end, "yyyyMMddHHmmss"));
             int payAmount = order.getPayAmount().multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_DOWN).intValue();
@@ -296,7 +297,8 @@ public class OrderService {
         }
         
         // 当订单支付成功时，计算推广积分、发送客服通知短信
-        if(order.getStatus() == PayStatusEnum.SUCCESS.code()) {
+        LOGGER.info("order pay_status=[{}]", order.getPayStatus());
+        if(order.getPayStatus() == PayStatusEnum.SUCCESS.code()) {
             // 推荐人的积分提成
             processAgent(order);
             
@@ -390,10 +392,6 @@ public class OrderService {
      */
     private void processAgent(Order order) {
         LOGGER.debug("Starting to process agent for order[{}]...", order.getId());
-    	if(order == null) {
-    		LOGGER.error("can not assign promote points, order is null");
-    		return;
-    	}
     	// parse order owner
         int userid =  order.getUserId();
         User user = userService.getUserById(userid);
@@ -432,9 +430,8 @@ public class OrderService {
         }
         else {
             for(Item item : order.getItemList()) {
-                Category c = categoryService.getCategory(item.getCategoryId());
                 //WARNING!!! Hard coding for 代理专区 category id 15
-                if(c.getParentId() == 15) {
+                if(15 == item.getCategoryId()) {
                     canAgent = true;
                     break;
                 }

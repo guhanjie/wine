@@ -507,9 +507,9 @@
                 $('#user-form input[name="name"]').val(user.name);
                 $('#user-form input[name="phone"]').val(user.phone);
                 $('#user-form input[name="points"]').val(user.points);
-                $('#modifyPoints').show();
-                $('#submitPoints').hide();
-                $('#cancelPoints').hide();
+                $('#modifyPoints').removeClass('hide');
+                $('#submitPoints').addClass('hide');
+                $('#cancelPoints').addClass('hide');
                 if (user.type == 1) {
                     $('#user-type').prop('checked', true);
                     $("#user-vip").show();
@@ -524,9 +524,9 @@
     });
     
     $('#modifyPoints').on('click', function() {
-        $('#modifyPoints').hide();
-        $('#submitPoints').show();
-        $('#cancelPoints').show();
+        $('#modifyPoints').addClass('hide');
+        $('#submitPoints').removeClass('hide');
+        $('#cancelPoints').removeClass('hide');
         $('#user-form input[name="points"]').addClass('points');
         $('#user-form input[name="points"]').prop('disabled', false);
     });
@@ -542,18 +542,18 @@
                 success : function(data) {
                     //console.log(data);
                     weui.toast('积分更新成功', 2000);
-                    $('#modifyPoints').show();
-                    $('#submitPoints').hide();
-                    $('#cancelPoints').hide();
+                    $('#modifyPoints').removeClass('hide');
+                    $('#submitPoints').addClass('hide');
+                    $('#cancelPoints').addClass('hide');
                     $('#user-form input[name="points"]').removeClass('points');
                     $('#user-form input[name="points"]').prop('disabled', true);
                 }
             });
         }, function () {
             //console.log('no');
-            $('#modifyPoints').show();
-            $('#submitPoints').hide();
-            $('#cancelPoints').hide();
+            $('#modifyPoints').removeClass('hide');
+            $('#submitPoints').addClass('hide');
+            $('#cancelPoints').addClass('hide');
             $('#user-form input[name="points"]').removeClass('points');
             $('#user-form input[name="points"]').prop('disabled', true);
         }, {

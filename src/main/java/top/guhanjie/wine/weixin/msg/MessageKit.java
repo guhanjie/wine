@@ -259,7 +259,7 @@ public class MessageKit {
         List<Article> as = new ArrayList<Article>();
 		Article a = new Article();
 		a.Title = "会员推广";
-		a.Description = "下面是您的专属推广二维码，请长按此二维码，发送给好友，推荐成功后，将获得积分";
+		a.Description = "下面是您的专属推广二维码，请长按此二维码，发送给好友，新会员注册成功，即送5代金券";
 		a.PicUrl = "";
 		a.Url = "http://www.guhanjie.top/wine/promote";
 		as.add(a);

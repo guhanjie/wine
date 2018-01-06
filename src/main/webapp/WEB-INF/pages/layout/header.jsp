@@ -5,7 +5,7 @@
     <div class="logo">
       <h1>
         <a class="hidden" href="index.html">如果商城</a>
-        <img class="img-responsive" alt="" src="${pageContext.request.contextPath}/resources/images/title.png">
+        <img class="img-responsive" alt="" src="${pageContext.request.contextPath}/resources/images/title_3.png">
       </h1>
     </div>
     <!-- top nav bar -->

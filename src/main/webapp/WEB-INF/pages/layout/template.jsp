@@ -21,7 +21,7 @@
     	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     	<meta name="keywords" content="如东，如果茶酒，商城，微信商城" />
     	<meta name="description" content="如东，如果茶酒，商城，微信商城"/>
-        <title>如果茶酒商城</title>
+        <title>如果微送商城</title>
     	<link rel="shortcut icon" type="image/x-icon" href="${resourcePath}/images/favicon.ico"/>
         <!--theme style-->
         <link rel="stylesheet" href="${resourcePath}/css/bootstrap.css" media="all"/>

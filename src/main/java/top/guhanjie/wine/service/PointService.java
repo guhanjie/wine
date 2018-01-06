@@ -26,7 +26,7 @@ public class PointService {
 	private PointDetailMapper pointDetailMapper;
 
 	/**
-	 * 会员注册，初始奖励5积分
+	 * 会员注册，初始奖励5代金券
 	 */
 	@Transactional
 	public int addPointsforSignup(int userid, int points) {

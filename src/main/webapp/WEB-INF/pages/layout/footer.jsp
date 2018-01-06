@@ -6,29 +6,21 @@
     <div class="footer-grids">
       <div class="col-md-3 ftr-grid">
         <h3>关于我们</h3>
-        <h5>如东酒业有限公司</h5>
-        <p>南通知名的酒类电子商务综合服务公司，主要从事知名品牌、地方畅销品牌等酒类商品线上和线下零售服务，经营范围包括白酒、葡萄酒、洋酒、保健酒、啤酒等。</p>
+        <h5>如果微送商城</h5>
+        <p>南通知名电子商务综合服务公司，主要从事知名品牌、地方畅销品牌产品的线上和线下批发零售配送服务。以掘港为中心，提供县城快速配送、乡镇快递送达。诚邀各类产品代理商入驻。</p>
       </div>
       <div class="col-md-3 ftr-grid">
-        <h3>联系方式</h3>
+        <h3>加盟方式</h3>
         <ul class="nav-bottom">
-          <li>公司地址：江苏省南通市如东县XXX路XXX号</li>
-          <li>联系电话：13********</li>
-          <li>邮政编码：226400</li>
+          <li>0513-84116900</li>
+          <li>13382376111（唐先生）</li>
+          <li>13382376115（陈女士）</li>
         </ul>
       </div>
       <div class="col-md-3 ftr-grid">
-        <h3>服务内容</h3>
+        <h3>公司地址</h3>
         <ul class="nav-bottom">
-          <li>经营各类酒水、茶叶、礼物等商品</li>
-          <li>送货上门</li>
-          <li>支持预订</li>
-        </ul>
-      </div>
-      <div class="col-md-3 ftr-grid">
-        <h3>服务覆盖范围</h3>
-        <ul class="nav-bottom">
-          <li>南通市区 | 掘港 | 马塘 | 海门</li>
+          <li>江苏省如东县范堤路3-6号</li>
         </ul>
       </div>
       <div class="clearfix"></div>

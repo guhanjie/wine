@@ -57,9 +57,13 @@ h1.b1,h2.b2,h3.b3 {
     height: 61px;
     /* background-image: url("/wine/resources/images/title.png"); */
 }
-.logo img{
+/* .logo img{
 	width:100%;
 	padding: 9px 0;
+} */
+.logo img{
+    width: 40%;
+    margin: 0 30%;
 }
 .login a{
 	font-size:13px;

@@ -723,6 +723,46 @@ public class Order {
             return desc;
         }
     }
+    
+    /**
+     * Class Name:    ShipTypeEnum<br/>
+     * <b>订单来源类型:    </b>
+     * <ul>
+     * <li>normal：普通商品下单，</li>
+     * <li>rush：1元购活动下单</li>
+     * </ul>
+     */
+    public static enum ShipTypeEnum {
+
+        KUAIDI(1, "快递"),
+        TONGCHENG(2, "同城快送");
+        
+        private int code;
+        private String desc;
+        
+        private ShipTypeEnum(int code, String desc) {
+            this.code = code;
+            this.desc = desc;
+        }
+        
+        public int code() {
+            return code;
+        }
+        
+        public String desc() {
+            return desc;
+        }
+        
+        public static ShipTypeEnum valueOf(int code) {
+            if(code == 1) {
+                return KUAIDI;
+            }
+            else if(code == 2) {
+                return TONGCHENG;
+            }
+            return KUAIDI;
+        }
+    }
 
     //------------------------- custom add -----------------------------
     private User user;
