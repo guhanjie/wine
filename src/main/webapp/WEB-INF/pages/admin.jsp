@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app-admin.css"/>
     <script src="${pageContext.request.contextPath}/resources/js/jquery-1.11.3.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/weui-1.1.2.js"> </script>
+    <script src="${pageContext.request.contextPath}/resources/js/mustache.min.js"> </script>
 </head>
 <body ontouchstart>
 <p id="bear"></p>
@@ -233,6 +234,11 @@
                       </div>
                   </div>
               </div>
+              <div class="item">
+                  <p class="item__title bg-success">推广人列表</p>
+                  <div class="table-responsive promotees_list">
+                  </div>
+              </div>
           </div>
         </div>
         <div class="weui-tab__content">
@@ -294,5 +300,42 @@
     </div>
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/app-admin.js"> </script>
+<script src="${pageContext.request.contextPath}/resources/js/app-order.js"> </script>
+<script id="order-template" type="x-tmpl-mustache">
+{{#orders}}
+<a class="weui-cell order-item" data-id="{{id}}" href="#pay">
+  <div class="weui-cell__hd"></div>
+  <div class="weui-cell__bd weui-cell_primary">
+    <div class="weui-uploader">
+      <div class="weui-uploader__hd weui-cell"></div>
+      <div class="weui-uploader__bd">
+        <ul class="weui-uploader__files">
+          {{#itemList}}
+          <li class="weui-uploader__file" 
+            style="background-image: url(/wine/resources/{{icon}}); background-size: 79px 79px; background-position: top left">
+            <div class="item_count">{{count}}</div>
+            <span style="position: absolute; top: 110px;">{{name}}</span>
+          </li>
+          {{/itemList}}
+        </ul>
+      </div>
+    </div>
+    <p>订单ID： <span id="start_time" class="text-blue">{{id}}</span></p>
+    <p>支付金额：<span id="amount" class="text-red">{{payAmount}}</span> 元</p>
+    <div class="order-detail">
+      <p>使用积分：<span id="coupons" class="text-blue">{{coupons}}</span> 分</p>
+      <p>配送方式：<span>{{fmtShipType}}</span></p>
+      <p>联系人：{{contactor}}</p>
+      <p>联系电话：<span>{{phone}}</span></p>
+      <p>收货地址：{{address}}</p>
+      <!--<p class="text-red">快递单号：<span class="text-red">{{address}}</span></p>-->
+      <p>创建时间：<span id="start_time">{{fmtCreateTime}}</span></p>
+      <p>备注：{{remark}}</p>
+    </div>
+  </div>
+  <div class="weui-cell__ft">{{{fmtStatus}}}</div>
+</a>
+{{/orders}}
+</script>
 </body>
 </html>

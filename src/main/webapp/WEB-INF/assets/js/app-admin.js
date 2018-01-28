@@ -7,17 +7,21 @@
         defaultIndex : 0,
         onChange : function(index) {
             if (index == 0) { // 商品管理页面
-
+                showItemList();
             } else if (index == 1) { // 订单管理页面
-                showOrderList();
-            } else if (index == 2) { // 积分管理页面
+                $.get("/wine/order/list_admin", function(data) {
+                    showOrderList(data);
+                });
+            } else if (index == 2) { // 会员积分管理页面
 
-            } else { // 其他
+            } else { // 会员列表
 
             }
         }
     });
 
+    //initialize
+    showItemList();
 
     // ====================================1. 商品管理=====================================
     var cateMap = {}, categories = [];
@@ -80,7 +84,6 @@
             });
         });
     };
-    showItemList();
     
     function initialImgUploader(uploader) {
         /* 图片自动上传 */
@@ -467,24 +470,64 @@
     
 
     // ====================================2. 订单管理=====================================
-    function showOrderList() {
-        $.get("/wine/order/list_admin", function(data) {
-            $('.order-list .weui-cells_access').empty();
-            if(data && data.success) {
-                $.each(data.orders, function(i, e) {
-                    var content = '<a class="weui-cell order-item" data-id="' + e.id + '" href="#pay">'
-                    + '  <div class="weui-cell__hd"></div>' + '  <div class="weui-cell__bd weui-cell_primary">'
-                    + '订单号：' + e.id + e.payAmount + '元' + '  </div>' + '</a>';
-                    // ' <div class="weui-uploader">'+
-                    // ' <div class="weui-uploader__hd weui-cell"></div>'+
-                    // ' <div class="weui-uploader__bd">'+
-                    // ' <ul class="weui-uploader__files">'
-                    $('.order-list .weui-cells_access').append(content);
-                });
+    function showOrderList(data) {
+        $('.order-list .weui-cells_access').empty();
+        if(data && data.success) {
+            data.fmtShipType = function () {
+              if(this.shipType == 1) {
+                  return "快递";
+              }
+              else if(this.shipType == 2) {
+                  return "同城配送";
+              }
+              return "--";
             }
-        });
+            data.fmtCreateTime = function() {
+                return new Date(this.createTime).toLocaleString();
+            }
+            data.fmtStatus = function() {
+              switch(this.status) {
+                case 29:
+                    return '<span class="btn_status text-primary">已支付</span>';
+                case 13:
+                    return '<span class="btn_status text-success">已送达</span>';
+                case 05:
+                    return '<span class="btn_status text-success">正在配送</span>';
+                case 03:
+                    return '<span class="btn_status text-bold">已取消</span>';
+                case 01:
+                    return '<span class="btn_cancel">取消</span>';
+                default:
+                    return '<span class="btn_success gloming">去支付</span>';
+              }
+            }
+            var orderTemplate = $('#order-template').html();
+            Mustache.parse(orderTemplate);   // optional, speeds up future uses
+            var rendered = Mustache.render(orderTemplate, data);
+            $('.order-list .weui-cells_access').append(rendered);
+            //pagenation
+            var $pagenation = $('.order-list .pagenation');
+            $pagenation.empty();
+            if(data.current > 0) {
+              $pagenation.append('<a class="page-left" data-page='+(data.current-1)+' href="#"><i class="glyphicon glyphicon-menu-left"></i></a>');
+            }
+            $pagenation.append('<span> '+(data.current+1)+' / '+data.pages+' </span>');
+            if(data.current < data.pages-1) {
+              $pagenation.append('<a class="page-right" data-page='+(data.current+1)+' href="#"><i class="glyphicon glyphicon-menu-right"></i></a>');
+            }
+        }
     };
     
+    $('.order-list').on('click touch', '.page-left,.page-right', function() {
+        var pageId = $(this).data('page');
+        $.ajax({
+            type : "GET",
+            url : "/wine/order/list_admin?page="+pageId,
+            success : function(data) {
+                showOrderList(data);
+            }
+        });
+    });
 
     // ====================================3. 会员管理=====================================
 
@@ -492,15 +535,21 @@
 
     $('#user-searchBar .weui-search-bar__search-btn').on('click touch', function() {
         var query = $('#user-searchBar input').val();
+        $('.promotees_list').empty();
         $.ajax({
             type : "GET",
             url : "/wine/admin/user",
             data : "search=" + query,
             success : function(data) {
                 //console.log(data);
-                var user = data.content;
+                var user = data.user;
                 if(user == undefined) {
                     weui.alert("用户不存在");
+                    $('#user-form').removeData('id');
+                    $('#user-form input[name="name"]').val('');
+                    $('#user-form input[name="phone"]').val('');
+                    $('#user-form input[name="points"]').val('');
+                    $('#modifyPoints').addClass('hide');
                     return;
                 }
                 $('#user-form').data('id', user.id);
@@ -518,6 +567,33 @@
                     $('#user-type').prop('checked', false);
                     $("#user-vip").hide();
                     $("#user-normal").show();
+                }
+                var promotees = data.promotees;
+                if(promotees) {
+                    $('.promotees_list').append('<table class="table table-condensed table-striped">'+
+                                    '<thead>'+
+                                    '<tr>'+
+                                      '<th>ID</th>'+
+                                      '<th>用户名</th>'+
+                                      '<th>积分</th>'+
+                                      '<th>电话</th>'+
+                                      '<th>注册时间</th>'+
+                                    '</tr>'+
+                                  '</thead>'+
+                                  '<tbody>'+
+                                  '</tbody>'+
+                                '</table>');
+                    for(i=0; i<promotees.length; i++) {
+                        var promotee = promotees[i];
+                        $('.promotees_list tbody').append(
+                            '<tr>'+
+                              '<th scope="row">'+promotee.id+'</th>'+
+                              '<td>'+promotee.name+'</td>'+
+                              '<td>'+promotee.points+'</td>'+
+                              '<td>'+promotee.phone+'</td>'+
+                              '<td>'+new Date(promotee.createTime).toLocaleString()+'</td>'+
+                            '</tr>');
+                    }
                 }
             }
         });

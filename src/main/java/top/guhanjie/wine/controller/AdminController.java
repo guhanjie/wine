@@ -1,6 +1,8 @@
 package top.guhanjie.wine.controller;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -75,7 +77,14 @@ public class AdminController extends BaseController{
     @ResponseBody
     @RequestMapping(value="/user", method=RequestMethod.GET)
     public Map<String, Object> findUser(@RequestParam("search") String str) {
-        return success(userService.findUser(str));
+        Map<String, Object> res = new HashMap<String, Object>();
+        User user = userService.findUser(str);
+        res.put("user", user);
+        if(user != null) {
+            List<User> promotees = userService.getPromotees(user.getId());
+            res.put("promotees", promotees);
+        }
+        return res;
     }
     
     @ResponseBody

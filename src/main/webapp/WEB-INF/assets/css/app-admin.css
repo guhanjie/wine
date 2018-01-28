@@ -81,3 +81,11 @@ input.points {
     margin-top: 0px;
     margin-left: 10px;
 }
+
+.order-list a.weui-cell.order-item:nth-of-type(even){
+	background-color: #fff8dc8f;
+}
+
+li.weui-uploader__file {
+	height: 99px;
+}

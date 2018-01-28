@@ -101,7 +101,7 @@
       <a class="back-buy" href="${pageContext.request.contextPath}/index">返回商品页</a>
       <a class="go-order-list" href="${pageContext.request.contextPath}/order/list" >前往订单中心</a>
     </div>
-    <div class="weui-msg weixin_pay">
+    <div class="pay weui-msg weixin_pay">
       <div class="weui-msg__icon-area">
         <i class="weui-icon-success weui-icon_msg"></i>
       </div>

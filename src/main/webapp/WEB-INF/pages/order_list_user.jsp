@@ -102,7 +102,7 @@
       </c:if>
     </div>
   </div>
-  <div class="weui-msg weixin_pay" style="display: none;">
+  <div class="order weui-msg weixin_pay" style="display: none;">
     <div class="weui-icon__area">
       <i class="weui-icon-success weui-icon_msg"></i>
     </div>
@@ -132,4 +132,3 @@
     </div>
   </div>
 </div>
-<script src="${pageContext.request.contextPath}/resources/js/app-order_search.js"></script>

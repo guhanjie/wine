@@ -60,8 +60,9 @@
             <ref bean="OAuthIntercepter"/>
         </mvc:interceptor>
         <mvc:interceptor>
-            <mvc:mapping path="/order/list_admin"/>
-            <mvc:mapping path="/order/payed"/>
+            <mvc:mapping path="/order/xx"/>
+            <!-- <mvc:mapping path="/order/list_admin"/>
+            <mvc:mapping path="/order/payed"/> -->
             <ref bean="AdminAuthIntercepter"/>
         </mvc:interceptor>
     </mvc:interceptors>

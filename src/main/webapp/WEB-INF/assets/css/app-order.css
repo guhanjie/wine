@@ -100,10 +100,16 @@ span.btn_success.gloming, span.btn_pay.gloming {
 .pagenation {
     text-align: center;
     font-weight: bold;
+    padding: 4px 0;
 }
 .pagenation i {
     color: #ccc99b;
     cursor: pointer;
+}
+.pagenation span {
+    position: relative;
+	left: 12px;
+    top: -2px;
 }
    
 #baiduMap {
