@@ -570,6 +570,7 @@
                 }
                 var promotees = data.promotees;
                 if(promotees) {
+                    $('.promotees').html('（共'+promotees.length+'人）');
                     $('.promotees_list').append('<table class="table table-condensed table-striped">'+
                                     '<thead>'+
                                     '<tr>'+

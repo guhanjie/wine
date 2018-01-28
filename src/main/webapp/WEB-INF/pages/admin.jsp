@@ -235,7 +235,7 @@
                   </div>
               </div>
               <div class="item">
-                  <p class="item__title bg-success">推广人列表</p>
+                  <p class="item__title bg-success">推广人列表<span class="promotees"></span></p>
                   <div class="table-responsive promotees_list">
                   </div>
               </div>
