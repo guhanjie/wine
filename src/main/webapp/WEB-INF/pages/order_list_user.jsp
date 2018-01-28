@@ -65,7 +65,7 @@
                 <p>联系电话：<span>${order.phone}</span></p>
                 <p>收货地址：${order.address}</p>
                 <c:if test="${order.address!=null}">
-                <p class="text-red">快递单号：<span class="text-red">${order.address}</span></p>
+                <%-- <p class="text-red">快递单号：<span class="text-red">${order.address}</span></p> --%>
                 </c:if>
                 <p>创建时间： 
                   <span id="start_time"> 
@@ -108,7 +108,7 @@
     </div>
     <div class="weui-msg__text-area">
       <h2 class="weui-msg__title">订单支付</h2>
-      <p class="weui-msg__desc">请您完成支付，如果茶酒商城给您最好的商品和服务！</p>
+      <p class="weui-msg__desc">请您完成支付，如果商城给您最好的商品和服务！</p>
       <div class="weui-cells order-item">
         <div class="weui-cell">
           <div class="weui-cell__hd">

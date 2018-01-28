@@ -107,7 +107,7 @@
       </div>
       <div class="weui-msg__text-area">
         <h2 class="weui-msg__title">订单支付</h2>
-        <p class="weui-msg__desc">请您完成支付，如果茶酒商城给您最好的商品和服务！</p>
+        <p class="weui-msg__desc">请您完成支付，如果商城给您最好的商品和服务！</p>
         <div class="weui-cells order-item">
           <div class="weui-cell">
             <div class="weui-cell__hd">
