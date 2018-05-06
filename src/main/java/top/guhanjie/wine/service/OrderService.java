@@ -401,11 +401,13 @@ public class OrderService {
         order.setPayType(PayTypeEnum.CASH.code());
         order.setPayTime(new Date());
         if(1 == orderMapper.updateByPayStatus(order, oldOrderStatus, oldPayStatus)) {
-        	// 推荐人的积分提成
-            processAgent(order);
             // 一元抢购活动
             if(Order.SourceTypeEnum.RUSH.code().equalsIgnoreCase(order.getSourceType())) {
             	rushItemService.putItem(order);
+            }
+            else {
+            	// 推荐人的积分提成
+                processAgent(order);
             }
             return true;
         }
