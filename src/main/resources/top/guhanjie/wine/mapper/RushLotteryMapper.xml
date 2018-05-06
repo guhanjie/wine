@@ -174,14 +174,14 @@
   
   <select id="countByItem" resultMap="BaseResultMap">
     select 
-    count (1)
+    count(1)
     from rush_lottery 
     where rush_item_id = #{rush_item_id,jdbcType=INTEGER} 
   </select>
   
   <select id="countUsersByItem" resultMap="BaseResultMap">
     select 
-    count (1) 
+    count(1) 
     from rush_lottery 
     where rush_item_id = #{rush_item_id,jdbcType=INTEGER} 
     group by user_id
