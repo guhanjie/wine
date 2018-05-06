@@ -875,12 +875,13 @@ background-position:-167px -36px;
 	/* font-weight:100; */
 	font-size: xx-small;
 	display:inline-block;
-	border-radius:5px;
+	/* border-radius:5px;
 	-moz-border-radius: 5px;
     -webkit-border-radius: 5px;
-    -o-border-radius: 5px;
+    -o-border-radius: 5px; */
     padding:4px 4px !important;
-	background:#00a0dc;
+	/* background:#00a0dc; */
+	background:#ed645c;
 	border:none;
 	outline:none;
 	float: right;
@@ -1342,7 +1343,7 @@ p.para {
     margin: 0 5px;
 }
 .prdt-info-grid{
-	margin:1.5em 0;
+	margin:1em 0;
 }
 .prdt-info-grid ul li{
 	display:block;

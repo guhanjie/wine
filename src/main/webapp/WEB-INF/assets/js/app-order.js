@@ -1,7 +1,12 @@
 (function($) {
     // buy item now
-    $('body').on('click', '.buy-now', function() {
-        window.location.href = "/wine/order/checkout";
+    $('body').on('click', '.buy-now', function(e) {
+    	if($(this).hasClass('rush')) {
+            window.location.href = "/wine/order/checkout?type=rush";
+    	}
+    	else {
+    		window.location.href = "/wine/order/checkout?type=normal";
+    	}
     });
     
     // add item into cart
@@ -38,6 +43,8 @@
     $("body").on('click', '.simpleCart_increment,.simpleCart_decrement', function(e) {
         simpleCart.update();
         $('input.points').val('');
+        $('span.delcpns').text('');
+        $('.coupons-discount').hide();
     });
     
     $("body").on('click', '.shipType :radio', function(e) {
@@ -83,7 +90,7 @@
         // $cpn.text(maxcpns-cpns);
         $('.coupons-discount').find('span.delcpns').text('-￥' + cpns);
         $('.coupons-discount').fadeIn('slow', function(e) {
-        var num = new Number(all - cpns);
+        	var num = new Number(all - cpns);
         $('.simpleCart_all').text('¥' + num.toFixed(1));
         });
     });
@@ -96,6 +103,11 @@
         if (simpleCart.total() == 0) {
             weui.alert('购物车内空空如也，请先加入商品');
             return;
+        }
+        // 如果是秒杀活动，则只能使用积分
+        if(ships==0 && $('.simpleCart_all').text() != '¥0.0') {
+        	weui.alert('本单为活动秒杀，必须使用等额积分支付本单');
+        	return;
         }
         // 1.收集数据
         var order = {};
@@ -111,7 +123,7 @@
         order["items"] = items.substr(1);
         order["ships"] = ships;
         order["shipType"] = $(':radio[name="shipType"]:checked').val();
-        order["sourceType"] = "normal";
+        order["sourceType"] = $('#sourceType').val() ? $('#sourceType').val() : "normal";
         order["contactor"] = $('#order-contactor').val();
         order["phone"] = $('#order-phone').val();
         order["address"] = $('#order-address').val();

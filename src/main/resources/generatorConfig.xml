@@ -12,7 +12,7 @@
 		</commentGenerator>
 		<!-- 数据库驱动 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://127.0.0.1:3306/wine" userId="root" password="1234">
+			connectionURL="jdbc:mysql://127.0.0.1:3306/wine" userId="root" password="123qwe!@#">
 		</jdbcConnection>
 		<!-- java类型解析 -->
 		<javaTypeResolver>
@@ -84,7 +84,7 @@
                selectByExampleQueryId="false">
                <generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table> -->
-		<table tableName="vip_item" domainObjectName="VipItem" 
+		<!-- <table tableName="vip_item" domainObjectName="VipItem" 
                enableInsert="true"
                enableSelectByPrimaryKey="true"
                enableSelectByExample="false"
@@ -96,7 +96,7 @@
                selectByPrimaryKeyQueryId="false"
                selectByExampleQueryId="false">
                <generatedKey column="id" sqlStatement="MySql" identity="true" />
-        </table>
+        </table> -->
 		<!-- <table tableName="order" domainObjectName="Order" 
 			   enableInsert="true"
                enableSelectByPrimaryKey="true"
@@ -136,6 +136,32 @@
                selectByExampleQueryId="false">
                <generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table> -->
+		<table tableName="rush_lottery" domainObjectName="RushLottery" 
+			   enableInsert="true"
+               enableSelectByPrimaryKey="true"
+               enableSelectByExample="false"
+               enableUpdateByPrimaryKey="true"
+               enableDeleteByPrimaryKey="true"
+               enableDeleteByExample="false"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               selectByPrimaryKeyQueryId="false"
+               selectByExampleQueryId="false">
+               <generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+		<table tableName="lottery_info" domainObjectName="LotteryInfo" 
+			   enableInsert="true"
+               enableSelectByPrimaryKey="true"
+               enableSelectByExample="false"
+               enableUpdateByPrimaryKey="true"
+               enableDeleteByPrimaryKey="true"
+               enableDeleteByExample="false"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               selectByPrimaryKeyQueryId="false"
+               selectByExampleQueryId="false">
+               <generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
 	</context>
 	<!--
 		maven cmd:

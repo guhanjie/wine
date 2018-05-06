@@ -26,6 +26,9 @@
       <c:if test="${not empty orders}">
         <c:forEach items="${orders}" var="order">
           <a class="weui-cell order-item" data-id="${order.id}" href="#pay">
+          	<c:if test="${order.sourceType=='rush'}">
+          		<div class="order_corner_mark">秒杀</div>
+          	</c:if>
             <div class="weui-cell__hd">
               <!-- <i class="icon-double-angle-down text-primary"> </i> -->
             </div>
@@ -35,15 +38,89 @@
                 </div>
                 <div class="weui-uploader__bd">
                   <ul class="weui-uploader__files">
-                    <c:forEach var="item" items="${order.itemList}">
-                      <li class="weui-uploader__file" 
-                        style="background-image: url(${pageContext.request.contextPath}/resources/${item.icon})">
-                        <div class="item_count">${item.count}</div>
-                      </li>
-                    </c:forEach>
+                  	<c:if test="${order.sourceType=='rush'}">
+	                    <c:forEach var="item" items="${order.rushItemList}">
+	                      <li class="weui-uploader__file" 
+	                        style="background-image: url('${pageContext.request.contextPath}/resources/${item.icon}')">
+	                        <div class="item_count">${item.count}</div>
+	                      </li>
+	                    </c:forEach>
+		          	</c:if>
+		          	<c:if test="${order.sourceType!='rush'}">
+	                    <c:forEach var="item" items="${order.itemList}">
+	                      <li class="weui-uploader__file" 
+	                        style="background-image: url('${pageContext.request.contextPath}/resources/${item.icon}')">
+	                        <div class="item_count">${item.count}</div>
+	                      </li>
+	                    </c:forEach>
+		          	</c:if>
                   </ul>
                 </div>
               </div>
+              <!-- 已支付 -->
+              <c:if test="${order.status == 29 && order.sourceType=='rush'}">
+              <c:forEach var="item" items="${order.rushItemList}">
+              <!-- 是否已开奖 -->
+              <c:if test="${item.lotteryCode!=null}">
+	              <!-- 已中奖 -->
+	              <c:if test="${item.won}">
+		              <p class="rush_won">
+		                <span class="glyphicon glyphicon-bookmark won" aria-hidden="true"></span>
+		                <span>恭喜您，中奖啦！</span>
+		              </p>
+	              </c:if>
+	              <!-- 未中奖 -->
+	              <c:if test="${!item.won}">
+		              <p class="rush_won">
+		                <span class="glyphicon glyphicon-remove-sign won" aria-hidden="true"></span>
+		                <span>您本轮号码未中奖，下次再接再厉！</span>
+		              </p>
+	              </c:if>
+	              <p>本次中奖号码为：<span class="label label-danger">${item.lotteryCode}</span></p>
+              </c:if>
+              <p>您购得的号码： 
+                  <c:forEach var="lottery" items="${item.rushLotterys}">
+                    <span class="label label-success">${lottery.lotteryCode}</span>
+                    <%-- <span class="weui-badge">${lottery.lotteryCode}</span> --%>
+                  </c:forEach>
+              </p>
+              <!-- 未开奖时显示进度 -->
+              <c:if test="${item.lotteryCode==null}">
+              <p>本活动进度：
+                <c:choose>
+                  <c:when test="${item.counts < 250}">
+	                <div class="progress">
+				      <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="${item.counts}" aria-valuemin="0" aria-valuemax="1000" style="width: ${item.counts/10}%">
+				        ${item.counts/10}%
+				      </div>
+					</div>
+			      </c:when>
+                  <c:when test="${item.counts < 500}">
+	                <div class="progress">
+				      <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="${item.counts}" aria-valuemin="0" aria-valuemax="1000" style="width: ${item.counts/10}%">
+				        已完成${item.counts/10}%
+				      </div>
+					</div>
+			      </c:when>
+                  <c:when test="${item.counts < 750}">
+	                <div class="progress">
+				      <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="${item.counts}" aria-valuemin="0" aria-valuemax="1000" style="width: ${item.counts/10}%">
+				        已完成${item.counts/10}%
+				      </div>
+					</div>
+			      </c:when>
+                  <c:otherwise>
+	                <div class="progress">
+				      <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="${item.counts}" aria-valuemin="0" aria-valuemax="1000" style="width: ${item.counts/10}%">
+				        已完成${item.counts/10}%
+				      </div>
+					</div>
+                  </c:otherwise>
+                </c:choose>
+			  </p>
+              </c:if>
+              </c:forEach>
+              </c:if>
               <p>订单ID： <span id="start_time" class="text-blue"> ${order.id}</span></p>
               <p>支付金额：<span id="amount" class="text-red">${order.payAmount}</span> 元</p>
               <div class="order-detail">

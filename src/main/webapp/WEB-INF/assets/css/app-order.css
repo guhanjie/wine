@@ -284,3 +284,42 @@ p.order_sumary .price  em{
 .weui_msg .weui_cell p i{
     padding-right: 0.2em;
 }
+.order_corner_mark {
+    width: 80px;
+    height: 80px;
+    color: #fff;
+    position: absolute;
+    right:0px;
+    top: 3px;
+    transform: rotateZ(45deg);
+	text-align: center;
+}
+.order_corner_mark:after {
+    content: '';
+    border-width: 40px;
+    width: 0;
+    border-style: dashed dashed solid dashed;
+    border-color: transparent transparent #d75d5a transparent;
+    display: block;
+    position: absolute;
+    top: -60px;
+    z-index: -2;
+}
+.order_corner_mark:before {
+    content: '';
+    border-width: 20px;
+    width: 0;
+    border-style: dashed dashed solid dashed;
+    border-color: transparent transparent #fff transparent;
+    display: block;
+    position: absolute;
+    top: -41px;
+    z-index: -1;
+    right: 20px;
+}
+.rush_won {
+	color: #ed645b;
+}
+.rush_won span {
+	left: 0px !important; 
+}

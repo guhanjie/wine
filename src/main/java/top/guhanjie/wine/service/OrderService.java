@@ -34,6 +34,7 @@ import top.guhanjie.wine.model.Order.PayStatusEnum;
 import top.guhanjie.wine.model.Order.PayTypeEnum;
 import top.guhanjie.wine.model.Order.ShipTypeEnum;
 import top.guhanjie.wine.model.PointDetail;
+import top.guhanjie.wine.model.RushItem;
 import top.guhanjie.wine.model.User;
 import top.guhanjie.wine.util.DateTimeUtil;
 import top.guhanjie.wine.weixin.WeixinConstants;
@@ -64,6 +65,9 @@ public class OrderService {
 
 	@Autowired
 	private ItemService itemService;
+
+	@Autowired
+	private RushItemService rushItemService;
 	
 	@Autowired
 	private OrderMapper orderMapper;
@@ -131,35 +135,65 @@ public class OrderService {
 		if(StringUtils.isBlank(order.getAddress())) {
 			order.setAddress(user.getAddress());
 		}
-		// 2. 检查订单总额
-		double total = 0.0;
+		// 2. 检查订单来源
+		String sourceType = order.getSourceType();
 		StringBuilder purchases = new StringBuilder("");
-		String items = order.getItems();
-		String[] it = items.split(",");
-		for(String str : it) {
-			String[] iteminfo = str.split(":");
-			Integer itemId = Integer.parseInt(iteminfo[0]);
-			Integer count = Integer.parseInt(iteminfo[1]);
-			Item item = itemService.getItem(itemId);
-			purchases.append(item.getName()+"\t"+count+"件\n");
-			double price = user.isAgent()? item.getVipPrice().doubleValue() : item.getNormalPrice().doubleValue();
-			total += count * price;
+		// 普通商品下单流程
+		if(Order.SourceTypeEnum.NORMAL.code().equalsIgnoreCase(sourceType)) {
+			// 2-1. 检查订单总额
+			double total = 0.0;
+			String items = order.getItems();
+			String[] it = items.split(",");
+			for(String str : it) {
+				String[] iteminfo = str.split(":");
+				Integer itemId = Integer.parseInt(iteminfo[0]);
+				Integer count = Integer.parseInt(iteminfo[1]);
+				Item item = itemService.getItem(itemId);
+				purchases.append(item.getName()+"\t"+count+"件\n");
+				double price = user.isAgent()? item.getVipPrice().doubleValue() : item.getNormalPrice().doubleValue();
+				total += count * price;
+			}
+			double totalAmount = order.getTotalAmount().doubleValue();
+			double pay = total + order.getShips().doubleValue() - order.getCoupons();
+			double payAmount = order.getPayAmount().doubleValue();
+			//校验订单金额（计算金额与前端展示金额误差在1.0以内）
+			if(Math.abs(total-totalAmount) > 0.1 || Math.abs(pay-payAmount) > 0.1) {
+			    LOGGER.error("order payment error: total[{}]-totalAmount[{}], pay[{}]-payAmount[{}]", 
+			            total, totalAmount, pay, payAmount);
+			    throw WebExceptionFactory.exception(WebExceptionEnum.VALIDATE_ERROR, "订单金额有误");
+			}
+	        itemService.addSales(items);	//插入商品销售记录
 		}
-		double totalAmount = order.getTotalAmount().doubleValue();
-		double pay = total + order.getShips().doubleValue() - order.getCoupons();
-		double payAmount = order.getPayAmount().doubleValue();
-		//校验订单金额（计算金额与前端展示金额误差在1.0以内）
-		if(Math.abs(total-totalAmount) > 0.1 || Math.abs(pay-payAmount) > 0.1) {
-		    LOGGER.error("order payment error: total[{}]-totalAmount[{}], pay[{}]-payAmount[{}]", 
-		            total, totalAmount, pay, payAmount);
-		    throw WebExceptionFactory.exception(WebExceptionEnum.VALIDATE_ERROR, "订单金额有误");
+		// 1元抢购下单流程
+		else if(Order.SourceTypeEnum.RUSH.code().equalsIgnoreCase(sourceType)) {
+			// 2-1. 检查订单总额
+			double total = 0.0;
+			String items = order.getItems();
+			String[] it = items.split(",");
+			for(String str : it) {
+				String[] iteminfo = str.split(":");
+				Integer itemId = Integer.parseInt(iteminfo[0]);
+				Integer count = Integer.parseInt(iteminfo[1]);
+				RushItem item = rushItemService.getItem(itemId);
+				purchases.append(item.getName()+"\t"+count+"件\n");
+				double price = user.isAgent()? item.getVipPrice().doubleValue() : item.getNormalPrice().doubleValue();
+				total += count * price;
+			}
+			double totalAmount = order.getTotalAmount().doubleValue();
+			double pay = total + order.getShips().doubleValue() - order.getCoupons();
+			double payAmount = order.getPayAmount().doubleValue();
+			//校验订单金额（计算金额与前端展示金额误差在1.0以内）
+			if(Math.abs(total-totalAmount) > 0.1 || Math.abs(pay-payAmount) > 0.1) {
+			    LOGGER.error("order payment error: total[{}]-totalAmount[{}], pay[{}]-payAmount[{}]", 
+			            total, totalAmount, pay, payAmount);
+			    throw WebExceptionFactory.exception(WebExceptionEnum.VALIDATE_ERROR, "订单金额有误");
+			}
 		}
 		
 		// 3. 生成订单
 		order.setCreateTime(new Date());
 		order.setStatus(Order.StatusEnum.NEW.code());
 		orderMapper.insertSelective(order);	//插入订单记录
-        itemService.addSales(items);	//插入商品销售记录
         pointService.consumePoints(user.getId(), order.getCoupons(), order.getId());	//更新用户积分
 		
 		// 4. 发送微信消息通知客服
@@ -170,7 +204,9 @@ public class OrderService {
 		sb.append("联系电话：").append(order.getPhone()).append("\n");
 		sb.append("购买商品：").append(purchases).append("\n");
 		sb.append("配送地址：").append(order.getAddress()).append("\n");
-		sb.append("配送方式：").append(ShipTypeEnum.valueOf(order.getShipType()).desc()).append("\n");
+		if(order.getShipType() != null) {
+			sb.append("配送方式：").append(ShipTypeEnum.valueOf(order.getShipType()).desc()).append("\n");
+		}
 		sb.append("创建时间：").append(DateTimeUtil.formatDate(order.getCreateTime(), "yyyy-MM-dd HH:mm")).append("\n");
 		sb.append("备注：").append(order.getRemark()==null?"无":order.getRemark()).append("\n");
 		MessageKit.sendKFMsg(weixinConstants.KF_OPENIDS, sb.toString());
@@ -367,24 +403,47 @@ public class OrderService {
         if(1 == orderMapper.updateByPayStatus(order, oldOrderStatus, oldPayStatus)) {
         	// 推荐人的积分提成
             processAgent(order);
+            // 一元抢购活动
+            if(Order.SourceTypeEnum.RUSH.code().equalsIgnoreCase(order.getSourceType())) {
+            	rushItemService.putItem(order);
+            }
             return true;
         }
         throw WebExceptionFactory.exception(WebExceptionEnum.PAY_ERROR, "当前订单支付出错");
     }
 
     private void parseItems(Order order) {
-    	List<Item> itemList = new ArrayList<Item>();
-    	String items = order.getItems();
-		String[] it = items.split(",");
-		for(String str : it) {
-			String[] iteminfo = str.split(":");
-			Integer itemId = Integer.parseInt(iteminfo[0]);
-			Integer count = Integer.parseInt(iteminfo[1]);
-			Item item = itemService.getItem(itemId).deepCopy();
-			item.setCount(count);
-			itemList.add(item);
+		if(Order.SourceTypeEnum.NORMAL.code().equalsIgnoreCase(order.getSourceType())) {
+	    	List<Item> itemList = new ArrayList<Item>();
+	    	String items = order.getItems();
+			String[] it = items.split(",");
+			for(String str : it) {
+				String[] iteminfo = str.split(":");
+				Integer itemId = Integer.parseInt(iteminfo[0]);
+				Integer count = Integer.parseInt(iteminfo[1]);
+				Item item = itemService.getItem(itemId).deepCopy();
+				item.setCount(count);
+				itemList.add(item);
+			}
+	    	order.setItemList(itemList);
 		}
-    	order.setItemList(itemList);
+		else if(Order.SourceTypeEnum.RUSH.code().equalsIgnoreCase(order.getSourceType())) {
+			List<RushItem> itemList = new ArrayList<RushItem>();
+	    	String items = order.getItems();
+			String[] it = items.split(",");
+			for(String str : it) {
+				String[] iteminfo = str.split(":");
+				Integer itemId = Integer.parseInt(iteminfo[0]);
+				Integer count = Integer.parseInt(iteminfo[1]);
+				RushItem item = rushItemService.getItemByOrder(order.getId(), itemId).deepCopy();
+				item.setCount(count);
+				itemList.add(item);
+			}
+	    	order.setRushItemList(itemList);
+		}
+		else {
+			throw new RuntimeException("订单商品信息解析出错");
+		}
     }
     
     /**

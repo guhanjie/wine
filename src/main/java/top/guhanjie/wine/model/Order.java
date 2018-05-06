@@ -784,6 +784,16 @@ public class Order {
 	public void setItemList(List<Item> itemList) {
 		this.itemList = itemList;
 	}
+
+    private List<RushItem> rushItemList;
+
+	public List<RushItem> getRushItemList() {
+		return rushItemList;
+	}
+
+	public void setRushItemList(List<RushItem> rushItemList) {
+		this.rushItemList = rushItemList;
+	}
     
     //--------------------------------------------------------------------
 }

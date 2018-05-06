@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import top.guhanjie.wine.model.Category;
 import top.guhanjie.wine.model.Item;
+import top.guhanjie.wine.model.RushItem;
 import top.guhanjie.wine.service.BannarService;
 import top.guhanjie.wine.service.CategoryService;
 import top.guhanjie.wine.service.ItemService;
@@ -52,6 +53,9 @@ public class IndexController extends BaseController{
 	    }
 	    model.addAttribute("indexCategories", indexCategories);
 	    model.addAttribute("indexItems", indexItems);
+	    //活动商品
+	    List<RushItem> ris = rushItemService.listItems();
+	    model.addAttribute("rushItems", ris);
 //	    List<Category> citemList = new ArrayList<Category>();
 //	    Map<String, List<Item>> items = new HashMap<String, List<Item>>();
 //	    Map<Integer, List<Item>> itemMaps = itemService.listIndexItems();

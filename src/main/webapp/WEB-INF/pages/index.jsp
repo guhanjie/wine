@@ -133,6 +133,41 @@
     </div>
   </div>
 </div>
+<!-- 活动页面 -->
+<div class="offers">
+  <div class="container">
+    <!-- <h3>『 一 · 元 · 购 』</h3> -->
+    <h3>『 秒 · 杀 · 专 · 区 』</h3>
+    <div class="offer-grids">
+      <c:forEach var="rush" items="${rushItems}" varStatus="status">
+        <div class="col-md-6">
+          <a href="rush_item/${rush.id}">
+            <div class="offer-grid">
+              <div class="ofr-pic">
+                <img src="${pageContext.request.contextPath}/resources/${rush.icon}" class="img-responsive center-block" alt="" />
+              </div>
+              <div class="ofr-pic-info pull-right text-right">
+                <h4>一元秒杀 · ${rush.name}</h4>
+                <p class="status">
+                  已抢购 <span>${rush.counts}</span> 份，剩余 <span>${1000-rush.counts}</span> 份成单
+                </p>
+                <c:if test="${rush.counts<1000}">
+                <p class="buy">立即抢购</p>
+                </c:if>
+                <c:if test="${rush.counts==1000}">
+                <p class="buy">活动已结束</p>
+                </c:if>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          </a>
+        </div>
+      </c:forEach>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</div>
+<!-- //活动页面 -->
 <!-- items -->
 <div class="container-fluid items">
   <c:forEach var="category" items="${indexCategories}" varStatus="status">

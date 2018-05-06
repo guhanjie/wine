@@ -23,16 +23,17 @@
       </div>
       <div class="col-xs-12 cart-total">
         <!-- <a class="continue" href="product.html">返回商品页</a> -->
-        <div class="price-details">
+        
+        <div class="price-details <c:if test="${cartType=='rush'}">hidden</c:if>">
           <h3>订单总额</h3>
           <div>
             <span>总价</span> <span class="total1"><span class="simpleCart_total"></span>元</span>
           </div>
-          <div>
-            <span>会员折扣（已省）</span> <span class="total1"><del class="simpleCart_discount"></del>元</span>
-          </div>
           <div class="coupons-discount">
             <span class="cpns">会员积分（扣减）</span> <span class="total1 "><span class="delcpns"></span>元</span>
+          </div>
+          <div>
+            <span>会员折扣（已省）</span> <span class="total1"><del class="simpleCart_discount"></del>元</span>
           </div>
           <div>
             <span class="shipType">
@@ -47,6 +48,7 @@
           </div>
           <div class="clearfix"></div>
         </div>
+        
         <div class="coupons-item">
           <h3>优惠券</h3>
           <p>
@@ -132,3 +134,7 @@
   </div>
   <!-- //pay msg -->
 </div>
+<c:if test="${cartType=='rush'}">
+  <input type="hidden" name="sourceType" id="sourceType" value="rush" />
+  <script>ships = 0;</script>
+</c:if>

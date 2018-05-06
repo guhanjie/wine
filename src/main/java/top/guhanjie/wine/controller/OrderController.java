@@ -81,7 +81,7 @@ public class OrderController extends BaseController {
 	private TaskScheduler taskScheduler;
 	
 	@RequestMapping(value={"/checkout"},method=RequestMethod.GET)
-	public String checkout(Model model, HttpSession session) {
+	public String checkout(Model model, HttpSession session, String type) {
 		getSessionUser();
 		List<Item> items = new ArrayList<Item>();
 		Object obj = session.getAttribute("cart");
@@ -97,6 +97,7 @@ public class OrderController extends BaseController {
 			}
 		}
 		model.addAttribute("items", items);
+		model.addAttribute("cartType", type);
 		return "checkout";
 	}
 	

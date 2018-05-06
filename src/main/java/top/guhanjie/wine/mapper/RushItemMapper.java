@@ -2,6 +2,8 @@ package top.guhanjie.wine.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import top.guhanjie.wine.model.RushItem;
 
 public interface RushItemMapper {
@@ -55,5 +57,6 @@ public interface RushItemMapper {
     
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     List<RushItem> selectByStatus(int status);
+    int addSales(@Param("itemid")Integer itemid, @Param("counts")Integer counts);
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }

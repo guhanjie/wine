@@ -16,31 +16,32 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.alibaba.fastjson.JSON;
 
-import top.guhanjie.wine.model.Item;
 import top.guhanjie.wine.model.RushItem;
+import top.guhanjie.wine.model.RushLottery;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(value = {"classpath:/context/db-mysql.xml", "classpath:/test-application-context.xml"})
-public class TestRushItemMapper {
+public class TestRushLotteryMapper {
 
-    private Logger logger = LoggerFactory.getLogger(TestRushItemMapper.class);
+    private Logger logger = LoggerFactory.getLogger(TestRushLotteryMapper.class);
     
     @Autowired
-    private RushItemMapper mapper;
+    private RushLotteryMapper mapper;
 	private String tableName;
 
     @Before
     public void setup() throws Exception {
-		tableName = "item";
+		tableName = "rush_lottery";
     }
 
 	@Test
 	public void testCRUD() {
 		//Create
 		logger.debug("Create one record to table[{}]...", tableName);
-		RushItem model = new RushItem();
-		model.setName("百年老窖");
-		model.setNormalPrice(new BigDecimal(888));
+		RushLottery model = new RushLottery();
+		model.setUserId(1);
+		model.setLotteryCode("888");
+		model.setRushItemId(3);
 		long insertCount = mapper.insertSelective(model);
 		assertEquals(insertCount, 1L);
 		//Retrieve
@@ -49,7 +50,7 @@ public class TestRushItemMapper {
 		logger.debug(JSON.toJSONString(model, true));
 		//Update
 		logger.debug("Update one record in table[{}]...", tableName);
-		model.setTitleImgs("http://www.guhanjie.top");
+		model.setLotteryCode("666");
 		long updateCount = mapper.updateByPrimaryKeySelective(model);
 		logger.debug("Update [{}] record(s) in table[{}]...", updateCount, tableName);
 		model = mapper.selectByPrimaryKey(model.getId());
@@ -61,10 +62,21 @@ public class TestRushItemMapper {
 	}
 	
 	@Test
-    public void testSelectByStatus() {
-	    List<RushItem> items = mapper.selectByStatus(1);
-	    for(RushItem item : items) {
+    public void testSelectByUserItem() {
+	    List<RushLottery> items = mapper.selectByOrderItem(1, 1);
+	    for(RushLottery item : items) {
 	        logger.debug(JSON.toJSONString(item));
 	    }
+	}
+	
+	@Test
+    public void testSelectByCodeItem() {
+		// exist case:
+	    RushLottery item1 = mapper.selectByItemCode(1, "505");
+	    System.out.println(JSON.toJSONString(item1, true));
+
+		// not exist case:
+	    RushLottery item2 = mapper.selectByItemCode(1, "222");
+	    System.out.println(JSON.toJSONString(item2, true));
 	}
 }

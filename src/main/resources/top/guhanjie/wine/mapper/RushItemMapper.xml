@@ -18,9 +18,12 @@
     <result column="buyers" jdbcType="INTEGER" property="buyers" />
     <result column="counts" jdbcType="INTEGER" property="counts" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="lottery_code" jdbcType="VARCHAR" property="lotteryCode" />
+    <result column="round" jdbcType="VARCHAR" property="round" />
     <result column="start_tiem" jdbcType="TIMESTAMP" property="startTiem" />
     <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
-    <result column="images" jdbcType="VARCHAR" property="images" />
+    <result column="title_imgs" jdbcType="VARCHAR" property="titleImgs" />
+    <result column="detail_imgs" jdbcType="VARCHAR" property="detailImgs" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
@@ -31,7 +34,7 @@
       This element was generated on Sun Aug 20 16:15:40 CST 2017.
     -->
     id, name, icon, detail, category_id, normal_price, vip_price, back_points, buyers, 
-    counts, status, start_tiem, end_time, images, create_time, update_time
+    counts, status, lottery_code, round, start_tiem, end_time, title_imgs, detail_imgs, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--
@@ -65,14 +68,16 @@
     insert into rush_item (name, icon, detail, 
       category_id, normal_price, vip_price, 
       back_points, buyers, counts, 
-      status, start_tiem, end_time, 
-      images, create_time, update_time
+      status, lottery_code, round, start_tiem, end_time, 
+      title_imgs, detail_imgs, create_time, update_time
       )
     values (#{name,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, 
       #{categoryId,jdbcType=INTEGER}, #{normalPrice,jdbcType=DECIMAL}, #{vipPrice,jdbcType=DECIMAL}, 
       #{backPoints,jdbcType=INTEGER}, #{buyers,jdbcType=INTEGER}, #{counts,jdbcType=INTEGER}, 
-      #{status,jdbcType=INTEGER}, #{startTiem,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
-      #{images,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      #{status,jdbcType=INTEGER}, #{lotteryCode,jdbcType=VARCHAR}, #{round,jdbcType=VARCHAR}, 
+      #{startTiem,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{titleImgs,jdbcType=VARCHAR}, #{detailImgs,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="top.guhanjie.wine.model.RushItem">
@@ -116,14 +121,23 @@
       <if test="status != null">
         status,
       </if>
+      <if test="lotteryCode != null">
+        lottery_code,
+      </if>
+      <if test="round != null">
+        round,
+      </if>
       <if test="startTiem != null">
         start_tiem,
       </if>
       <if test="endTime != null">
         end_time,
       </if>
-      <if test="images != null">
-        images,
+      <if test="titleImgs != null">
+        title_imgs,
+      </if>
+      <if test="detailImgs != null">
+        detail_imgs,
       </if>
       <if test="createTime != null">
         create_time,
@@ -163,14 +177,23 @@
       <if test="status != null">
         #{status,jdbcType=INTEGER},
       </if>
+      <if test="lotteryCode != null">
+        #{lotteryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="round != null">
+        #{round,jdbcType=VARCHAR},
+      </if>
       <if test="startTiem != null">
         #{startTiem,jdbcType=TIMESTAMP},
       </if>
       <if test="endTime != null">
         #{endTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="images != null">
-        #{images,jdbcType=VARCHAR},
+      <if test="titleImgs != null">
+        #{titleImgs,jdbcType=VARCHAR},
+      </if>
+      <if test="detailImgs != null">
+        #{detailImgs,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -218,14 +241,23 @@
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
+      <if test="lotteryCode != null">
+        lottery_code = #{lotteryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="round != null">
+        round = #{round,jdbcType=VARCHAR},
+      </if>
       <if test="startTiem != null">
         start_tiem = #{startTiem,jdbcType=TIMESTAMP},
       </if>
       <if test="endTime != null">
         end_time = #{endTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="images != null">
-        images = #{images,jdbcType=VARCHAR},
+      <if test="titleImgs != null">
+        title_imgs = #{titleImgs,jdbcType=VARCHAR},
+      </if>
+      <if test="detailImgs != null">
+        detail_imgs = #{detailImgs,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -253,9 +285,12 @@
       buyers = #{buyers,jdbcType=INTEGER},
       counts = #{counts,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
+      lottery_code = #{lotteryCode,jdbcType=VARCHAR},
+      round = #{round,jdbcType=VARCHAR},
       start_tiem = #{startTiem,jdbcType=TIMESTAMP},
       end_time = #{endTime,jdbcType=TIMESTAMP},
-      images = #{images,jdbcType=VARCHAR},
+      title_imgs = #{titleImgs,jdbcType=VARCHAR},
+      detail_imgs = #{detailImgs,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
@@ -269,5 +304,11 @@
     where status = #{status,jdbcType=INTEGER} 
     order by end_time
   </select>
+  
+  <update id="addSales">
+    update rush_item
+    set counts = counts + #{counts}
+    where id = #{itemid}
+  </update>
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 </mapper>
