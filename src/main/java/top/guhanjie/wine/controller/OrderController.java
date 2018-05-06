@@ -82,7 +82,7 @@ public class OrderController extends BaseController {
 	
 	@RequestMapping(value={"/checkout"},method=RequestMethod.GET)
 	public String checkout(Model model, HttpSession session, String type) {
-		getSessionUser();
+		getSessionUser(); //refresh user info from DB
 		List<Item> items = new ArrayList<Item>();
 		Object obj = session.getAttribute("cart");
 		Map<Integer, Integer> cart = null;

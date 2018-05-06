@@ -45,6 +45,11 @@ public abstract class BaseController {
     	    }
     		return u;
     	}
+    	else {
+    		String openid = (String)request.getSession().getAttribute(AppConstants.SESSION_KEY_OPEN_ID);
+    		User u = userService.getUserByOpenId(openid);
+	        setSessionUser(u);
+    	}
     	return null;
     }
     
