@@ -79,4 +79,10 @@ public class TestRushLotteryMapper {
 	    RushLottery item2 = mapper.selectByItemCode(1, "222");
 	    System.out.println(JSON.toJSONString(item2, true));
 	}
+	
+	@Test
+    public void testcountByItem() {
+	    int cnt = mapper.countByItem(5);
+	    System.out.println(cnt);
+	}
 }

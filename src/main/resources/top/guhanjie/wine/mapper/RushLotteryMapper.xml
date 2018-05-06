@@ -172,14 +172,14 @@
     and lottery_code = #{lottery_code,jdbcType=INTEGER}  
   </select>
   
-  <select id="countByItem" resultMap="BaseResultMap">
+  <select id="countByItem" resultType="Integer">
     select 
     count(1)
     from rush_lottery 
     where rush_item_id = #{rush_item_id,jdbcType=INTEGER} 
   </select>
   
-  <select id="countUsersByItem" resultMap="BaseResultMap">
+  <select id="countUsersByItem" resultType="Integer">
     select 
     count(1) 
     from rush_lottery 
