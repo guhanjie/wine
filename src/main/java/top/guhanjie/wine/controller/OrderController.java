@@ -243,6 +243,13 @@ public class OrderController extends BaseController {
         if(order == null) {
             return fail("无效的订单号");
         }
+        //1元抢购活动
+        if(Order.SourceTypeEnum.RUSH.code().equalsIgnoreCase(order.getSourceType())) {
+        	orderService.finishOrderPay(order);
+        	Map<String, Object> res = success();
+        	res.put("rush", "true");
+        	return res;
+        }
         //获取订单的微信预支付id
         String prepayid = order.getPayId();
         try {

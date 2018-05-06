@@ -19,7 +19,7 @@ DROP TABLE IF EXISTS `lottery_info`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `lottery_info` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `lottery_code` int(10) unsigned DEFAULT NULL COMMENT '开奖号码',
+  `lottery_code` varchar(10) DEFAULT NULL COMMENT '开奖号码',
   `round` varchar(20) DEFAULT NULL COMMENT '第x期',
   `type` int(6) DEFAULT '1' COMMENT '彩票类型：（1：福彩3D，2：试机号）',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -34,6 +34,3 @@ ADD COLUMN `lottery_code` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci
 ADD COLUMN `round` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '第x期' AFTER `lottery_code`,
 ADD COLUMN `title_imgs` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '商品预览图片（以，分隔）' AFTER `end_time`,
 ADD COLUMN `detail_imgs` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '商品详情图片（以，分隔）' AFTER `title_imgs`;
-
-ALTER TABLE `lottery_info`
-MODIFY COLUMN `lottery_code` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '开奖号码' AFTER `id`;

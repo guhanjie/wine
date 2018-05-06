@@ -50,6 +50,19 @@ $('.weui-msg.weixin_pay').on('click', '.order-pay', function() {
         dataType : 'json',
         success : function(data) {
             if (data.success) {
+            	if(!!data.rush) {
+                    $('body').html(
+                            '<div class="weui-msg">' 
+                          + '  <div class="weui-msg__icon-area">'
+                          + '    <i class="weui-icon-success weui-icon_msg"></i>' 
+                          + '  </div>'
+                          + '  <div class="weui-msg__text-area">' 
+                          + '    <h2 class="weui-msg__title">支付成功</h2>'
+                          + '    <p class="weui-msg__desc">如果商城，竭诚为您服务！</p>' 
+                          + '  </div>' 
+                          + '</div>');
+                    return;
+            	}
                 callWeixinPay(data.content, function() {
                     $('body').html(
                         '<div class="weui-msg">' 
@@ -61,7 +74,6 @@ $('.weui-msg.weixin_pay').on('click', '.order-pay', function() {
                       + '    <p class="weui-msg__desc">如果商城，竭诚为您服务！</p>' 
                       + '  </div>' 
                       + '</div>');
-
                 }, function() {
                     $('body').html(
                         '<div class="weui-msg">' 
