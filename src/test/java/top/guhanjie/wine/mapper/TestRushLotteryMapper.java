@@ -85,4 +85,10 @@ public class TestRushLotteryMapper {
 	    int cnt = mapper.countByItem(5);
 	    System.out.println(cnt);
 	}
+
+	@Test
+    public void testcountUsersByItem() {
+	    int cnt = mapper.countUsersByItem(1);
+	    System.out.println(cnt);
+	}
 }
