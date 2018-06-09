@@ -27,7 +27,7 @@
         <c:forEach items="${orders}" var="order">
           <a class="weui-cell order-item" data-id="${order.id}" href="#pay">
           	<c:if test="${order.sourceType=='rush'}">
-          		<div class="order_corner_mark">秒杀</div>
+          		<div class="corner_mark">秒杀</div>
           	</c:if>
             <div class="weui-cell__hd">
               <!-- <i class="icon-double-angle-down text-primary"> </i> -->

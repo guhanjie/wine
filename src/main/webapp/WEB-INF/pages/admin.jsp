@@ -33,8 +33,16 @@
         <div class="weui-tab__content">
             <div id="item-list">
               <div class="weui-cells__title">管理后台--商品列表</div>
-              <div class="weui-grids"></div>
-              <a id="add-item" class="weui-footer_fixed-bottom weui-btn weui-btn_primary">添加商品</a>
+              <div class="item">
+              	<p class="item__title bg-success">秒杀商品</p>
+              	<div id="rush-items" class="weui-grids"></div>
+              </div>
+              <div class="item">
+              	<p class="item__title bg-info">普通商品</p>
+              	<div id="normal-items" class="weui-grids"></div>
+              </div>
+              <a id="add-rush-item" class="weui-footer_fixed-bottom weui-btn weui-btn_primary left">添加秒杀商品</a>
+              <a id="add-normal-item" class="weui-footer_fixed-bottom weui-btn weui-btn_primary right">添加普通商品</a>
             </div>
             <div id="item-form">
                 <div class="weui-cells__title">

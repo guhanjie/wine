@@ -9,7 +9,7 @@
 <!-- item -->
 <ol class="breadcrumb">
   <li><a href="<c:url value="/index"/>">首页</a></li>
-  <li>一元购活动</li>
+  <li>积分秒杀活动</li>
 </ol>
 <!--breadcrumb//-->
 <div class="product">

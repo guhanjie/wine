@@ -54,7 +54,7 @@ public class IndexController extends BaseController{
 	    model.addAttribute("indexCategories", indexCategories);
 	    model.addAttribute("indexItems", indexItems);
 	    //活动商品
-	    List<RushItem> ris = rushItemService.listItems();
+	    List<RushItem> ris = rushItemService.listActiveItems();
 	    model.addAttribute("rushItems", ris);
 //	    List<Category> citemList = new ArrayList<Category>();
 //	    Map<String, List<Item>> items = new HashMap<String, List<Item>>();

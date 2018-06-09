@@ -66,6 +66,35 @@
         $('#item-form').hide();
         $('#item-list').show();
         $('#item-list .weui-grids').empty();
+        //秒杀商品
+        $.get("/wine/admin/rush_item/all", function(data) {
+            $.each(data.content, function(i, e) {
+            	var statusTxt = '状态未知';
+            	switch(e.status) {
+            		case 1:
+            			statusTxt = '进行中'; break;
+            		case 2:
+            			statusTxt = '未开始'; break;
+            		case 3:
+            			statusTxt = '已结束'; break;
+            	}
+                var content = '<a href="javascript:;" class="weui-grid item rush" id="item-' + e.id + '">'
+                        + '  <div class="weui-grid__icon"><div class="corner_mark">' + statusTxt + '</div>' 
+                        + '    <img src="resources/' + e.icon + '" alt="">'
+                        + ' </div>' + ' <p class="weui-grid__label">' + e.name + '</p>' +
+                        // '<span
+                        // class="del-item
+                        // weui-badge"
+                        // style="position:
+                        // absolute;top:
+                        // 0.5em;right:
+                        // 0.5em;">X</span>'+
+                        '</a>';
+                $('#item-list #rush-items.weui-grids').append(content);
+                $('#item-' + e.id).data('item', e);
+            });
+        });
+        //普通商品
         $.get("/wine/admin/item/all", function(data) {
             $.each(data.content, function(i, e) {
                 var content = '<a href="javascript:;" class="weui-grid item" id="item-' + e.id + '">'
@@ -79,7 +108,7 @@
                         // 0.5em;right:
                         // 0.5em;">X</span>'+
                         '</a>';
-                $('#item-list .weui-grids').append(content);
+                $('#item-list #normal-items.weui-grids').append(content);
                 $('#item-' + e.id).data('item', e);
             });
         });
@@ -193,6 +222,14 @@
             '.item.weui-grid',
             function(event) {
                 var $item = $(this);
+                var item_url = 'item'; //默认普通商品
+                if($item.hasClass('rush')) {
+                	item_url = 'rush_item';
+                	$('#item-form').data('item_type', 'rush-item');
+                }
+                else {
+                	$('#item-form').data('item_type', 'normal-item');
+                }
                 weui.actionSheet([
                         {
                             label : '编辑',
@@ -260,7 +297,7 @@
                                     // delete item
                                     $.ajax({
                                         type : "DELETE",
-                                        url : "/wine/admin/item/delete",
+                                        url : "/wine/admin/"+item_url+"/delete",
                                         contentType : "application/json",
                                         data : JSON.stringify(item),
                                         success : function(data) {
@@ -284,14 +321,37 @@
                 });
             });
 
-    // 添加商品信息
-    $('#add-item').on("click touch", function(event) {
+    // 添加秒杀商品信息
+    $('#add-rush-item').on("click touch", function(event) {
+    	$('#item-form').data('item_type', 'rush-item');
         $('#item-form').removeData("id");
         $('input[name="name"]').val('');
         $('textarea[name="detail"]').val('');
         $('input[name="categoryId"]').val('');
         $('input[name="normalPrice"]').val('');
         $('input[name="vipPrice"]').val('');
+        $('input[name="sales"]').parents('.weui-cell').hide();
+        $('input[name="state"]').prop('checked', 'true');
+        iconUploader.uploadList = [];
+        $('#iconImgsFiles').empty();
+        titleUploader.uploadList = [];
+        $('#titleImgsFiles').empty();
+        detailUploader.uploadList = [];
+        $('#detailImgsFiles').empty();
+        $('#item-list').hide();
+        $('#item-form').show();
+    });
+    
+    // 添加普通商品信息
+    $('#add-normal-item').on("click touch", function(event) {
+    	$('#item-form').data('item_type', 'normal-item');
+        $('#item-form').removeData("id");
+        $('input[name="name"]').val('');
+        $('textarea[name="detail"]').val('');
+        $('input[name="categoryId"]').val('');
+        $('input[name="normalPrice"]').val('');
+        $('input[name="vipPrice"]').val('');
+        $('input[name="sales"]').parents('.weui-cell').show();
         $('input[name="sales"]').val('');
         $('input[name="state"]').prop('checked', 'true');
         iconUploader.uploadList = [];
@@ -397,9 +457,12 @@
                 item.detailImgs = item.detailImgs.substr(1);
                 console.log(item);
                 var loading = weui.loading('提交中...');
+                //秒杀or普通商品
+                var item_type = $('#item-form').data('item_type');
+                var item_url = item_type==='rush-item' ? 'rush_item' : 'item';
                 // submit
                 var type = id ? "PUT" : "POST";
-                var url =  id ? "/wine/admin/item/modify" : "/wine/admin/item/add";
+                var url =  id ? "/wine/admin/"+item_url+"/modify" : "/wine/admin/"+item_url+"/add";
                 $.ajax({
                     type : type,
                     url : url,

@@ -8,6 +8,7 @@
  */  
 package top.guhanjie.wine.service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -21,10 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
 
-import top.guhanjie.wine.mapper.LotteryInfoMapper;
 import top.guhanjie.wine.mapper.RushItemMapper;
 import top.guhanjie.wine.mapper.RushLotteryMapper;
-import top.guhanjie.wine.model.LotteryInfo;
 import top.guhanjie.wine.model.Order;
 import top.guhanjie.wine.model.RushItem;
 import top.guhanjie.wine.model.RushLottery;
@@ -38,11 +37,31 @@ public class RushItemService {
     private RushItemMapper rushItemMapper;
     @Autowired
     private RushLotteryMapper rushLotteryMapper;
-    @Autowired
-    private LotteryInfoMapper lotteryInfoMapper;
+
+	//获取所有秒杀商品列表
+    public List<RushItem> listAllItems() {
+    	List<RushItem> items = rushItemMapper.selectAll();
+        return items;
+    }
+    
+    public void addItem(RushItem item) {
+		LOGGER.info("Add a new rush item[{}]...", JSON.toJSONString(item, true));
+		item.setStartTiem(new Date());
+		rushItemMapper.insertSelective(item);
+	}
+
+    public void updateItem(RushItem item) {
+		LOGGER.info("Update rush item[{}]...", JSON.toJSONString(item, true));
+		rushItemMapper.updateByPrimaryKeySelective(item);
+	}
+    
+    public void deleteItem(RushItem item) {
+    	LOGGER.info("Delete rush item[{}]...", JSON.toJSONString(item, true));
+    	rushItemMapper.deleteByPrimaryKey(item.getId());
+    }
     
     //获取当前正在进行的活动商品列表
-    public List<RushItem> listItems() {
+    public List<RushItem> listActiveItems() {
     	List<RushItem> items = rushItemMapper.selectByStatus(RushItem.StatusEnum.PROCESSING.code());
         return items;
     }
@@ -72,7 +91,6 @@ public class RushItemService {
     }
     
     //生产活动的随机码
-    @SuppressWarnings("deprecation")
 	@Transactional
     public void putItem(Order order) {
     	LOGGER.debug("generating for rush item:[{}]", JSON.toJSONString(order, true));
@@ -98,14 +116,13 @@ public class RushItemService {
 			ri.setId(itemId);
 			ri.setBuyers(rushLotteryMapper.countUsersByItem(itemId));
 			//检查是否活动达成
-			if(rushLotteryMapper.countByItem(itemId) == 1000) {
-				Date end = new Date();
-				end = new Date(end.getYear(), end.getMonth(), end.getDate());
-				Date start = new Date(end.getTime()-24*3600); //前一天
-				start = new Date(start.getYear(), start.getMonth(), start.getDate());
-				LotteryInfo li = lotteryInfoMapper.selectByTime(start, end);
-				ri.setLotteryCode(li.getLotteryCode());
-				ri.setRound(li.getRound());
+			if(rushLotteryMapper.countByItem(itemId) >= 1000) {
+				Date now = new Date();
+				Date kjdate = new Date(now.getTime()+24*3600); //后一天
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	            String round = sdf.format(kjdate);
+				ri.setRound(round);
+				ri.setEndTime(now);
 			}
 			rushItemMapper.updateByPrimaryKeySelective(ri);
 		}

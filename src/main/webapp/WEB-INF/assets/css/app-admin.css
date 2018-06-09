@@ -89,3 +89,13 @@ input.points {
 li.weui-uploader__file {
 	height: 99px;
 }
+
+.weui-footer_fixed-bottom.left {
+	left: 0;
+    right: 50%;
+}
+
+.weui-footer_fixed-bottom.right {
+	left: 50%;
+    right: 0;
+}

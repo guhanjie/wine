@@ -56,7 +56,9 @@ public interface RushItemMapper {
     int updateByPrimaryKey(RushItem record);
     
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    List<RushItem> selectAll();
     List<RushItem> selectByStatus(int status);
+    List<RushItem> selectByRound(String round);
     int addSales(@Param("itemid")Integer itemid, @Param("counts")Integer counts);
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }

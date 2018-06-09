@@ -284,7 +284,7 @@ p.order_sumary .price  em{
 .weui_msg .weui_cell p i{
     padding-right: 0.2em;
 }
-.order_corner_mark {
+.corner_mark {
     width: 80px;
     height: 80px;
     color: #fff;
@@ -294,7 +294,7 @@ p.order_sumary .price  em{
     transform: rotateZ(45deg);
 	text-align: center;
 }
-.order_corner_mark:after {
+.corner_mark:after {
     content: '';
     border-width: 40px;
     width: 0;
@@ -305,7 +305,7 @@ p.order_sumary .price  em{
     top: -60px;
     z-index: -2;
 }
-.order_corner_mark:before {
+.corner_mark:before {
     content: '';
     border-width: 20px;
     width: 0;
@@ -316,6 +316,9 @@ p.order_sumary .price  em{
     top: -41px;
     z-index: -1;
     right: 20px;
+}
+.offer-grids .corner_mark{
+	right: 15px;
 }
 .rush_won {
 	color: #ed645b;

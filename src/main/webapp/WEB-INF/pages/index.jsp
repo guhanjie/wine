@@ -141,13 +141,14 @@
     <div class="offer-grids">
       <c:forEach var="rush" items="${rushItems}" varStatus="status">
         <div class="col-md-6">
+          <div class="corner_mark">秒杀</div>
           <a href="rush_item/${rush.id}">
             <div class="offer-grid">
               <div class="ofr-pic">
                 <img src="${pageContext.request.contextPath}/resources/${rush.icon}" class="img-responsive center-block" alt="" />
               </div>
               <div class="ofr-pic-info pull-right text-right">
-                <h4>一元秒杀 · ${rush.name}</h4>
+                <h4>积分秒杀 · ${rush.name}</h4>
                 <p class="status">
                   已抢购 <span>${rush.counts}</span> 份，剩余 <span>${1000-rush.counts}</span> 份成单
                 </p>

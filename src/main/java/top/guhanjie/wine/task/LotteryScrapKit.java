@@ -9,6 +9,7 @@ package top.guhanjie.wine.task;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,7 +26,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import top.guhanjie.wine.mapper.LotteryInfoMapper;
+import top.guhanjie.wine.mapper.RushItemMapper;
 import top.guhanjie.wine.model.LotteryInfo;
+import top.guhanjie.wine.model.RushItem;
 
 /**
  * Class Name:		AccessTokenKit<br/>
@@ -41,17 +44,21 @@ public class LotteryScrapKit {
     private static final Logger LOGGER = LoggerFactory.getLogger(LotteryScrapKit.class);
     
     @Autowired
-    LotteryInfoMapper looteryInfoMapper;
+    RushItemMapper rushItemMapper;
+    
+    @Autowired
+    LotteryInfoMapper lotteryInfoMapper;
 
     /**
      * 定时刷新福彩3D中奖号码，并落库。
+     * 每天21:30,22:30,23:30执行该定时任务
      */
     @Scheduled(cron="0 30 21-23 * * ?")
-    public synchronized void refreshToken() {
+    public synchronized void refreshLotteryInfo() {
     	Date now = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String date = sdf.format(now);
-        if(looteryInfoMapper.selectByRound(date) != null) {
+        if(lotteryInfoMapper.selectByRound(date) != null) {
         	LOGGER.warn("lottery code for date[{}] has existed.", date);
         	return;
         }
@@ -69,14 +76,21 @@ public class LotteryScrapKit {
             System.out.println(p.pattern());
             Matcher m = p.matcher(txt);
             if (m.find( )) {
-            	//System.out.println(m.group());
+            	//设置当前的福彩3D中奖号码信息
             	String znum = m.group(1);
             	znum = znum.replaceAll("\\s", "");
             	LOGGER.info("found lottery code[{}] for date[{}]", znum, date);
             	LotteryInfo li = new LotteryInfo();
             	li.setLotteryCode(znum);
             	li.setRound(date);
-            	looteryInfoMapper.insertSelective(li);
+            	lotteryInfoMapper.insertSelective(li);
+            	//更新当天中奖的rush_item的中奖号码
+            	List<RushItem> items = rushItemMapper.selectByRound(date);
+            	for(RushItem item : items) {
+                	LOGGER.info("update lottery code[{}] for rush_item[{}]", znum, item.getId());
+            		item.setLotteryCode(znum);
+            		rushItemMapper.updateByPrimaryKeySelective(item);
+            	}
             }
         } catch (Exception e) {
             LOGGER.error("Failed to refresh lottery.", e);
