@@ -71,9 +71,9 @@ public class ItemService {
 	}
     
     public void deleteItem(Item item) {
-    	LOGGER.info("Delete item[{}]...", JSON.toJSONString(item, true));
-    	//item.setStatus(3); //商品删除状态
-    	itemMapper.deleteByPrimaryKey(item.getId());
+    	LOGGER.warn("Delete item[{}]...", JSON.toJSONString(item, true));
+    	item.setStatus(3); //商品删除状态
+    	itemMapper.updateByPrimaryKeySelective(item);
     	ITEM_CACHE.remove(item.getId());
     	GROUPED_ITEMS_CACHE.clear();  //disable cache to update info
     }

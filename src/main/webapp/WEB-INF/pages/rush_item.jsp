@@ -47,7 +47,7 @@
               <span class="hidden item_itemid">${item.id}</span>
               <span class="hidden item_name">${item.name}</span>
               <span class="hidden item_img">${pageContext.request.contextPath}/resources/${item.icon}</span>
-              <h5 class="item_price">￥ 1.00</h5>
+              <h5 class="item_price">￥ ${item.vipPrice}</h5>
               <p class="pric1 normal-price">
                 原价 <del class="item_normalprice">${item.normalPrice}</del>
               </p>
@@ -60,11 +60,11 @@
             <div class="prdt-info-grid">
               『 秒 · 杀 · 专 · 区 』活动说明：<br/>
               <ul>
-                <li>- 用户使用一积分，下单购买本活动的一份额；</li>
+                <li>- 用户使用积分，下单购买本活动的相应份额；</li>
                 <li>- 购得一份额后，会随机获得一个3位数的随机号码；</li>
                 <li>- 当达成活动总份额时开奖，最终拥有中奖号码的用户购得此活动商品。</li>
                 <li>- 为保证本活动公开透明，采用福彩3D中奖号码作为活动参考开奖号码，</li>
-                <li>- 开奖号码日期确定为当活动份额达成当日的前一天的福彩3D中奖号码。</li>
+                <li>- 开奖号码日期确定为当活动份额达成当日的后一天的福彩3D中奖号码。</li>
               </ul>
             </div>
           </div>

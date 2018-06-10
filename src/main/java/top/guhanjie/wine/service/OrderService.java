@@ -415,6 +415,7 @@ public class OrderService {
     }
 
     private void parseItems(Order order) {
+    	LOGGER.debug("parse order:[{}]", JSON.toJSONString(order, true));
 		if(Order.SourceTypeEnum.NORMAL.code().equalsIgnoreCase(order.getSourceType())) {
 	    	List<Item> itemList = new ArrayList<Item>();
 	    	String items = order.getItems();

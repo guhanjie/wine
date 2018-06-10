@@ -56,8 +56,9 @@ public class RushItemService {
 	}
     
     public void deleteItem(RushItem item) {
-    	LOGGER.info("Delete rush item[{}]...", JSON.toJSONString(item, true));
-    	rushItemMapper.deleteByPrimaryKey(item.getId());
+    	LOGGER.warn("Delete rush item[{}]...", JSON.toJSONString(item, true));
+    	item.setStatus(4);
+    	rushItemMapper.updateByPrimaryKeySelective(item);
     }
     
     //获取当前正在进行的活动商品列表
@@ -75,6 +76,7 @@ public class RushItemService {
     
     //获取某个活动商品
     public RushItem getItemByOrder(Integer orderId, Integer itemId) {
+    	LOGGER.debug("Get item by order[{}], item[{}]", orderId, itemId);
     	RushItem item = rushItemMapper.selectByPrimaryKey(itemId);
     	List<RushLottery> rls = rushLotteryMapper.selectByOrderItem(orderId, itemId);
     	item.setRushLotterys(rls);
@@ -93,7 +95,7 @@ public class RushItemService {
     //生产活动的随机码
 	@Transactional
     public void putItem(Order order) {
-    	LOGGER.debug("generating for rush item:[{}]", JSON.toJSONString(order, true));
+    	LOGGER.info("Put rush item:[{}]", JSON.toJSONString(order, true));
     	Integer orderId = order.getId();
     	Integer userId = order.getUserId();
     	String items = order.getItems();

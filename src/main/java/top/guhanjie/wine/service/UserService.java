@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSON;
 
 import top.guhanjie.wine.mapper.UserMapper;
 import top.guhanjie.wine.model.User;
+import top.guhanjie.wine.util.StringValidationUtil;
 import top.guhanjie.wine.util.TTLCache;
 
 @Service
@@ -52,13 +53,13 @@ public class UserService {
 	 */
 	public User findUser(String str) {
 		User user = null;
-		if (StringUtils.isNumeric(str)) {
-			user = userMapper.selectByPrimaryKey(Integer.parseInt(str));
-			if (user == null) {
-				user = userMapper.selectByPhone(str);
-			}
+		if(StringValidationUtil.isPhoneNumber(str)) {
+			user = userMapper.selectByPhone(str);
 		}
-		if (user == null) {
+		else if (StringUtils.isNumeric(str)) {
+			user = userMapper.selectByPrimaryKey(Integer.parseInt(str));
+		}
+		else {
 			user = userMapper.selectLikeName("%" + str + "%");
 		}
 		return user;

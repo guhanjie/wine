@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="6 seconds" debug="true">
 	<property name="PROJECT_NAME" value="wine" />
-    <property name="PROJECT_LOG_DIR" value="${user.home}/logs/${PROJECT_NAME}" />
-    <property name="log.root.level" value="WARN" />
-    <property name="log.app.level" value="INFO" />
-    <property file="default.properties"/>
-    <property file="${user.home}/default.properties"/>
+	<property name="PROJECT_LOG_DIR" value="${user.home}/logs/${PROJECT_NAME}" />
+	<property name="log.root.level" value="WARN" />
+	<property name="log.app.level" value="INFO" />
+	<property file="default.properties" />
+	<property file="${user.home}/default.properties" />
 
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
@@ -13,11 +13,12 @@
 			<charset>UTF-8</charset>
 		</encoder>
 	</appender>
-	
+
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${PROJECT_LOG_DIR}/${PROJECT_NAME}.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${PROJECT_LOG_DIR}/${PROJECT_NAME}.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>${PROJECT_LOG_DIR}/${PROJECT_NAME}.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
 		<encoder>
@@ -25,10 +26,10 @@
 			<charset>UTF-8</charset>
 		</encoder>
 	</appender>
-	
-	<!-- TRACE < DEBUG < INFO < WARN < ERROR -->	 
-		
-	<logger name="top.guhanjie.wine" level="${log.app.level}"/>
+
+	<!-- TRACE < DEBUG < INFO < WARN < ERROR -->
+
+	<logger name="top.guhanjie.wine" level="${log.app.level}" />
 
 	<root level="${log.root.level}">
 		<appender-ref ref="FILE" />

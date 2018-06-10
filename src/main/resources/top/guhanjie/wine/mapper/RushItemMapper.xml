@@ -301,6 +301,7 @@
     select 'false' as QUERYID,
     <include refid="Base_Column_List" />
     from rush_item 
+    where status = 1 or status = 2 
     order by update_time desc
   </select>
   

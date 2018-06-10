@@ -561,7 +561,8 @@ public class RushItem {
 
         PROCESSING(1, "进行中"),
         NOT_STARTED(2, "未开始"),
-        OVER(3, "已结束");
+        OVER(3, "已结束"),
+        DELETED(4, "已删除");
         
         private int code;
         private String desc;

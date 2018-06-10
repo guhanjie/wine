@@ -30,6 +30,7 @@ CREATE TABLE `lottery_info` (
 
 ALTER TABLE `rush_item`
 DROP COLUMN `images`,
+ADD COLUMN `status` int(6) DEFAULT '2' COMMENT '商品状态（1：进行中、2：未开始、3：已结束、4：已删除）' AFTER `count`;
 ADD COLUMN `lottery_code` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '开奖号码' AFTER `status`,
 ADD COLUMN `round` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '第x期' AFTER `lottery_code`,
 ADD COLUMN `title_imgs` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '商品预览图片（以，分隔）' AFTER `end_time`,
