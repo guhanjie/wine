@@ -73,6 +73,11 @@ $('.weui-msg.weixin_pay').on('click', '.order-pay', function() {
                       + '    <h2 class="weui-msg__title">支付成功</h2>'
                       + '    <p class="weui-msg__desc">如果商城，竭诚为您服务！</p>' 
                       + '  </div>' 
+                      + '  <div class="weui-msg__opr-area">' 
+                      + '    <p class="weui-btn-area">'
+                      + '      <a href="/wine/order/list" class="weui-btn weui-btn_primary">查看我的订单</a>'
+                      + '    </p>' 
+                      + '  </div>' 
                       + '</div>');
                 }, function() {
                     $('body').html(

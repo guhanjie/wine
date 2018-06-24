@@ -46,6 +46,7 @@
             <div class="relative">
               <span class="hidden item_itemid">${item.id}</span>
               <span class="hidden item_name">${item.name}</span>
+              <span class="hidden item_type">rush</span>
               <span class="hidden item_img">${pageContext.request.contextPath}/resources/${item.icon}</span>
               <h5 class="item_price">￥ ${item.vipPrice}</h5>
               <p class="pric1 normal-price">
