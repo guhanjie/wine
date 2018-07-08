@@ -92,6 +92,7 @@
         </div>
 		<c:if test="${cartType=='rush'}">
 		  <input type="hidden" name="sourceType" id="sourceType" value="rush" />
+		  <script>ships = 0;</script>
 		</c:if>
         <a class="order btn" id="submit" href="javascript:;">确认下单</a>
       </div>
