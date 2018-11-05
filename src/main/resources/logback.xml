@@ -4,7 +4,7 @@
 	<property name="PROJECT_LOG_DIR" value="${user.home}/logs/${PROJECT_NAME}" />
 	<property name="log.root.level" value="WARN" />
 	<property name="log.app.level" value="INFO" />
-	<property file="default.properties" />
+	<property resource="default.properties" />
 	<property file="${user.home}/default.properties" />
 
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
