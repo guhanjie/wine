@@ -13,10 +13,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,10 +36,17 @@ public class RushItemService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RushItemService.class);
         
+    @Value("${test}")
+    private String test;
     @Autowired
     private RushItemMapper rushItemMapper;
     @Autowired
     private RushLotteryMapper rushLotteryMapper;
+
+    @PostConstruct
+    private void init() {
+        LOGGER.error("===="+test);
+    }
 
 	//获取所有秒杀商品列表
     public List<RushItem> listAllItems() {
@@ -68,10 +78,11 @@ public class RushItemService {
     }
     
     //获取某个活动商品
-    public RushItem getItem(Integer itemId) {
+    public RushItem getItem(Integer itemId) throws RuntimeException {
     	RushItem item = rushItemMapper.selectByPrimaryKey(itemId);
+	throw new RuntimeException("run error....");
     	//item.setCounts(rushLotteryMapper.countByItem(itemId));
-        return item;
+        //return item;
     }
     
     //获取某个活动商品
